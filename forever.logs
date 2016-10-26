@@ -1,0 +1,784 @@
+error: Could not read .foreverignore file.
+error: ENOENT: no such file or directory, open '/home/sam/dev/webdev/quickData/webpack-express/.foreverignore'
+[0mGET / [36m302 [0m13.569 ms - 66[0m
+[0mGET /index.html [33m404 [0m445.144 ms - 1363[0m
+[0mGET / [36m302 [0m4.006 ms - 66[0m
+[0mGET /index.html [33m404 [0m45.318 ms - 1363[0m
+[0mGET /style.css [33m404 [0m85.574 ms - 1363[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #1
+[0mGET / [36m302 [0m13.176 ms - 66[0m
+[0mGET /index.html [33m404 [0m328.512 ms - 1363[0m
+[0mGET /style.css [33m404 [0m54.977 ms - 1363[0m
+[0mGET /style.css [33m404 [0m54.641 ms - 1363[0m
+[0mGET / [36m302 [0m1.202 ms - 66[0m
+[0mGET /index.html [33m404 [0m19.168 ms - 1363[0m
+[0mGET /style.css [33m404 [0m32.214 ms - 1363[0m
+[0mGET / [36m302 [0m4.579 ms - 66[0m
+[0mGET /index.html [33m404 [0m20.421 ms - 1363[0m
+[0mGET /style.css [33m404 [0m52.411 ms - 1363[0m
+error: restarting script because addDir changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #2
+error: restarting script because add changed
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #3
+error: restarting script because unlink changed
+error: restarting script because unlink changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #4
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #5
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #6
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #7
+[0mGET / [32m200 [0m11.130 ms - 209[0m
+[0mGET /dist/build.js [33m404 [0m427.154 ms - 1363[0m
+[0mGET / [36m304 [0m2.738 ms - -[0m
+[0mGET /dist/build.js [33m404 [0m94.620 ms - 1363[0m
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #8
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #9
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #10
+error: restarting script because unlink changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #11
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #12
+error: restarting script because addDir changed
+error: restarting script because addDir changed
+error: restarting script because addDir changed
+error: restarting script because addDir changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #13
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because addDir changed
+error: restarting script because addDir changed
+error: restarting script because addDir changed
+error: restarting script because add changed
+error: restarting script because add changed
+(node:27852) Warning: Possible EventEmitter memory leak detected. 11 exit listeners added. Use emitter.setMaxListeners() to increase limit
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because addDir changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #14
+error: restarting script because addDir changed
+error: restarting script because addDir changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+(node:27852) Warning: Possible EventEmitter memory leak detected. 11 exit listeners added. Use emitter.setMaxListeners() to increase limit
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #15
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+(node:27852) Warning: Possible EventEmitter memory leak detected. 11 exit listeners added. Use emitter.setMaxListeners() to increase limit
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #16
+error: restarting script because unlink changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #17
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #18
+[0mGET / [36m304 [0m14.957 ms - -[0m
+[0mGET /dist/build.js [33m404 [0m575.231 ms - 1363[0m
+[0mGET / [36m304 [0m40.261 ms - -[0m
+[0mGET /dist/build.js [33m404 [0m142.886 ms - 1363[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #19
+[0mGET / [36m304 [0m11.732 ms - -[0m
+[0mGET /dist/build.js [32m200 [0m24.726 ms - 95205[0m
+/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/router.js:47
+    if (err) throw err;
+             ^
+
+Error: ENOENT: no such file or directory, open '/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/../public/quickData.csv'
+    at Error (native)
+error: Forever detected script exited with code: 1
+error: Script restart attempt #20
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #21
+file saved
+[0mPOST /quickdata [32m200 [0m74.182 ms - 123[0m
+[0mGET / [36m304 [0m10.683 ms - -[0m
+[0mGET /dist/build.js [36m304 [0m4.747 ms - -[0m
+file saved
+[0mPOST /quickdata [32m200 [0m7.741 ms - 123[0m
+file saved
+[0mPOST /quickdata [32m200 [0m5.479 ms - 123[0m
+file saved
+[0mPOST /quickdata [32m200 [0m6.125 ms - 123[0m
+file saved
+[0mPOST /quickdata [32m200 [0m3.905 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #22
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #23
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #24
+[0mGET / [36m304 [0m10.676 ms - -[0m
+[0mGET /dist/build.js [36m304 [0m17.948 ms - -[0m
+max value = undefined
+file saved
+[0mPOST /quickdata [32m200 [0m58.559 ms - 123[0m
+[0mGET / [32m200 [0m27.939 ms - 209[0m
+[0mGET /dist/build.js [32m200 [0m7.609 ms - 95205[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #25
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #26
+[0mGET / [36m304 [0m11.549 ms - -[0m
+[0mGET /dist/build.js [32m200 [0m16.063 ms - 95204[0m
+max value = 500
+file saved
+[0mPOST /quickdata [32m200 [0m85.676 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #27
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #28
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #29
+max value = undefined
+file saved
+[0mPOST /quickdata [33m404 [0m430.032 ms - 297[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #30
+max value = undefined
+file saved
+[0mPOST /quickdata [33m404 [0m376.157 ms - 283[0m
+max value = undefined
+file saved
+[0mPOST /quickdata [33m404 [0m85.681 ms - 283[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #31
+max value = undefined
+file saved
+[0mPOST /quickdata [33m404 [0m417.657 ms - 395[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #32
+max value = undefined
+file saved
+[0mPOST /quickdata [32m200 [0m48.589 ms - 123[0m
+max value = undefined
+file saved
+[0mPOST /quickdata [32m200 [0m7.997 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #33
+max value = undefined
+file saved
+[0mPOST /quickdata [32m200 [0m69.613 ms - 123[0m
+[0mGET / [32m200 [0m6.793 ms - 209[0m
+[0mGET /dist/build.js [32m200 [0m6.594 ms - 95204[0m
+max value = undefined
+file saved
+[0mPOST /quickdata [32m200 [0m15.069 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #34
+max value = undefined
+file saved
+[0mPOST /quickdata [32m200 [0m57.454 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #35
+max value = undefined
+file saved
+[0mPOST /quickdata [33m404 [0m374.833 ms - 419[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #36
+max value = undefined
+file saved
+[0mPOST /quickdata [32m200 [0m50.561 ms - 123[0m
+[0mGET / [36m304 [0m8.081 ms - -[0m
+[0mGET /dist/build.js [36m304 [0m5.273 ms - -[0m
+max value = undefined
+file saved
+[0mPOST /quickdata [32m200 [0m9.732 ms - 123[0m
+max value = undefined
+file saved
+[0mPOST /quickdata [32m200 [0m2.272 ms - 123[0m
+max value = undefined
+file saved
+[0mPOST /quickdata [32m200 [0m3.277 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #37
+max value = ____undefined
+file saved
+[0mPOST /quickdata [32m200 [0m70.984 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #38
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #39
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #40
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #41
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #42
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #43
+[0mGET / [36m304 [0m13.341 ms - -[0m
+[0mGET /dist/build.js [32m200 [0m42.280 ms - 95203[0m
+[0mGET / [32m200 [0m3.965 ms - 209[0m
+[0mGET /dist/build.js [32m200 [0m5.271 ms - 95203[0m
+max value = ____500
+file saved
+[0mPOST /quickdata [32m200 [0m37.783 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #44
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #45
+error: Forever detected script was killed by signal: SIGKILL
+error: Could not read .foreverignore file.
+error: ENOENT: no such file or directory, open '/home/sam/dev/webdev/quickData/webpack-express/.foreverignore'
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #1
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #2
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #3
+error: restarting script because unlink changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #4
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #5
+error: Forever detected script was killed by signal: SIGKILL
+error: Could not read .foreverignore file.
+error: ENOENT: no such file or directory, open '/home/sam/dev/webdev/quickData/webpack-express/.foreverignore'
+[0mGET / [36m304 [0m13.558 ms - -[0m
+[0mGET /dist/build.js [36m304 [0m19.584 ms - -[0m
+max value = 50
+file saved
+[0mPOST /quickdata [32m200 [0m48.545 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #1
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #2
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #3
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #4
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #5
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #6
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #7
+[0mGET / [36m304 [0m20.669 ms - -[0m
+[0mGET /dist/build.js [36m304 [0m5.859 ms - -[0m
+max value = 50
+file saved
+/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/router.js:68
+        console.log('Sent:', fileName);
+                             ^
+
+ReferenceError: fileName is not defined
+    at /mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/router.js:68:30
+    at /mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/node_modules/express/lib/response.js:412:22
+    at SendStream.onend (/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/node_modules/express/lib/response.js:1000:5)
+    at emitNone (events.js:86:13)
+    at SendStream.emit (events.js:185:7)
+    at ReadStream.onend (/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/node_modules/send/index.js:717:10)
+    at emitNone (events.js:91:20)
+    at ReadStream.emit (events.js:185:7)
+    at endReadableNT (_stream_readable.js:934:12)
+    at _combinedTickCallback (internal/process/next_tick.js:74:11)
+error: Forever detected script exited with code: 1
+error: Script restart attempt #8
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #9
+[0mGET / [36m304 [0m13.049 ms - -[0m
+[0mGET /dist/build.js [36m304 [0m22.615 ms - -[0m
+max value = 50
+file saved
+Sent: quickData.csv
+[0mPOST /quickdata [32m200 [0m39.421 ms - 123[0m
+max value = 50
+file saved
+Sent: quickData.csv
+[0mPOST /quickdata [32m200 [0m81.638 ms - 123[0m
+max value = 500
+file saved
+Sent: quickData.csv
+[0mPOST /quickdata [32m200 [0m4.064 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #10
+max value = 500
+file saved
+Sent: quickData.csv
+[0mPOST /quickdata [32m200 [0m63.148 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #11
+/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/router.js:61
+});
+^
+SyntaxError: Unexpected token }
+    at Object.exports.runInThisContext (vm.js:53:16)
+    at Module._compile (module.js:513:28)
+    at Object.Module._extensions..js (module.js:550:10)
+    at Module.load (module.js:458:32)
+    at tryModuleLoad (module.js:417:12)
+    at Function.Module._load (module.js:409:3)
+    at Module.require (module.js:468:17)
+    at require (internal/module.js:20:19)
+    at Object.<anonymous> (/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/app.js:8:14)
+    at Module._compile (module.js:541:32)
+error: Forever detected script exited with code: 1
+error: restarting script because change changed
+error: Script restart attempt #12
+/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/router.js:61
+});
+^
+SyntaxError: Unexpected token }
+    at Object.exports.runInThisContext (vm.js:53:16)
+    at Module._compile (module.js:513:28)
+    at Object.Module._extensions..js (module.js:550:10)
+    at Module.load (module.js:458:32)
+    at tryModuleLoad (module.js:417:12)
+    at Function.Module._load (module.js:409:3)
+    at Module.require (module.js:468:17)
+    at require (internal/module.js:20:19)
+    at Object.<anonymous> (/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/app.js:8:14)
+    at Module._compile (module.js:541:32)
+error: Forever detected script exited with code: 1
+error: Script restart attempt #13
+/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/router.js:61
+});
+^
+SyntaxError: Unexpected token }
+    at Object.exports.runInThisContext (vm.js:53:16)
+    at Module._compile (module.js:513:28)
+    at Object.Module._extensions..js (module.js:550:10)
+    at Module.load (module.js:458:32)
+    at tryModuleLoad (module.js:417:12)
+    at Function.Module._load (module.js:409:3)
+    at Module.require (module.js:468:17)
+    at require (internal/module.js:20:19)
+    at Object.<anonymous> (/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/app.js:8:14)
+    at Module._compile (module.js:541:32)
+error: Forever detected script exited with code: 1
+error: Could not read .foreverignore file.
+error: ENOENT: no such file or directory, open '/home/sam/dev/webdev/quickData/webpack-express/.foreverignore'
+/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/router.js:61
+});
+^
+SyntaxError: Unexpected token }
+    at Object.exports.runInThisContext (vm.js:53:16)
+    at Module._compile (module.js:513:28)
+    at Object.Module._extensions..js (module.js:550:10)
+    at Module.load (module.js:458:32)
+    at tryModuleLoad (module.js:417:12)
+    at Function.Module._load (module.js:409:3)
+    at Module.require (module.js:468:17)
+    at require (internal/module.js:20:19)
+    at Object.<anonymous> (/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/app.js:8:14)
+    at Module._compile (module.js:541:32)
+error: Forever detected script exited with code: 1
+error: restarting script because change changed
+error: Script restart attempt #1
+/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/router.js:61
+});
+^
+SyntaxError: Unexpected token }
+    at Object.exports.runInThisContext (vm.js:53:16)
+    at Module._compile (module.js:513:28)
+    at Object.Module._extensions..js (module.js:550:10)
+    at Module.load (module.js:458:32)
+    at tryModuleLoad (module.js:417:12)
+    at Function.Module._load (module.js:409:3)
+    at Module.require (module.js:468:17)
+    at require (internal/module.js:20:19)
+    at Object.<anonymous> (/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/app.js:8:14)
+    at Module._compile (module.js:541:32)
+error: Forever detected script exited with code: 1
+error: Script restart attempt #2
+/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/router.js:61
+});
+^
+SyntaxError: Unexpected token }
+    at Object.exports.runInThisContext (vm.js:53:16)
+    at Module._compile (module.js:513:28)
+    at Object.Module._extensions..js (module.js:550:10)
+    at Module.load (module.js:458:32)
+    at tryModuleLoad (module.js:417:12)
+    at Function.Module._load (module.js:409:3)
+    at Module.require (module.js:468:17)
+    at require (internal/module.js:20:19)
+    at Object.<anonymous> (/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/app.js:8:14)
+    at Module._compile (module.js:541:32)
+error: Forever detected script exited with code: 1
+error: restarting script because change changed
+error: Script restart attempt #3
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #4
+[0mGET / [32m200 [0m26.008 ms - 209[0m
+[0mGET /dist/build.js [36m304 [0m7.952 ms - -[0m
+max value = 50
+file saved
+Tue, 25 Oct 2016 05:22:49 GMT express deprecated res.redirect(url, status): Use res.redirect(status, url) instead at router.js:53:14
+_http_server.js:192
+    throw new RangeError(`Invalid status code: ${statusCode}`);
+    ^
+
+RangeError: Invalid status code: 0
+    at ServerResponse.writeHead (_http_server.js:192:11)
+    at ServerResponse.writeHead (/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/node_modules/on-headers/index.js:55:19)
+    at ServerResponse._implicitHeader (_http_server.js:157:8)
+    at ServerResponse.OutgoingMessage.end (_http_outgoing.js:566:10)
+    at ServerResponse.redirect (/mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/node_modules/express/lib/response.js:900:10)
+    at /mnt/stuff/opt/dev/code/webdev/quickData/webpack-express/router.js:53:14
+    at FSReqWrap.oncomplete (fs.js:117:15)
+error: Forever detected script exited with code: 1
+error: Script restart attempt #5
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #6
+[0mGET / [36m304 [0m16.345 ms - -[0m
+[0mGET /dist/build.js [36m304 [0m13.138 ms - -[0m
+max value = 50
+file saved
+[0mPOST /quickdata [36m302 [0m41.384 ms - 36[0m
+[0mGET /quickData.csv [32m200 [0m6.923 ms - 123[0m
+error: Forever detected script was killed by signal: SIGKILL
+error: Could not read .foreverignore file.
+error: ENOENT: no such file or directory, open '/home/sam/dev/webdev/quickData/webpack-express/.foreverignore'
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #1
+[0mGET / [36m302 [0m17.297 ms - 66[0m
+[0mGET /index.html [33m404 [0m483.557 ms - 1363[0m
+[0mGET /style.css [32m200 [0m18.426 ms - 111[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #2
+[0mGET / [36m302 [0m15.545 ms - 66[0m
+[0mGET /index.html [33m404 [0m391.825 ms - 1363[0m
+[0mGET / [36m302 [0m2.857 ms - 66[0m
+[0mGET /index.html [33m404 [0m54.075 ms - 1363[0m
+[0mGET /style.css [36m304 [0m3.015 ms - -[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #3
+[0mGET / [36m302 [0m13.316 ms - 66[0m
+[0mGET /index.html [33m404 [0m377.079 ms - 1363[0m
+[0mGET /style.css [36m304 [0m6.048 ms - -[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #4
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #5
+[0mGET / [36m302 [0m13.139 ms - 66[0m
+[0mGET /index.html [33m404 [0m413.277 ms - 1363[0m
+[0mGET / [36m302 [0m2.151 ms - 66[0m
+[0mGET /index.html [33m404 [0m59.691 ms - 1363[0m
+[0mGET /style.css [36m304 [0m8.716 ms - -[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #6
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #7
+error: restarting script because unlink changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #8
+[0mGET /index.html [32m200 [0m24.579 ms - 209[0m
+[0mGET /dist/build.js [32m200 [0m11.412 ms - 95268[0m
+max value = 50
+file saved
+[0mPOST /quickdata [32m200 [0m70.506 ms - -[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #9
+[0mGET /index.html [36m304 [0m13.893 ms - -[0m
+[0mGET /dist/build.js [36m304 [0m9.355 ms - -[0m
+max value = 50
+file saved
+[0mPOST /quickdata [32m200 [0m38.008 ms - -[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #10
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #11
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #12
+[0mGET / [32m200 [0m12.139 ms - 209[0m
+[0mGET /dist/build.js [32m200 [0m6.826 ms - 95268[0m
+max value = 50
+file saved
+[0mPOST /quickdata [32m200 [0m33.140 ms - -[0m
+[0mGET /quickData.csv [32m200 [0m2.106 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #13
+max value = 50
+number of columns = 3
+file saved
+[0mPOST /quickdata [32m200 [0m35.356 ms - -[0m
+[0mGET /quickData.csv [32m200 [0m18.121 ms - 123[0m
+max value = 50
+number of columns = 3
+file saved
+[0mPOST /quickdata [32m200 [0m3.347 ms - -[0m
+[0mGET /quickData.csv [32m200 [0m2.917 ms - 123[0m
+max value = 50
+number of columns = 4
+file saved
+[0mPOST /quickdata [32m200 [0m5.984 ms - -[0m
+[0mGET /quickData.csv [32m200 [0m1.086 ms - 123[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #14
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #15
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #16
+[0mGET / [36m304 [0m14.605 ms - -[0m
+[0mGET /dist/build.js [32m200 [0m37.771 ms - 95272[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #17
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #18
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #19
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #20
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #21
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #22
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #23
+[0mGET / [36m304 [0m9.648 ms - -[0m
+[0mGET /dist/build.js [32m200 [0m19.662 ms - 95294[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #24
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #25
+[0mGET / [32m200 [0m20.629 ms - 209[0m
+[0mGET /dist/build.js [32m200 [0m9.976 ms - 95664[0m
+[0mGET /favicon.ico [33m404 [0m340.488 ms - 1363[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #26
+[0mGET / [32m200 [0m22.137 ms - 209[0m
+[0mGET /dist/build.js [32m200 [0m8.928 ms - 95664[0m
+[0mGET /favicon.ico [33m404 [0m360.389 ms - 1363[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #27
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #28
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #29
+[0mGET / [32m200 [0m19.265 ms - 209[0m
+[0mGET /dist/build.js [32m200 [0m10.170 ms - 95654[0m
+[0mGET /favicon.ico [33m404 [0m343.007 ms - 1363[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #30
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #31
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #32
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #33
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #34
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #35
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #36
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #37
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #38
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #39
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #40
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #41
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #42
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #43
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #44
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #45
+error: restarting script because addDir changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #46
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #47
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #48
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #49
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #50
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #51
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #52
+error: restarting script because add changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #53
+error: restarting script because unlink changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #54
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #55
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #56
+[0mGET / [32m200 [0m25.868 ms - 230[0m
+[0mGET /dist/build.js [36m304 [0m5.983 ms - -[0m
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #57
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #58
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #59
+error: restarting script because change changed
+error: Forever detected script was killed by signal: SIGKILL
+error: Script restart attempt #60
+[0mGET / [32m200 [0m16.590 ms - 230[0m
+[0mGET /dist/build.js [32m200 [0m49.435 ms - 95654[0m
+[0mGET /favicon.ico [33m404 [0m868.208 ms - 1363[0m
+error: Forever detected script was killed by signal: SIGKILL
