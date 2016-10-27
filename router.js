@@ -6,7 +6,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, response, next) {
-  response.redirect("/index.html")
+  response.redirect("http://localhost:3001/index.html")
 });
 
 router.post("/quickdata", function(request, response, next) {
