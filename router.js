@@ -15,11 +15,15 @@ router.post("/quickdata", function(request, response, next) {
   console.log("max value = " + maxval);
   console.log("number of columns = " + length);
 
+  var bodyColumns = request.body.columns;
   // parse and create json to create / overwrite csv file in public
+  // quick_data will be json parsed to csv: json2csv({ data: quick_data, fields: quick_data_fields })
+  // will also need to create quick_data_fields when creating column model
   var quick_data = [];
   /*
    * have maxRows, data profile of each column:
    *  data profile:
+		  datatype
           max value: to use in row creation to limit value
    *      randomness prop: will need to use to calculate an interval to change value compared to index
 
@@ -27,7 +31,18 @@ router.post("/quickdata", function(request, response, next) {
 
   // first loop thru columns, find randomness profile for each column, calculate interval
   // 1 <= randomness <= maxRows
-
+  // # of columns for each datatype for column names:
+  var textColumnCount = decColumnCount = intColumnCount = dateColumnCount = 1;
+  var columns = [];
+  /* each column in : {
+		interval = FLOOR(maxRows / randomness)
+		datatype
+		intervalCounter = interval // to be decremented once per record : counter--, reset to interval if < 1
+		maxvalue : maxValue
+		name : [datatype] + "-" + 
+    }
+   */
+   // then loop from 0 -> maxRows and create new row following column models
 
   var fields = ['car.make', 'car.model', 'price', 'color'];
   var myCars = [
@@ -46,7 +61,7 @@ router.post("/quickdata", function(request, response, next) {
     }
   ];
   var csv = json2csv({ data: myCars, fields: fields });
-  var csv = json2csv({ data: myCars, fields: fields });
+  // var csv = json2csv({ data: quick_data, fields: quick_data_fields });
 
   // use path.resolve() here!!!!
   fs.writeFile(__dirname + '/public/quickData.csv', csv, function(err) {
