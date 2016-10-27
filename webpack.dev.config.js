@@ -5,10 +5,10 @@ var webpack = require('webpack')
 module.exports = {
     entry:    [
         'webpack/hot/dev-server',
-        'webpack-hot-middleware/client?path=http://localhost:3001',
+        // 'webpack-hot-middleware/client?path=http://localhost:3001',
+        'webpack-hot-middleware/client',
         './src/main.js'
     ],
-    debug: true,
     module: {
       loaders: [
         {
@@ -33,14 +33,10 @@ module.exports = {
       ]
     },
     output: {
-        path: '/',
-        publicPath: 'http://localhost:3001/dist/',
-        filename: 'build.js',
+        path: '/dist/',
+        publicPath: '/dist/',
+        filename: 'bundle.js',
         libraryTarget: 'commonjs2'
-    },
-    resolve: {
-      extensions: ['', '.js', '.vue'],
-      packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),

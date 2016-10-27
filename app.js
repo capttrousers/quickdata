@@ -5,9 +5,27 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var webpack = require('webpack');
+var config = require('./webpack.dev.config');
+
 var routes = require('./router');
 
+
 var app = express();
+
+var compiler = webpack(config);
+app.use(require('webpack-dev-middleware')(compiler, {
+  publicPath: config.output.publicPath,
+  historyApiFallback: true,
+  watchOptions: { ignored: /node_modules/ },
+  stats: {
+    colors: true
+  }
+}));
+
+app.use(require('webpack-hot-middleware')(compiler, {
+    log: console.log
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, './jade-views'));

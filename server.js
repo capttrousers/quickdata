@@ -1,15 +1,10 @@
-// #!/usr/bin/env node
-
 /**
  * Module dependencies.
  */
 
 var app = require('./app');
-var config = require('./webpack.dev.config');
 var debug = require('debug')('express:server');
 var http = require('http');
-var path = require('path');
-var webpack = require('webpack');
 
 /**
  * Get port from environment and store in Express.
@@ -17,16 +12,6 @@ var webpack = require('webpack');
 
 var port = normalizePort(process.env.PORT || '3001');
 app.set('port', port);
-
-var compiler = webpack(config);
-app.use(require('webpack-dev-middleware')(compiler, {
-  publicPath: config.output.publicPath,
-  stats: {
-    colors: true
-  }
-}));
-
-app.use(require('webpack-hot-middleware')(compiler));
 
 /**
  * Create HTTP server.

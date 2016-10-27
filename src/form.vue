@@ -6,7 +6,7 @@
         button(@click.prevent="getCSV") Get CSV File
         br
         br
-        label  Rows of random data
+        label  Rows of random data and stuff and
         input(v-model="maxRows")
         br
         br
