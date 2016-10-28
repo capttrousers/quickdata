@@ -6,7 +6,7 @@
         button(@click.prevent="getCSV") Get CSV File
         br
         br
-        label  Rows of random data and stuff and
+        label  Rows of random data : 
         input(v-model="maxRows")
         br
         br
@@ -43,8 +43,8 @@ export default {
     addNewColumn: function () {
       if(this.columns.length <= 5) {
         var newColumn = {
-          "columntype": "date",
-          "maxvalue": "1000",
+          "dataType": "date",
+          "maxValue": "1000",
           "randomness": "1"
         }
         this.columns.push(newColumn)

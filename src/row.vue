@@ -4,17 +4,17 @@
     button(@click.prevent="$emit('remove')") X
     tr
       td
-        label  data type
-        select(v-model="columnData.columntype")
+        label  Data type
+        select(v-model="columnData.dataType")
             option(v-for="dataType in dataTypes", :value="dataType.value")  {{ dataType.text }}
-      td(v-if="columnData.columntype == 'int' || columnData.columntype == 'decimal' ")
-        label  max value:
-        input(v-model="columnData.maxvalue")
-      td(v-if="columnData.columntype == 'text' ")
-        label  max length:
+      td(v-if="columnData.dataType == 'int' || columnData.dataType == 'decimal' ")
+        label  Max value:
+        input(v-model="columnData.maxValue")
+      td(v-if="columnData.dataType == 'text' ")
+        label  Max length:
         input(v-model="columnData.maxvalue", :value="20")
-      td(v-if="columnData.columntype == 'text' || columnData.columntype == 'int' || columnData.columntype == 'decimal' ")
-        label  randomness:
+      td(v-if="columnData.dataType == 'text' || columnData.dataType == 'int' || columnData.dataType == 'decimal' ")
+        label  Randomness:
         input(v-model="columnData.randomness")
     br
 </template>

@@ -1,0 +1,42 @@
+get two things from the body:
+
+maxRows = int
+columns = [ {}, {}, {}]
+
+each column: {
+	maxValue
+	randomness
+	dataType
+}
+
+will create column data profile:
+column.interval
+column.intervalCounter = column.interval
+column.nextRandomData = getRandomData(column)
+column.name
+
+in switch statement:
+ - set column name
+ - calculate next random data
+ - clip max value for text to 10 chars
+
+
+
+to make csv file
+
+need rows of data: 
+row {
+	column-1 : data,
+	column-2 : data,
+	column-3 : data,
+	column-4 : data
+}
+when creating rows:
+ add nextRandomData, 
+ intervalCounter--,
+ if intervalCounter < 1
+	intervalCounter = interval
+	nextRandomData = getRandomData(column)
+
+ data: [row1, row2, row3, ...etc]
+need field names: [column1.name, column2.name, column3.name, ... etc]
