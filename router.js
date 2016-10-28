@@ -10,9 +10,9 @@ router.get('/', function(req, response, next) {
 });
 
 router.post("/quickdata", function(request, response, next) {
-  var maxval = request.body.maxRows;
+  var maxRows = request.body.maxRows;
   var length = request.body.columns.length;
-  console.log("max value = " + maxval);
+  console.log("max value = " + maxRows);
   console.log("number of columns = " + length);
 
   var bodyColumns = request.body.columns;
@@ -20,6 +20,7 @@ router.post("/quickdata", function(request, response, next) {
   // quick_data will be json parsed to csv: json2csv({ data: quick_data, fields: quick_data_fields })
   // will also need to create quick_data_fields when creating column model
   var quick_data = [];
+  var quick_data_fields = [];
   /*
    * have maxRows, data profile of each column:
    *  data profile:
@@ -39,11 +40,67 @@ router.post("/quickdata", function(request, response, next) {
 		datatype
 		intervalCounter = interval // to be decremented once per record : counter--, reset to interval if < 1
 		maxvalue : maxValue
-		name : [datatype] + "-" + 
+		name : [datatype] + "-" + datatype column count
     }
    */
+   bodyColumns.forEach(function(bodyColumn) {
+		bodyColumn.interval = Math.floor(maxRows / bodyColumn.randomness);
+		bodyColumn.intervalCounter = bodyColumn.interval;
+		
+		switch (bodyColumn.datatype) {
+			case 'text' :
+				bodyColumn.name = "Text column " + textColumnCount;
+				textColumnCount++;
+				bodyColumn.maxvalue = Math.min(bodyColumn.maxvalue, 10);
+				break;
+			case 'date' :
+				bodyColumn.name = "Date column " + dateColumnCount;
+				dateColumnCount++;
+				break;
+			case 'int' :
+				bodyColumn.name = "Integer column " + intColumnCount;
+				intColumnCount++;
+				break;
+			case 'decimal' :
+				bodyColumn.name = "Decimal column " + decColumnCount;
+				decColumnCount++;
+				break;
+	   }
+	   columns.push(bodyColumn);
+	   quick_data_fields.push(bodyColumn.name);
+   });
+   
    // then loop from 0 -> maxRows and create new row following column models
-
+	for(var i = 0; i < maxRows; i++) {
+		var row = {};
+		columns.forEach(function(column) {
+			row[column.name] = getRandomData(column);
+		});
+		quick_data.push(row);
+	}
+   
+   var getRandomData = function(column) {
+	   var randomData;
+	   switch(column.datatype) {
+			case 'text' :
+				
+				break;
+			case 'date' :
+				randomData =  new Date( new Date() - (Math.random() * new Date()));
+				break;
+			case 'int' :
+				
+				break;
+			case 'decimal' :
+			
+				break;
+	   }
+	   column.intervalCounter--;
+	   if(column.intervalCounter < 1) {
+		   column.intervalCounter =  column.interval;
+	   }
+   }
+   
   var fields = ['car.make', 'car.model', 'price', 'color'];
   var myCars = [
     {
