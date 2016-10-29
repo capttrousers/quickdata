@@ -11,4 +11,4 @@
 5. Clone project: `git clone https://github.com/capttrousers/quickdata.git`.
 6. This will create a `quickdata` folder inside the `code` directory. Move into new project directory: `cd ./quickdata`.
 7. Run `npm run build` to make sure you have the latest build of the front end code.
-8. Run project: `node ./server.js` and navigate to `localhost:3001` in a browser to see the quick data tool.
+8. Run project: `node ./server.js` and navigate to `localhost:8080` in a browser to see the quick data tool.
