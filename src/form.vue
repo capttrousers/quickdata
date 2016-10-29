@@ -1,12 +1,39 @@
+<style>
+  #info {
+    background-color: #fff6e0;
+    padding: 1em;
+  }
+  #form form {
+    margin: 0 auto;
+    width: 50%;
+  }
+</style>
+
 <template lang="jade">
-  div(id="form" )
+  #form
+    #info
+      p.
+        This tool will quickly generate random data
+        based on the parameters selected below.
+      p.
+        Possible data types to select are Date, Text, Integers, and Decimals.
+        You can also set the number of rows of random data to generate.
+      p.
+        Data types of Text, Integers, and Decimals allow maximum lengths / values respectively.
+        They also allow a #[i randomness] property. A randomness value of 1 means there
+        will be a new random value every record. A randomness value greater than 1
+        means there will be a new random value every ___ lines, per calculation below:
+      code floor(max-rows / randomness-value)
+      p.
+        So a randomness value of 5 with 50 rows of data means that the same random data value will be
+        repeated for 10 rows / records / lines of data for that specific data field/column
     form(action="quickdata" method="post")
         br
         button(@click.prevent="addNewColumn") Add Column
         button(@click.prevent="getCSV") Get CSV File
         br
         br
-        label  Rows of random data : 
+        label  Rows of random data :
         input(v-model="maxRows")
         br
         br

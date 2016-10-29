@@ -38,7 +38,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// app.use(express.static(path.resolve(__dirname, '/index.html')));
+// app use path express.static relative file path
+app.use('/index.html', express.static('./index.html'));
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/dist', express.static(path.join(__dirname, 'dist')));
 
