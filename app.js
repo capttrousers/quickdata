@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var routes = require('./router');
 
-//
 // var webpack = require('webpack');
 // var config = require('./webpack.dev.config');
 // var {build} = require('vue-webpack');
@@ -29,8 +28,7 @@ var app = express();
 //   })
 // });
 // app.use(middleware);
-//
-//
+
 // var compiler = webpack(config);
 //
 // app.use(require('webpack-dev-middleware')(compiler, {

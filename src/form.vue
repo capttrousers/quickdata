@@ -18,6 +18,7 @@
         repeated for 10 rows / records / lines of data for that specific data field/column
     form(action="quickdata" method="post")
         br
+        // @click="$store.dispatch('action')"
         button(@click.prevent="addNewColumn") Add Column
         button(@click.prevent="getCSV") Get CSV File
         br
