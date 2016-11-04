@@ -1,2 +1,6 @@
 #!/bin/bash
-forever start -l /home/sam/dev/webdev/quickData/webpack-express/forever.logs -a -w --watchIgnore *.logs --watchIgnore dist/ --watchIgnore *.csv --watchIgnore node_modules/ --watchDirectory /home/sam/dev/webdev/quickData/webpack-express server.js
+if [ "$NODE_ENV" = "production" ]; then
+  export NODE_ENV=development
+  echo "$NODE_ENV"
+fi
+forever start -l $PWD/forever.logs -o app.logs -e error.logs -a -w --watchDirectory $PWD server.js

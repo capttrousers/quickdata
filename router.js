@@ -6,7 +6,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, response, next) {
-  response.redirect("http://localhost:8080/index.html")
+  response.redirect("/index.html")
 });
 
 router.post("/quickdata", function(request, response, next) {
@@ -99,28 +99,10 @@ router.post("/quickdata", function(request, response, next) {
 	   }
    }
 
-	var fields = ['car.make', 'car.model', 'price', 'color'];
-	var myCars = [
-		{
-			"car": {"make": "Audi", "model": "A3"},
-			"price": 40000,
-			"color": "blue"
-		}, {
-			"car": {"make": "BMW", "model": "F20"},
-			"price": 35000,
-			"color": "black"
-		}, {
-			"car": {"make": "Porsche", "model": "9PA AF1"},
-			"price": 60000,
-			"color": "green"
-		}
-	];
-	// var csv = json2csv({ data: myCars, fields: fields });
-
 	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
 
 	// use path.resolve() here!!!!
-	fs.writeFile(__dirname + '/public/quickData.csv', csv, function(err) {
+	fs.writeFile(__dirname + '/quickData.csv', csv, function(err) {
 		if (err) throw err;
 		console.log('file saved');
 		// send csv file
