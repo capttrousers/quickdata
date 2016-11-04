@@ -1,0 +1,6 @@
+*.logs
+*.logs.bk
+dist
+*.csv
+node_modules
+src

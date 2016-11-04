@@ -1,20 +1,9 @@
-<style>
-  #info {
-    background-color: #fff6e0;
-    padding: 1em;
-  }
-  #form form {
-    margin: 0 auto;
-    width: 50%;
-  }
-</style>
-
 <template lang="jade">
   #form
     #info
       p.
         This tool will quickly generate random data
-        based on the parameters selected below.
+        based on the parameters selected below. test
       p.
         Possible data types to select are Date, Text, Integers, and Decimals.
         You can also set the number of rows of random data to generate.
@@ -84,7 +73,7 @@ export default {
       body.maxRows = this.maxRows;
       this.$http.post('/quickdata', body).then(
         () => {
-          window.location = './quickData.csv';
+          window.location = '/quickData.csv';
         }, () => {
           // error
         }
@@ -93,3 +82,13 @@ export default {
   }
 }
 </script>
+<style>
+  #info {
+    background-color: #fff6e0;
+    padding: 1em;
+  }
+  #form > form {
+    margin: 0 auto;
+    width: 50%;
+  }
+</style>

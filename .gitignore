@@ -1,5 +1,6 @@
 node_modules
-public/*.csv
+*.csv
 *.logs
 *.logs.bk
-dist/
+dist
+

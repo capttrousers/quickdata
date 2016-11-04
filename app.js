@@ -4,27 +4,45 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var webpack = require('webpack');
-var config = require('./webpack.dev.config');
-
 var routes = require('./router');
-
+//
+// var webpack = require('webpack');
+// var config = require('./webpack.dev.config');
+var {build} = require('vue-webpack');
+var {devServer} = require('express-vue-dev');
 
 var app = express();
+
+var middleware = devServer({
+  server: build({
+    mode: 'server',
+    inputFilePath: `./src/main.js` // Vue application entry file for server-side
+  }),
+  client: build({
+    mode: 'client',
+    outputFileName: 'bundle',
+    outputPath: './dist',
+    publicPath: '/dist/',
+    // splitStyle: false,
+    inputFilePath: `./src/main.js` // Vue application entry file for client-side
+  })
+});
+app.use(middleware);
+
 //
 // var compiler = webpack(config);
+//
 // app.use(require('webpack-dev-middleware')(compiler, {
 //   publicPath: config.output.publicPath,
 //   historyApiFallback: true,
+//   // noInfo: true,
 //   watchOptions: { ignored: /node_modules/ },
 //   stats: {
 //     colors: true
 //   }
 // }));
-//
 // app.use(require('webpack-hot-middleware')(compiler, {
-//     log: console.log
+//     // log: console.log
 // }));
 
 // view engine setup
@@ -38,8 +56,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// app use path express.static relative file path
+// app.use( [URL path],  express.static( relative file path ) )
 app.use('/index.html', express.static('./index.html'));
+app.use('/quickData.csv', express.static('./quickData.csv'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/dist', express.static(path.join(__dirname, 'dist')));
@@ -58,6 +77,7 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
+  console.log("NODE_ENV = " + process.env.NODE_ENV);
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {

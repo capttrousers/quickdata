@@ -1,14 +1,18 @@
-// # webpack.dev.config
-var path = require('path')
-var webpack = require('webpack')
+var path = require('path');
+var webpack = require('webpack');
 
-module.exports = {
+var config = {
     entry:    [
-        'webpack/hot/dev-server',
-        // 'webpack-hot-middleware/client?path=http://localhost:3001',
-        'webpack-hot-middleware/client',
+        // 'webpack/hot/dev-server',
+        'webpack-hot-middleware/client?path=http://localhost:8080&noInfo=true&reload=true',
         './src/main.js'
     ],
+    output: {
+        path: path.resolve(__dirname, './dist'),
+        publicPath: '/dist/',
+        filename: 'bundle.js',
+        libraryTarget: 'commonjs2'
+    },
     module: {
       loaders: [
         {
@@ -32,14 +36,14 @@ module.exports = {
         }
       ]
     },
-    output: {
-        path: '/dist/',
-        publicPath: '/dist/',
-        filename: 'bundle.js',
-        libraryTarget: 'commonjs2'
+    resolve: {
+      alias: {
+        'vue$': 'vue/dist/vue'
+      }
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({
           '__DEV__': true,
@@ -49,4 +53,6 @@ module.exports = {
         })
     ],
     devtool: '#eval-source-map'
-}
+};
+
+module.exports = config;
