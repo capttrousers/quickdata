@@ -4,6 +4,9 @@
 		button(@click.prevent="$emit('remove')") X
 		tr
 			td
+				label Is hierarchy
+				input(type="checkbox" v-model="columnData.hierarchy")
+			td
 				label  Data type
 				select(v-model="columnData.dataType")
 					option(v-for="dataType in dataTypes", :value="dataType.value")  {{ dataType.text }}

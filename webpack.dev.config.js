@@ -4,7 +4,8 @@ var webpack = require('webpack');
 var config = {
     entry:    [
         // 'webpack/hot/dev-server',
-        'webpack-hot-middleware/client?path=http://localhost:8080&noInfo=true&reload=true',
+        // 'webpack-hot-middleware/client?path=http://localhost:8080&noInfo=true&reload=true',
+        'webpack-hot-middleware/client',
         './src/main.js'
     ],
     output: {

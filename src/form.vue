@@ -3,7 +3,7 @@
     #info
       p.
         This tool will quickly generate random data
-        based on the parameters selected below. test
+        based on the parameters selected below.
       p.
         Possible data types to select are Date, Text, Integers, and Decimals.
         You can also set the number of rows of random data to generate.
@@ -36,59 +36,60 @@
 </template>
 
 <script>
-import row from './row.vue'
-
-export default {
-  name: 'form',
-  components: {
-    'myRow': row
-  },
-  data () {
-    return {
-      "dataTypes": [
-        {text: "Text", value: "text"},
-        {text: "Date", value: "date"},
-        {text: "Integer", value: "int"},
-        {text: "Decimal", value: "decimal"}
-      ],
-      columns: [],
-      maxRows: "50"
-    }
-  },
-  methods: {
-    addNewColumn: function () {
-      if(this.columns.length <= 5) {
-        var newColumn = {
-          "dataType": "date",
-          "maxValue": "1000",
-          "randomness": "1"
-        }
-        this.columns.push(newColumn)
+  import row from './row.vue';
+  export default {
+    name: 'form',
+    components: {
+      'myRow': row
+    },
+    data () {
+      return {
+        "dataTypes": [
+          {text: "Text", value: "text"},
+          {text: "Date", value: "date"},
+          {text: "Integer", value: "int"},
+          {text: "Decimal", value: "decimal"}
+        ],
+        columns: [],
+        maxRows: "50"
       }
     },
-    getCSV: function () {
-      // ajax post columns, maxRows
-      var body = {};
-      body.columns = this.columns;
-      body.maxRows = this.maxRows;
-      this.$http.post('/quickdata', body).then(
-        () => {
-          window.location = '/quickData.csv';
-        }, () => {
-          // error
+    methods: {
+      addNewColumn: function () {
+        if(this.columns.length <= 5) {
+          var newColumn = {
+            "dataType": "date",
+            "maxValue": "1000",
+            "randomness": "1",
+            "hierarchy": false,
+            "child": {}
+          }
+          this.columns.push(newColumn)
         }
-      );
+      },
+      getCSV: function () {
+        // ajax post columns, maxRows
+        var body = {};
+        body.columns = this.columns;
+        body.maxRows = this.maxRows;
+        this.$http.post('/quickdata', body).then(
+          () => {
+            window.location = '/quickData.csv';
+          }, () => {
+            // error
+          }
+        );
+      }
     }
   }
-}
 </script>
 <style>
-  #info {
-    background-color: #fff6e0;
-    padding: 1em;
-  }
-  #form > form {
-    margin: 0 auto;
-    width: 50%;
-  }
+#info {
+  background-color: #fff6e0;
+  padding: 1em;
+}
+#form > form {
+  margin: 0 auto;
+  width: 50%;
+}
 </style>

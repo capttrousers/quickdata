@@ -5,30 +5,31 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var routes = require('./router');
+
 //
 // var webpack = require('webpack');
 // var config = require('./webpack.dev.config');
-var {build} = require('vue-webpack');
-var {devServer} = require('express-vue-dev');
+// var {build} = require('vue-webpack');
+// var {devServer} = require('express-vue-dev');
 
 var app = express();
 
-var middleware = devServer({
-  server: build({
-    mode: 'server',
-    inputFilePath: `./src/main.js` // Vue application entry file for server-side
-  }),
-  client: build({
-    mode: 'client',
-    outputFileName: 'bundle',
-    outputPath: './dist',
-    publicPath: '/dist/',
-    // splitStyle: false,
-    inputFilePath: `./src/main.js` // Vue application entry file for client-side
-  })
-});
-app.use(middleware);
-
+// var middleware = devServer({
+//   server: build({
+//     mode: 'server',
+//     inputFilePath: `./src/main.js` // Vue application entry file for server-side
+//   }),
+//   client: build({
+//     mode: 'client',
+//     outputFileName: 'bundle',
+//     outputPath: './dist',
+//     publicPath: '/dist/',
+//     // splitStyle: false,
+//     inputFilePath: `./src/main.js` // Vue application entry file for client-side
+//   })
+// });
+// app.use(middleware);
+//
 //
 // var compiler = webpack(config);
 //
@@ -38,7 +39,11 @@ app.use(middleware);
 //   // noInfo: true,
 //   watchOptions: { ignored: /node_modules/ },
 //   stats: {
-//     colors: true
+//     colors: true,
+//     modules: false,
+//     children: false,
+//     chunks: false,
+//     chunkModules: false
 //   }
 // }));
 // app.use(require('webpack-hot-middleware')(compiler, {
