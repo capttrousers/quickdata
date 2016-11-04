@@ -27,9 +27,14 @@ router.post("/quickdata", function(request, response, next) {
 		bodyColumn.randomness = (1 < bodyColumn.randomness && bodyColumn.randomness <= maxRows
                                 ? bodyColumn.randomness : maxRows);
 		bodyColumn.interval = Math.floor(maxRows / bodyColumn.randomness);
-    bodyColumn.intervalCounter = bodyColumn.interval;
-		bodyColumn.maxValue = (0 < bodyColumn.maxValue && bodyColumn.maxValue <= 1000000
+		bodyColumn.intervalCounter = bodyColumn.interval;
+		if(bodyColumn.dataType === 'date') {
+			// date max value is actually min date value
+			bodyColumn.maxValue = new Date(bodyColumn.maxValue);
+		} else {
+			bodyColumn.maxValue = (0 < bodyColumn.maxValue && bodyColumn.maxValue <= 1000000
                                     ? bodyColumn.maxValue : 1000000 );
+		}
 		switch (bodyColumn.dataType) {
 			case 'text' :
 				bodyColumn.name = "Text column " + textColumnCount;
@@ -84,7 +89,9 @@ router.post("/quickdata", function(request, response, next) {
 				}
 				return randomData;
 			case 'date' :
-				return new Date( new Date() - (Math.random() * new Date())).toString();
+				var minDate = new Date(column.maxValue);
+				var date = ((new Date() - minDate.valueOf()) * Math.random()) + minDate.valueOf();
+				return new Date(date).toString();
 			case 'int' :
 				return Math.floor(Math.random() * (column.maxValue + 1));
 			case 'decimal' :
