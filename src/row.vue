@@ -14,11 +14,11 @@
 				label Minimum date
 				input(v-model="columnData.maxValue" type="date")
 			td(v-if="columnData.dataType == 'int' || columnData.dataType == 'decimal' ")
-				label  Max value:
+				label  Max number value:
 				input(v-model="columnData.maxValue")
 			td(v-if="columnData.dataType == 'text' ")
-				label  Max length:
-				input(v-model="columnData.maxvalue", :value="20")
+				label  Max string length:
+				input(v-model="columnData.maxValue")
 			td(v-if="columnData.dataType == 'text' || columnData.dataType == 'int' || columnData.dataType == 'decimal' ")
 				label  Randomness:
 				input(v-model="columnData.randomness")
