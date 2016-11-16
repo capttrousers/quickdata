@@ -6,9 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		columns: [],
-		stuff: "store testing 123",
 		maxrows: "50",
-		dataType: [
+		dataTypes: [
         {text: "Text", value: "text"},
         {text: "Date", value: "date"},
         {text: "Integer", value: "int"},

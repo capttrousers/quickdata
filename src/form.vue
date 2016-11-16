@@ -33,7 +33,6 @@
         table
           myRow( v-for="(column, index) in columns"
           @remove="columns.splice(index, 1)",
-          :dataTypes="dataTypes",
           :columnData="column",
           :columnIndex="index"
           )
@@ -46,18 +45,18 @@
     components: {
       'myRow': row
     },
-    data () {
-      return {
-        "dataTypes": [
-          {text: "Text", value: "text"},
-          {text: "Date", value: "date"},
-          {text: "Integer", value: "int"},
-          {text: "Decimal", value: "decimal"}
-        ]
-        // , columns: []
-        // , maxRows: "50"
-      }
-    },
+    // data () {
+    //   return {
+    //     "dataTypes": [
+    //       {text: "Text", value: "text"},
+    //       {text: "Date", value: "date"},
+    //       {text: "Integer", value: "int"},
+    //       {text: "Decimal", value: "decimal"}
+    //     ]
+    //     // , columns: []
+    //     // , maxRows: "50"
+    //   }
+    // },
     computed: {
         maxRowCount: {
           get: function () {
@@ -72,20 +71,20 @@
           //   this.$store.commit('SET_MAX_ROWS', v);
           //   // this.$store.dispatch('setMaxRows', e.target.value);
           // }
+        },
+        columns: {
+          get() {
+            return this.$store.state.columns;
+          }
+        },
+        dataTypes: {
+          get() {
+            return this.$store.state.dataTypes;
+          }
         }
     },
     methods: {
       addNewColumn: function () {
-        // if(this.columns.length <= 5) {
-        //   var newColumn = {
-        //     "dataType": "date",
-        //     "maxValue": "1000",
-        //     "randomness": "1",
-        //     "hierarchy": false,
-        //     "child": {}
-        //   }
-        //   this.columns.push(newColumn)
-        // }
         this.$store.commit('ADD_NEW_COLUMN')
       },
       getCSV: function () {

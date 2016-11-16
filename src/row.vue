@@ -28,9 +28,15 @@
 <script>
   export default {
       props: [
-        "dataTypes",
         "columnData",
         "columnIndex"
-      ]
+      ],
+			computed: {
+	        dataTypes: {
+	          get() {
+	            return this.$store.state.dataTypes;
+	          }
+	        }
+	    },
   }
 </script>
