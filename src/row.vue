@@ -18,7 +18,7 @@
 				input(v-model="columnData.maxValue")
 			td(v-if="columnData.dataType == 'text' ")
 				label  Max length:
-				input(v-model="columnData.maxvalue", :value="20")
+				input(v-model="columnData.maxValue", :value="20")
 			td(v-if="columnData.dataType == 'text' || columnData.dataType == 'int' || columnData.dataType == 'decimal' ")
 				label  Randomness:
 				input(v-model="columnData.randomness")

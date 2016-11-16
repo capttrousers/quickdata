@@ -24,8 +24,11 @@
         br
         br
         label  Rows of random data :
-        input(v-model="maxRows")
+        input(:value="maxRowCount"
+              , @input="setRowCount"
+              )
         br
+        span number of max rows: {{ maxRowCount }}
         br
         table
           myRow( v-for="(column, index) in columns"
@@ -50,29 +53,46 @@
           {text: "Date", value: "date"},
           {text: "Integer", value: "int"},
           {text: "Decimal", value: "decimal"}
-        ],
-        columns: [],
-        maxRows: "50"
+        ]
+        // , columns: []
+        // , maxRows: "50"
       }
+    },
+    computed: {
+        maxRowCount: {
+          get: function () {
+            console.log('get max rows called')
+            return this.$store.state.maxrows;
+          }
+          // ,
+          // // e for element? is this raw js?
+          // set: function (v){
+          //   console.log('set max rows called');
+          //
+          //   this.$store.commit('SET_MAX_ROWS', v);
+          //   // this.$store.dispatch('setMaxRows', e.target.value);
+          // }
+        }
     },
     methods: {
       addNewColumn: function () {
-        if(this.columns.length <= 5) {
-          var newColumn = {
-            "dataType": "date",
-            "maxValue": "1000",
-            "randomness": "1",
-            "hierarchy": false,
-            "child": {}
-          }
-          this.columns.push(newColumn)
-        }
+        // if(this.columns.length <= 5) {
+        //   var newColumn = {
+        //     "dataType": "date",
+        //     "maxValue": "1000",
+        //     "randomness": "1",
+        //     "hierarchy": false,
+        //     "child": {}
+        //   }
+        //   this.columns.push(newColumn)
+        // }
+        this.$store.commit('ADD_NEW_COLUMN')
       },
       getCSV: function () {
         // ajax post columns, maxRows
         var body = {};
         body.columns = this.columns;
-        body.maxRows = this.maxRows;
+        body.maxRows = this.maxRowCount;
         this.$http.post('/quickdata', body).then(
           () => {
             window.location = '/quickData.csv';
@@ -80,6 +100,9 @@
             // error
           }
         );
+      },
+      setRowCount: function (e) {
+        this.$store.commit('SET_MAX_ROWS', e.target.value)
       }
     }
   }

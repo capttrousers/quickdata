@@ -3,11 +3,11 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-var store = new Vuex.Store({
+export default new Vuex.Store({
 	state: {
 		columns: [],
-		stuff: "store test",
-		maxValue: 50,
+		stuff: "store testing 123",
+		maxrows: "50",
 		dataType: [
         {text: "Text", value: "text"},
         {text: "Date", value: "date"},
@@ -15,10 +15,34 @@ var store = new Vuex.Store({
         {text: "Decimal", value: "decimal"}
 		]
 	},
-	// getters allow custom computed functions on the state
-	getters: {},
+	// // getters allow custom computed functions on the state
+	// getters: {
+	// 	maxRows : state => state.maxRows
+	// 	// , other stuff
+	// },
 	// store.commit('mutation-name');
-	mutations: {},
+	mutations: {
+		SET_MAX_ROWS(state, value) {
+			state.maxrows = value;
+		},
+		ADD_NEW_COLUMN(state) {
+			if(state.columns.length <= 5) {
+				var newColumn = {
+					"dataType": "date",
+					"maxValue": "1000",
+					"randomness": "1",
+					"hierarchy": false,
+					"child": {}
+				}
+				state.columns.push(newColumn)
+			}
+		}
+	},
 	// store.dispatch('action-name');
-	actions: {}
+	// actions: {
+	// 	setMaxRows({commit}, value) {
+	// 		commit('SET_MAX_ROWS', value);
+	// 	}
+	// },
+	strict: false
 });
