@@ -4,6 +4,8 @@ or call event handler with multiple params?
 eventMethod(index, 'propName', $event)
 "
 
+** will need to update removeColumn event method for X button
+
 methods:
 eventMethod(index,propName, event)
   call action with object payload:
