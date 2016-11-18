@@ -36,6 +36,9 @@ export default new Vuex.Store({
 				state.columns.push(newColumn)
 			}
 		},
+		REMOVE_COLUMN(state, payload){
+			state.columns.splice(payload.index, 1);
+		},
 		UPDATE_COLUMN(state, payload) {
 			var index, propName, newValue;
 			index = payload.index;
@@ -51,6 +54,9 @@ export default new Vuex.Store({
 		},
 		updateColumn({commit}, payload) {
 			commit('UPDATE_COLUMN', payload);
+		},
+		removeColumn({commit}, payload) {
+			commit('REMOVE_COLUMN', payload);
 		}
 	},
 	strict: false

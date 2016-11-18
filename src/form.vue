@@ -28,14 +28,10 @@
               , @input="setRowCount"
               )
         br
-        span number of max rows: {{ maxRowCount }}
-        br
         table
-          myRow( v-for="(column, index) in columns"
-          @remove="columns.splice(index, 1)",
-          :columnData="column",
-          :columnIndex="index"
-          )
+          myRow( v-for="(column, index) in columns",
+            :columnData="column",
+            :columnIndex="index")
 </template>
 
 <script>
@@ -45,18 +41,6 @@
     components: {
       'myRow': row
     },
-    // data () {
-    //   return {
-    //     "dataTypes": [
-    //       {text: "Text", value: "text"},
-    //       {text: "Date", value: "date"},
-    //       {text: "Integer", value: "int"},
-    //       {text: "Decimal", value: "decimal"}
-    //     ]
-    //     // , columns: []
-    //     // , maxRows: "50"
-    //   }
-    // },
     computed: {
         maxRowCount: {
           get: function () {
@@ -102,12 +86,17 @@
   }
 </script>
 <style>
-#info {
-  background-color: #fff6e0;
-  padding: 1em;
-}
-#form > form {
-  margin: 0 auto;
-  width: 50%;
-}
+  #info {
+    background-color: #fff6e0;
+    padding: 1em;
+  }
+  #form > form {
+    margin: 0 auto;
+    width: 50%;
+  }
+  @media screen and (max-width: 1400px) {
+    #form > form {
+      width: 80%;
+    }
+  }
 </style>
