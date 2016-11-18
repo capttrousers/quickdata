@@ -8,8 +8,9 @@
 				input(type="checkbox" v-model="columnData.hierarchy")
 			td
 				label  Data type
-				select(v-model="columnData.dataType")
-					option(v-for="dataType in dataTypes", :value="dataType.value")  {{ dataType.text }}
+				select(:value="columnData.dataType", 
+					@input="updateColumn(columnIndex, 'dataType', $event.target.value)")
+						option(v-for="dataType in dataTypes", :value="dataType.value")  {{ dataType.text }}
 			td(v-if="columnData.dataType == 'date'")
 				label Minimum date
 				input(v-model="columnData.maxValue" type="date")
@@ -26,17 +27,22 @@
 </template>
 
 <script>
-  export default {
-      props: [
-        "columnData",
-        "columnIndex"
-      ],
-			computed: {
-	        dataTypes: {
-	          get() {
-	            return this.$store.state.dataTypes;
-	          }
-	        }
-	    },
-  }
+export default {
+	props: [
+		"columnData",
+		"columnIndex"
+	],
+	computed: {
+		dataTypes: {
+		  get() {
+			return this.$store.state.dataTypes;
+		  }
+		}
+	},
+	methods: {
+		updateColumn: function (index, propName, newValue) {
+			this.$store.dispatch('updateColumn', {index, propName, newValue});
+		}
+	}
+}
 </script>

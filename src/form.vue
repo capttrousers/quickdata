@@ -76,11 +76,6 @@
           get() {
             return this.$store.state.columns;
           }
-        },
-        dataTypes: {
-          get() {
-            return this.$store.state.dataTypes;
-          }
         }
     },
     methods: {

@@ -35,13 +35,23 @@ export default new Vuex.Store({
 				}
 				state.columns.push(newColumn)
 			}
+		},
+		UPDATE_COLUMN(state, payload) {
+			var index, propName, newValue;
+			index = payload.index;
+			propName = payload.propName;
+			newValue = payload.newValue;
+			state.columns[index][propName] = newValue;
 		}
 	},
 	// store.dispatch('action-name');
-	// actions: {
-	// 	setMaxRows({commit}, value) {
-	// 		commit('SET_MAX_ROWS', value);
-	// 	}
-	// },
+	actions: {
+		setMaxRows({commit}, value) {
+			commit('SET_MAX_ROWS', value);
+		},
+		updateColumn({commit}, payload) {
+			commit('UPDATE_COLUMN', payload);
+		}
+	},
 	strict: false
 });
