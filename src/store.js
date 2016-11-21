@@ -27,7 +27,7 @@ export default new Vuex.Store({
 		ADD_NEW_COLUMN(state) {
 			if(state.columns.length <= 5) {
 				var newColumn = {
-					"dataType": "date",
+					"dataType": "text",
 					"maxValue": "1000",
 					"randomness": "1",
 					"hierarchy": false,

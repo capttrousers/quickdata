@@ -44,7 +44,6 @@
     computed: {
         maxRowCount: {
           get: function () {
-            console.log('get max rows called')
             return this.$store.state.maxrows;
           }
           // ,

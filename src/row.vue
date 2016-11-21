@@ -11,7 +11,7 @@
 				label  Data type
 				select(:value="columnData.dataType",
 					@input="updateColumn(columnIndex, 'dataType', $event.target.value)")
-						option(v-for="dataType in dataTypes", :value="dataType.value")  {{ dataType.text }}
+						option(v-for="dataType in dataTypes", v-if="dataType != 'date'", :value="dataType.value")  {{ dataType.text }}
 			td(v-if="columnData.dataType == 'date'")
 				label Minimum date
 				input(:value="columnData.maxValue" type="date",
@@ -40,7 +40,12 @@
 		computed: {
 			dataTypes: {
 			  get() {
-				return this.$store.state.dataTypes;
+				var dTypes = this.$store.state.dataTypes;
+				var hierarchy = false;
+				if(hierarchy) {
+					dTypes.splice(1,1);
+				} 
+				return dTypes;
 			  }
 			}
 		},
