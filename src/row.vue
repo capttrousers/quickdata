@@ -25,12 +25,12 @@
 				input(:value="columnData.maxValue",
 					@input="updateColumn(columnIndex, 'maxValue', $event.target.value)")
 			td(v-if="columnData.dataType == 'text' || columnData.dataType == 'int' || columnData.dataType == 'decimal' ")
-				label  Randomness:
-				input(:value="columnData.randomness",
-					@input="updateColumn(columnIndex, 'randomness', $event.target.value)")
+				label  Interval:
+				input(:value="columnData.interval",
+					@input="updateColumn(columnIndex, 'interval', $event.target.value)")
 		br
 </template>
-
+    
 <script>
 	export default {
 		props: [

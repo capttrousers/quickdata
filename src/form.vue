@@ -1,21 +1,18 @@
 <template lang="jade">
   #form
     #info
-      p.
-        This tool will quickly generate random data
-        based on the parameters selected below.
-      p.
-        Possible data types to select are Date, Text, Integers, and Decimals.
-        You can also set the number of rows of random data to generate.
-      p.
-        Data types of Text, Integers, and Decimals allow maximum lengths / values respectively.
-        They also allow a #[i randomness] property. A randomness value of 1 means there
-        will be a new random value every record. A randomness value greater than 1
-        means there will be a new random value every ___ lines, per calculation below:
-      code floor(max-rows / randomness-value)
-      p.
-        So a randomness value of 5 with 50 rows of data means that the same random data value will be
-        repeated for 10 rows / records / lines of data for that specific data field/column
+        p.
+          This tool will quickly generate random data
+          based on the parameters selected below.
+        p.
+          Possible data types to select are Date, Text, Integers, and Decimals.
+          You can also set the number of rows of random data to generate.
+        p.
+          Data types of Text, Integers, and Decimals allow maximum lengths / values respectively.
+          They also allow an #[i interval] property. An interval value of 1 means there
+          will be a new random value every record, whereas an interval of 5 means there will be a new random value every 5 records. 
+        p.
+          Dates allow a minimum date property, to create a range of possible dates between the min date and today.
     form(action="quickdata" method="post")
         br
         // @click="$store.dispatch('action')"
@@ -24,14 +21,11 @@
         br
         br
         label  Rows of random data :
-        input(:value="maxRowCount"
-              , @input="setRowCount"
-              )
+        input(:value="maxRowCount", @input="setRowCount")
+        br
         br
         table
-          myRow( v-for="(column, index) in columns",
-            :columnData="column",
-            :columnIndex="index")
+          myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
 </template>
 
 <script>

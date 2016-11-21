@@ -28,8 +28,8 @@ export default new Vuex.Store({
 			if(state.columns.length <= 5) {
 				var newColumn = {
 					"dataType": "text",
-					"maxValue": "1000",
-					"randomness": "1",
+					"maxValue": "10",
+					"interval": "1",
 					"hierarchy": false,
 					"child": {}
 				}
@@ -45,6 +45,13 @@ export default new Vuex.Store({
 			propName = payload.propName;
 			newValue = payload.newValue;
 			state.columns[index][propName] = newValue;
+      if(propName == 'dataType') {
+        if(newValue == 'text') {
+          state.columns[index].maxValue = 10;
+        } else {
+          state.columns[index].maxValue = 1000;
+        }
+      }
 		}
 	},
 	// store.dispatch('action-name');
