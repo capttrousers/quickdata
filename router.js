@@ -109,7 +109,7 @@ router.post("/quickdata", function(request, response, next) {
 			case 'integer' :
 				return Math.floor(Math.random() * (column.maxValue + 1));
 			case 'decimal' :
-				return Math.random() * (column.maxValue + 1);
+				return Math.random() * column.maxValue;
 	   }
    }
 
