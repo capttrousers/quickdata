@@ -19,7 +19,7 @@ export default new Vuex.Store({
 			"interval": "1",
 			// possible options: 'none', 'parent', 'child'
 			"hierarchy": "none",
-			// "parentIndex": null, 
+			// "parentIndex": null,
 			"child": {}
 		}
 	},
@@ -43,11 +43,13 @@ export default new Vuex.Store({
 			state.columns.splice(payload.index, 1);
 		},
 		UPDATE_COLUMN(state, payload) {
+			// get update info, and update column at index
 			var index, propName, newValue;
 			index = payload.index;
 			propName = payload.propName;
 			newValue = payload.newValue;
 			state.columns[index][propName] = newValue;
+			// update column props to handle corner cases
 			if(propName == "hierarchy") {
 				var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
 				newColumn.hierarchy = 'child';
@@ -61,7 +63,8 @@ export default new Vuex.Store({
 		  }
 			if(state.columns[index].hierarchy == 'parent') {
 			  state.columns[index].child.dataType = state.columns[index].dataType;
-		  }		  
+				state.columns[index].child.maxValue = state.columns[index].maxValue;
+		  }
 		}
 	},
 	// store.dispatch('action-name');

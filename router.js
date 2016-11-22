@@ -21,45 +21,56 @@ router.post("/quickdata", function(request, response, next) {
 
 	// first loop thru columns, find interval profile for each column
 	// 1 <= interval <= maxRows
-	
+
 	// # of columns for each datatype for column names:
 	var textColumnCount = decColumnCount = intColumnCount = dateColumnCount = 1;
 	var columns = [];
-	
+
 	bodyColumns.forEach(function(bodyColumn) {
-		bodyColumn.interval = (1 <= bodyColumn.interval && bodyColumn.interval <= maxRows
-                                ? bodyColumn.interval : 1);
-		bodyColumn.intervalCounter = bodyColumn.interval;
-		if(bodyColumn.dataType === 'date') {
+		processColumn(bodyColumn);
+    // handle child column
+    if(bodyColumn.hierarchy == 'parent') {
+      var child = bodyColumn.child;
+      child.parentIndex = columns.indexOf(bodyColumn);
+      processColumn(child);
+    }
+
+	});
+
+  function processColumn(column) {
+    column.interval = (1 <= column.interval && column.interval <= maxRows
+                                ? column.interval : 1);
+		column.intervalCounter = column.interval;
+		if(column.dataType === 'date') {
 			// date max value is actually min date value
-			bodyColumn.maxValue = new Date(bodyColumn.maxValue);
+			column.maxValue = new Date(column.maxValue);
 		} else {
-			bodyColumn.maxValue = (0 < bodyColumn.maxValue && bodyColumn.maxValue <= 1000000
-                                    ? bodyColumn.maxValue : 1000000 );
+			column.maxValue = (0 < column.maxValue && column.maxValue <= 1000000
+                                    ? column.maxValue : 1000000 );
 		}
-		switch (bodyColumn.dataType) {
+		switch (column.dataType) {
 			case 'text' :
-				bodyColumn.name = "Text column " + textColumnCount;
+				column.name = "Text column " + textColumnCount;
 				textColumnCount++;
-				bodyColumn.maxValue = Math.min(bodyColumn.maxValue, 10);
+				column.maxValue = Math.min(column.maxValue, 10);
 				break;
 			case 'date' :
-				bodyColumn.name = "Date column " + dateColumnCount;
+				column.name = "Date column " + dateColumnCount;
 				dateColumnCount++;
 				break;
 			case 'int' :
-				bodyColumn.name = "Integer column " + intColumnCount;
+				column.name = "Integer column " + intColumnCount;
 				intColumnCount++;
 				break;
 			case 'decimal' :
-				bodyColumn.name = "Decimal column " + decColumnCount;
+				column.name = "Decimal column " + decColumnCount;
 				decColumnCount++;
 				break;
 		}
-		bodyColumn.nextRandomData = getRandomData(bodyColumn);
-		columns.push(bodyColumn);
-		quick_data_fields.push(bodyColumn.name);
-	});
+		column.nextRandomData = getRandomData(column);
+		columns.push(column);
+		quick_data_fields.push(column.name);
+  }
 
 	// then loop from 0 -> maxRows and create new row following column models
 	for(var i = 0; i < maxRows; i++) {
