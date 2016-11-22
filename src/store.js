@@ -12,7 +12,16 @@ export default new Vuex.Store({
         {text: "Date", value: "date"},
         {text: "Integer", value: "int"},
         {text: "Decimal", value: "decimal"}
-		]
+		],
+		templateColumn: {
+			"dataType": "date",
+			"maxValue": "1000",
+			"randomness": "1",
+			// possible options: 'none', 'parent', 'child'
+			"hierarchy": "none",
+			// "parentIndex": null, 
+			"child": {}
+		}
 	},
 	// // getters allow custom computed functions on the state
 	// getters: {
@@ -26,14 +35,8 @@ export default new Vuex.Store({
 		},
 		ADD_NEW_COLUMN(state) {
 			if(state.columns.length <= 5) {
-				var newColumn = {
-					"dataType": "date",
-					"maxValue": "1000",
-					"randomness": "1",
-					"hierarchy": false,
-					"child": {}
-				}
-				state.columns.push(newColumn)
+				var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
+				state.columns.push(newColumn);
 			}
 		},
 		REMOVE_COLUMN(state, payload){
@@ -45,6 +48,14 @@ export default new Vuex.Store({
 			propName = payload.propName;
 			newValue = payload.newValue;
 			state.columns[index][propName] = newValue;
+			if(propName == "hierarchy") {
+				var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
+				newColumn.hierarchy = 'child';
+				state.columns[index]["child"] = (newValue == 'parent' ? newColumn : {});
+			}
+			if(state.columns[index].hierarchy == 'parent') {
+				state.columns[index].child.dataType = state.columns[index].dataType;
+			}
 		}
 	},
 	// store.dispatch('action-name');
