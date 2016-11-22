@@ -11,26 +11,19 @@
       @change="updateColumn(columnIndex, 'hierarchy', (columnData.hierarchy == 'none' ? 'parent' : 'none'))")
     td
       label  Data type:
-      span(v-if="columnData.hierarchy == 'child'" class='childDataType')  {{ columnData.dataType }}
-      select(v-else, :value="columnData.dataType",
-      @input="updateColumn(columnIndex, 'dataType', $event.target.value)")
+      span(v-if="columnData.hierarchy == 'child'", class='childDataType')  {{ columnData.dataType }}
+      select(v-else, :value="columnData.dataType", @input="updateColumn(columnIndex, 'dataType', $event.target.value)")
         option(v-for="dataType in dataTypes", :value="dataType.value")  {{ dataType.text }}
-    td(v-if="columnData.dataType == 'date'")
-      label Minimum date
-      input(:value="columnData.maxValue" type="date",
+    td
+      label(v-if="columnData.dataType == 'date'") Minimum date
+      label(v-if="columnData.dataType == 'integer' || columnData.dataType == 'decimal' ")  Max value:
+      label(v-if="columnData.dataType == 'text' ")  Max length:
+      span(v-if="columnData.hierarchy == 'child'", class='childDataType')  {{ columnData.maxValue }}
+      input(v-else, :value="columnData.maxValue", :type="(columnData.dataType == 'date' ? 'date' : 'text')", 
       @input="updateColumn(columnIndex, 'maxValue', $event.target.value)")
-    td(v-if="columnData.dataType == 'int' || columnData.dataType == 'decimal' ")
-      label  Max value:
-      input(:value="columnData.maxValue",
-      @input="updateColumn(columnIndex, 'maxValue', $event.target.value)")
-    td(v-if="columnData.dataType == 'text' ")
-      label  Max length:
-      input(:value="columnData.maxValue",
-      @input="updateColumn(columnIndex, 'maxValue', $event.target.value)")
-    td(v-if="columnData.dataType == 'text' || columnData.dataType == 'int' || columnData.dataType == 'decimal' ")
+    td(v-if="columnData.dataType == 'text' || columnData.dataType == 'integer' || columnData.dataType == 'decimal' ")
       label  Interval:
-	  input(:value="columnData.interval",
-	  @input="updateColumn(columnIndex, 'interval', $event.target.value)")
+      input(:value="columnData.interval", @input="updateColumn(columnIndex, 'interval', $event.target.value)")
   br
   Row(v-if="columnData.hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
 
@@ -48,20 +41,13 @@
 			  get() {
 				var dTypes = JSON.parse(JSON.stringify(this.$store.state.dataTypes));
 				var hierarchy = false;
-				if(this.columnData.hierarchy) {
+				if(this.columnData.hierarchy == 'parent') {
 					// date is at index 1 in default dataTypes array in store
 					dTypes.splice(1,1);
 				} 
 				return dTypes;
 			  }
-			},
-      parentDataType: {
-        get() {
-          if(columnData.hierarchy == 'child') {
-            return this.$store.state.columns[columnIndex].dataType;
-          }
-        }
-      }
+			}
 		},
 		methods: {
 			updateColumn: function (index, propName, newValue) {

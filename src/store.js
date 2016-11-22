@@ -10,7 +10,7 @@ export default new Vuex.Store({
 		dataTypes: [
         {text: "Text", value: "text"},
         {text: "Date", value: "date"},
-        {text: "Integer", value: "int"},
+        {text: "Integer", value: "integer"},
         {text: "Decimal", value: "decimal"}
 		],
 		templateColumn: {
@@ -54,6 +54,10 @@ export default new Vuex.Store({
 				var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
 				newColumn.hierarchy = 'child';
 				state.columns[index]["child"] = (newValue == 'parent' ? newColumn : {});
+        if(newValue == 'parent' && state.columns[index].dataType == 'date') {
+          state.columns[index].dataType = 'text';
+			    state.columns[index].maxValue = 10;
+        }
 			} else if(propName == 'dataType') {
 			  if(newValue == 'text') {
 			    state.columns[index].maxValue = 10;

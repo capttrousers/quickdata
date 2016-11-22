@@ -32,9 +32,10 @@ router.post("/quickdata", function(request, response, next) {
     if(bodyColumn.hierarchy == 'parent') {
       var child = bodyColumn.child;
       child.parentIndex = columns.indexOf(bodyColumn);
+      // clip child interval to be between 1 and parent interval
+      child.interval = (child.interval <= bodyColumn.interval ? child.interval : 1);
       processColumn(child);
     }
-
 	});
 
   function processColumn(column) {
@@ -58,7 +59,7 @@ router.post("/quickdata", function(request, response, next) {
 				column.name = "Date column " + dateColumnCount;
 				dateColumnCount++;
 				break;
-			case 'int' :
+			case 'integer' :
 				column.name = "Integer column " + intColumnCount;
 				intColumnCount++;
 				break;
@@ -105,7 +106,7 @@ router.post("/quickdata", function(request, response, next) {
 				var minDate = new Date(column.maxValue);
 				var date = ((new Date() - minDate.valueOf()) * Math.random()) + minDate.valueOf();
 				return new Date(date).toString();
-			case 'int' :
+			case 'integer' :
 				return Math.floor(Math.random() * (column.maxValue + 1));
 			case 'decimal' :
 				return Math.random() * (column.maxValue + 1);
