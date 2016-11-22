@@ -14,9 +14,9 @@ export default new Vuex.Store({
         {text: "Decimal", value: "decimal"}
 		],
 		templateColumn: {
-			"dataType": "date",
-			"maxValue": "1000",
-			"randomness": "1",
+			"dataType": "text",
+			"maxValue": "10",
+			"interval": "1",
 			// possible options: 'none', 'parent', 'child'
 			"hierarchy": "none",
 			// "parentIndex": null, 
@@ -52,10 +52,16 @@ export default new Vuex.Store({
 				var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
 				newColumn.hierarchy = 'child';
 				state.columns[index]["child"] = (newValue == 'parent' ? newColumn : {});
-			}
+			} else if(propName == 'dataType') {
+			  if(newValue == 'text') {
+			    state.columns[index].maxValue = 10;
+			  } else {
+			    state.columns[index].maxValue = 1000;
+			  }
+		  }
 			if(state.columns[index].hierarchy == 'parent') {
-				state.columns[index].child.dataType = state.columns[index].dataType;
-			}
+			  state.columns[index].child.dataType = state.columns[index].dataType;
+		  }		  
 		}
 	},
 	// store.dispatch('action-name');

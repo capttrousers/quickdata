@@ -19,15 +19,16 @@ router.post("/quickdata", function(request, response, next) {
 	var quick_data = [];
 	var quick_data_fields = [];
 
-	// first loop thru columns, find randomness profile for each column, calculate interval
-	// 1 < randomness <= maxRows
+	// first loop thru columns, find interval profile for each column
+	// 1 <= interval <= maxRows
+	
 	// # of columns for each datatype for column names:
 	var textColumnCount = decColumnCount = intColumnCount = dateColumnCount = 1;
 	var columns = [];
+	
 	bodyColumns.forEach(function(bodyColumn) {
-		bodyColumn.randomness = (1 < bodyColumn.randomness && bodyColumn.randomness <= maxRows
-                                ? bodyColumn.randomness : maxRows);
-		bodyColumn.interval = Math.floor(maxRows / bodyColumn.randomness);
+		bodyColumn.interval = (1 <= bodyColumn.interval && bodyColumn.interval <= maxRows
+                                ? bodyColumn.interval : 1);
 		bodyColumn.intervalCounter = bodyColumn.interval;
 		if(bodyColumn.dataType === 'date') {
 			// date max value is actually min date value
@@ -79,16 +80,16 @@ router.post("/quickdata", function(request, response, next) {
 			case 'text' :
 			    // String.fromCharCode()
 				// A-Z: 65-90, a-z: 97-122
-				var randomData = "";
+				var randomString = "";
 				for(var i = 0; i < column.maxValue; i++) {
 					var charNumber = Math.random() * (123-65) + 65;
 					if(charNumber < 97 && charNumber > 90) {
 						charNumber += Math.random() * (20-7) + 7;
 					}
 					var c = String.fromCharCode(charNumber);
-					randomData += c;
+					randomString += c;
 				}
-				return randomData;
+				return randomString;
 			case 'date' :
 				var minDate = new Date(column.maxValue);
 				var date = ((new Date() - minDate.valueOf()) * Math.random()) + minDate.valueOf();
@@ -102,11 +103,11 @@ router.post("/quickdata", function(request, response, next) {
 
 	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
 
-	// use path.resolve() here!!!!
+	// use path.resolve() here?
 	fs.writeFile(__dirname + '/quickData.csv', csv, function(err) {
 		if (err) throw err;
 		console.log('file saved');
-		// send csv file
+		// send success code to redirect client to url path of new csv file
 		response.status(200).end();
 	});
 });

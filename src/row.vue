@@ -28,13 +28,14 @@
       input(:value="columnData.maxValue",
       @input="updateColumn(columnIndex, 'maxValue', $event.target.value)")
     td(v-if="columnData.dataType == 'text' || columnData.dataType == 'int' || columnData.dataType == 'decimal' ")
-      label  Randomness:
-      input(:value="columnData.randomness",
-      @input="updateColumn(columnIndex, 'randomness', $event.target.value)")
+      label  Interval:
+	  input(:value="columnData.interval",
+	  @input="updateColumn(columnIndex, 'interval', $event.target.value)")
   br
   Row(v-if="columnData.hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
-</template>
 
+</template>
+    
 <script>
 	export default {
 		props: [
@@ -45,7 +46,13 @@
 		computed: {
 			dataTypes: {
 			  get() {
-				return this.$store.state.dataTypes;
+				var dTypes = JSON.parse(JSON.stringify(this.$store.state.dataTypes));
+				var hierarchy = false;
+				if(this.columnData.hierarchy) {
+					// date is at index 1 in default dataTypes array in store
+					dTypes.splice(1,1);
+				} 
+				return dTypes;
 			  }
 			},
       parentDataType: {
