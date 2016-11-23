@@ -19,7 +19,7 @@
       label(v-if="columnData.dataType == 'integer' || columnData.dataType == 'decimal' ")  Max value:
       label(v-if="columnData.dataType == 'text' ")  Max length:
       span(v-if="columnData.hierarchy == 'child'", class='childDataType')  {{ columnData.maxValue }}
-      input(v-else, :value="columnData.maxValue", :type="(columnData.dataType == 'date' ? 'date' : 'text')", 
+      input(v-else, :value="columnData.maxValue", :type="(columnData.dataType == 'date' ? 'date' : 'text')",
       @input="updateColumn(columnIndex, 'maxValue', $event.target.value)")
     td(v-if="columnData.dataType == 'text' || columnData.dataType == 'integer' || columnData.dataType == 'decimal' ")
       label  Interval:
@@ -28,7 +28,7 @@
   Row(v-if="columnData.hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
 
 </template>
-    
+
 <script>
 	export default {
 		props: [
@@ -43,8 +43,8 @@
 				var hierarchy = false;
 				if(this.columnData.hierarchy == 'parent') {
 					// date is at index 1 in default dataTypes array in store
-					dTypes.splice(1,1);
-				} 
+					dTypes.splice(3,1);
+				}
 				return dTypes;
 			  }
 			}

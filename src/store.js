@@ -9,9 +9,9 @@ export default new Vuex.Store({
 		maxrows: "50",
 		dataTypes: [
         {text: "Text", value: "text"},
-        {text: "Date", value: "date"},
         {text: "Integer", value: "integer"},
-        {text: "Decimal", value: "decimal"}
+        {text: "Decimal", value: "decimal"},
+        {text: "Date", value: "date"}
 		],
 		templateColumn: {
 			"dataType": "text",
@@ -53,7 +53,7 @@ export default new Vuex.Store({
 			if(propName == "hierarchy") {
 				var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
 				newColumn.hierarchy = 'child';
-				state.columns[index]["child"] = (newValue == 'parent' ? newColumn : {});
+				state.columns[index].child = (newValue == 'parent' ? newColumn : {});
         if(newValue == 'parent' && state.columns[index].dataType == 'date') {
           state.columns[index].dataType = 'text';
 			    state.columns[index].maxValue = 10;
