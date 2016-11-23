@@ -23,7 +23,8 @@
         @input="updateColumn(columnIndex, 'maxValue', $event.target.value)")
       td(v-if="columnData.dataType == 'text' || columnData.dataType == 'integer' || columnData.dataType == 'decimal' ")
         label  Interval:
-        input(:value="columnData.interval", @input="updateColumn(columnIndex, 'interval', $event.target.value)")
+        input(v-if="columnData.hierarchy == 'child'", :value="columnData.interval", @input="updateColumn(columnIndex, 'child-interval', $event.target.value)")
+        input(v-else, :value="columnData.interval", @input="updateColumn(columnIndex, 'interval', $event.target.value)")
     br
     Row(v-if="columnData.hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
 </template>

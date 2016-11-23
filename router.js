@@ -32,8 +32,6 @@ router.post("/quickdata", function(request, response, next) {
     if(bodyColumn.hierarchy == 'parent') {
       var child = bodyColumn.child;
       child.parentIndex = columns.indexOf(bodyColumn);
-      // clip child interval to be between 1 and parent interval
-      child.interval = (child.interval <= bodyColumn.interval ? child.interval : 1);
       processColumn(child);
     }
 	});
@@ -114,8 +112,8 @@ router.post("/quickdata", function(request, response, next) {
 	   }
    }
 
+   
 	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
-
 	// use path.resolve() here?
 	fs.writeFile(__dirname + '/quickData.csv', csv, function(err) {
 		if (err) throw err;
