@@ -5,10 +5,10 @@ var VueResource = require('vue-resource');
 Vue.use(VueResource);
 
 // import App from './App.vue'
-import form from './form.vue';
+import app from './app.vue';
 
 new Vue({
-  el: '#form',
+  el: '#app',
   store,
-  render: h => h(form)
+  render: h => h(app)
 });

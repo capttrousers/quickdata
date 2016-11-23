@@ -79,9 +79,10 @@ router.post("/quickdata", function(request, response, next) {
 		columns.forEach(function(column) {
 			row[column.name] = column.nextRandomData;
 			column.intervalCounter--;
-			if(column.intervalCounter < 1) {
-				column.intervalCounter = column.interval;
-				column.nextRandomData = getRandomData(column);
+			if(column.intervalCounter < 1 ||
+        (column.hierarchy == 'child' && columns[column.parentIndex].intervalCounter == columns[column.parentIndex].interval)) {
+  				column.intervalCounter = column.interval;
+  				column.nextRandomData = getRandomData(column);
 			}
 		});
 		quick_data.push(row);
@@ -90,7 +91,7 @@ router.post("/quickdata", function(request, response, next) {
 	function getRandomData (column) {
 	   switch(column.dataType) {
 			case 'text' :
-			    // String.fromCharCode()
+		    // String.fromCharCode()
 				// A-Z: 65-90, a-z: 97-122
 				var randomString = "";
 				for(var i = 0; i < column.maxValue; i++) {

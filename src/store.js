@@ -19,7 +19,6 @@ export default new Vuex.Store({
 			"interval": "1",
 			// possible options: 'none', 'parent', 'child'
 			"hierarchy": "none",
-			// "parentIndex": null,
 			"child": {}
 		}
 	},
@@ -28,7 +27,6 @@ export default new Vuex.Store({
 	// 	maxRows : state => state.maxRows
 	// 	// , other stuff
 	// },
-	// store.commit('mutation-name');
 	mutations: {
 		SET_MAX_ROWS(state, value) {
 			state.maxrows = value;
@@ -71,7 +69,6 @@ export default new Vuex.Store({
 		  }
 		}
 	},
-	// store.dispatch('action-name');
 	actions: {
 		setMaxRows({commit}, value) {
 			commit('SET_MAX_ROWS', value);
