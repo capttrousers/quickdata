@@ -1,3 +1,5 @@
+console.log('Dont forget to run the command `npm run build` before starting the server');
+
 /**
  * Module dependencies.
  */
