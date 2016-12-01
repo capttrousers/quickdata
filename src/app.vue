@@ -21,6 +21,10 @@
       .form-row
         label  Rows of random data :
         input(:value="maxRowCount", @input="setRowCount")
+      .form-row
+        md-input-container
+          label  With label
+          md-input(placeholder="My nice placeholder")    
       table
         myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
 </template>

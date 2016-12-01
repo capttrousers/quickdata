@@ -3,10 +3,11 @@ components:
   checkbox / toggle / switch
 
   text inputs
-  date picker
   select menu
 
   buttons
     X - remove
     Add Column
     Get CSV
+    
+    using https://marcosmoura.github.io/vue-material/#/
