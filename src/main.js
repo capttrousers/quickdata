@@ -1,4 +1,6 @@
 import Vue from 'vue';
+// import App from './App.vue'
+import app from './app.vue';
 import store from './store';
 
 import VueMaterial from 'vue-material';
@@ -11,9 +13,6 @@ Vue.material.theme.register('default', {
   
 var VueResource = require('vue-resource');
 Vue.use(VueResource);
-
-// import App from './App.vue'
-import app from './app.vue';
 
 new Vue({
   el: '#app',
