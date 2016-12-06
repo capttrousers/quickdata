@@ -18,7 +18,7 @@ var config = {
       loaders: [
         {
           test: /\.vue$/,
-          loader: 'vue',
+          loader: 'vue-loader',
         },
         {
           test: /\.js$/,

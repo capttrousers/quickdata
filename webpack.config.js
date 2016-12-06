@@ -12,7 +12,7 @@ module.exports = {
       rules: [
         {
           test: /\.vue$/,
-          loader: 'vue',
+          loader: 'vue-loader',
           options: {
             // vue-loader options go here
           }
