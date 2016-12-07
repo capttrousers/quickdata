@@ -47,13 +47,16 @@ export default new Vuex.Store({
 			propName = payload.propName;
 			newValue = payload.newValue;
       if(propName == 'child-interval') {
-        newValue = parseInt(newValue, 10) <= parseInt(state.columns[index].interval, 10) ? newValue : state.columns[index].interval;
+				console.log(newValue);
+				console.log(state.columns[index].interval);
+        newValue = parseInt(newValue, 10) <= parseInt(state.columns[index].interval, 10) ? newValue : "";
         state.columns[index].child.interval = newValue;
       } else {
         state.columns[index][propName] = newValue;
       }
 			// update column props to handle corner cases
 			if(propName == "hierarchy") {
+				// stringify then parse to get deep copy, probably a better way
 				var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
 				newColumn.hierarchy = 'child';
 				state.columns[index].child = (newValue == 'parent' ? newColumn : {});
