@@ -15,16 +15,15 @@
         Dates allow a minimum date property, to create a range of possible dates between the min date and today.
     #form
       .form-row
-        // @click="$store.dispatch('action')"
         button(@click.prevent="addNewColumn") Add Column
         button(@click.prevent="getCSV") Get CSV File
       .form-row
         label  Rows of random data :
         input(:value="maxRowCount", @input="setRowCount")
-      //.form-row
-        //md-input-container
-          //label  With label
-          //md-input(placeholder="My nice placeholder") 
+      .form-row
+        md-input-container
+          label  With label
+          md-input(placeholder="My nice placeholder") 
       table
         myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
 </template>

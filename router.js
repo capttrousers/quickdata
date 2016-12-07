@@ -11,7 +11,7 @@ router.get('/', function(req, response, next) {
 
 router.post("/quickdata", function(request, response, next) {
 	var maxRows = request.body.maxRows;
-  maxRows = (maxRows <= 1000 && maxRows > 0 ? maxRows : 50);
+  maxRows = (maxRows <= 10000000 && maxRows > 0 ? maxRows : 50);
 	var bodyColumns = request.body.columns;
 
 	// parse and create json to create / overwrite csv file in public
