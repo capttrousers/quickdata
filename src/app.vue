@@ -1,5 +1,5 @@
 <template lang="jade">
-  #app
+  #app(v-md-theme="'default'")
     #info
       p.
         This tool will quickly generate random data
@@ -13,6 +13,7 @@
         will be a new random value every record, whereas an interval of 5 means there will be a new random value every 5 records.
       p.
         Dates allow a minimum date property, to create a range of possible dates between the min date and today.
+
     #form
       .form-row
         // @click="$store.dispatch('action')"
@@ -22,10 +23,11 @@
         label  Rows of random data :
         input(:value="maxRowCount", @input="setRowCount")
       .form-row
-        md-input-container
-          label  With label
-          md-input(placeholder="My nice placeholder")    
-      table
+        div(v-md-theme="'default'")
+          md-input-container
+            label  With label
+            md-input(placeholder="My nice placeholder")
+    table
         myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
 </template>
 
