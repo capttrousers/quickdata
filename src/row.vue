@@ -1,9 +1,10 @@
 <template lang="jade">
-  .row(:class="columnData.hierarchy == 'child' ? columnData.hierarchy : ''")
+  .row(v-md-theme="'default'", :class="columnData.hierarchy == 'child' ? columnData.hierarchy : ''")
     span(v-if="columnData.hierarchy != 'child'")  Column {{ columnIndex + 1 }}
-      button(@click.prevent="removeColumn(columnIndex)")  X
+      md-button.md-icon-button.md-accent.md-dense(@click.prevent="removeColumn(columnIndex)")
+        md-icon.md-accent clear
     span(v-else) Child column of Column {{ columnIndex + 1 }}
-      button(@click.prevent="updateColumn(columnIndex, 'hierarchy', 'none')")  X
+      md-button.md-icon-button.md-accent.md-dense(@click.prevent="updateColumn(columnIndex, 'hierarchy', 'none')")  X
     tr
       td(v-if="columnData.hierarchy != 'child'")
         label Is parent column

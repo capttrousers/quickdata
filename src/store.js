@@ -28,8 +28,8 @@ export default new Vuex.Store({
 	// 	// , other stuff
 	// },
 	mutations: {
-		SET_MAX_ROWS(state, value) {
-			state.maxrows = value;
+		SET_MAX_ROWS(state, payload) {
+			state.maxrows = payload.value;
 		},
 		ADD_NEW_COLUMN(state) {
 			if(state.columns.length <= 5) {
@@ -78,8 +78,8 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-		setMaxRows({commit}, value) {
-			commit('SET_MAX_ROWS', value);
+		setMaxRows({commit}, payload) {
+			commit('SET_MAX_ROWS', payload);
 		},
 		updateColumn({commit}, payload) {
 			commit('UPDATE_COLUMN', payload);

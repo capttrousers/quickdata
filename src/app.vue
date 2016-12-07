@@ -15,15 +15,12 @@
         Dates allow a minimum date property, to create a range of possible dates between the min date and today.
     #form
       .form-row
-        button(@click.prevent="addNewColumn") Add Column
-        button(@click.prevent="getCSV") Get CSV File
-      .form-row
-        label  Rows of random data :
-        input(:value="maxRowCount", @input="setRowCount")
+        md-button.md-raised(@click="addNewColumn") Add Column
+        md-button.md-raised.md-primary(@click="getCSV") Get CSV File
       .form-row
         md-input-container
-          label  With label
-          md-input(placeholder="My nice placeholder") 
+          label  Rows of random data with setter
+          md-input(v-model="maxRowCount")
       table
         myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
 </template>
@@ -39,11 +36,10 @@
         maxRowCount: {
           get: function () {
             return this.$store.state.maxrows;
+          },
+          set: function (value){
+            this.$store.dispatch('setMaxRows', {value});
           }
-          // , set: function (v){
-          //   this.$store.commit('SET_MAX_ROWS', v);
-          //   // this.$store.dispatch('setMaxRows', e.target.value);
-          // }
         },
         columns: {
           get() {
@@ -67,9 +63,6 @@
             // error
           }
         );
-      },
-      setRowCount: function (e) {
-        this.$store.commit('SET_MAX_ROWS', e.target.value)
       }
     }
   }
