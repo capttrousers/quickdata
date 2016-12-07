@@ -1,14 +1,21 @@
 import Vue from 'vue';
+// import App from './App.vue'
+import app from './app.vue';
 import store from './store';
+
+import VueMaterial from 'vue-material';
+// import 'css!vue-material/dist/vue-material.css';
+Vue.use(VueMaterial);
+Vue.material.theme.register('default', {
+  primary: 'black',
+  accent: 'cyan'
+});
 
 var VueResource = require('vue-resource');
 Vue.use(VueResource);
 
-// import App from './App.vue'
-import form from './form.vue';
-
 new Vue({
-  el: '#form',
+  el: '#app',
   store,
-  render: h => h(form)
+  render: h => h(app)
 });

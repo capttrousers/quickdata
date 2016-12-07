@@ -11,6 +11,7 @@ router.get('/', function(req, response, next) {
 
 router.post("/quickdata", function(request, response, next) {
 	var maxRows = request.body.maxRows;
+  maxRows = (maxRows <= 1000 && maxRows > 0 ? maxRows : 50);
 	var bodyColumns = request.body.columns;
 
 	// parse and create json to create / overwrite csv file in public
@@ -18,46 +19,57 @@ router.post("/quickdata", function(request, response, next) {
 	var quick_data = [];
 	var quick_data_fields = [];
 
-	// first loop thru columns, find randomness profile for each column, calculate interval
-	// 1 < randomness <= maxRows
+	// first loop thru columns, find interval profile for each column
+	// 1 <= interval <= maxRows
+
 	// # of columns for each datatype for column names:
 	var textColumnCount = decColumnCount = intColumnCount = dateColumnCount = 1;
 	var columns = [];
+
 	bodyColumns.forEach(function(bodyColumn) {
-		bodyColumn.randomness = (1 < bodyColumn.randomness && bodyColumn.randomness <= maxRows
-                                ? bodyColumn.randomness : maxRows);
-		bodyColumn.interval = Math.floor(maxRows / bodyColumn.randomness);
-		bodyColumn.intervalCounter = bodyColumn.interval;
-		if(bodyColumn.dataType === 'date') {
+		processColumn(bodyColumn);
+    // handle child column
+    if(bodyColumn.hierarchy == 'parent') {
+      var child = bodyColumn.child;
+      child.parentIndex = columns.indexOf(bodyColumn);
+      processColumn(child);
+    }
+	});
+
+  function processColumn(column) {
+    column.interval = (1 <= column.interval && column.interval <= maxRows
+                                ? column.interval : 1);
+		column.intervalCounter = column.interval;
+		if(column.dataType === 'date') {
 			// date max value is actually min date value
-			bodyColumn.maxValue = new Date(bodyColumn.maxValue);
+			column.maxValue = new Date(column.maxValue);
 		} else {
-			bodyColumn.maxValue = (0 < bodyColumn.maxValue && bodyColumn.maxValue <= 1000000
-                                    ? bodyColumn.maxValue : 1000000 );
+			column.maxValue = (0 < column.maxValue && column.maxValue <= 1000000
+                                    ? column.maxValue : 1000000 );
 		}
-		switch (bodyColumn.dataType) {
+		switch (column.dataType) {
 			case 'text' :
-				bodyColumn.name = "Text column " + textColumnCount;
+				column.name = "Text column " + textColumnCount;
 				textColumnCount++;
-				bodyColumn.maxValue = Math.min(bodyColumn.maxValue, 10);
+				column.maxValue = Math.min(column.maxValue, 10);
 				break;
 			case 'date' :
-				bodyColumn.name = "Date column " + dateColumnCount;
+				column.name = "Date column " + dateColumnCount;
 				dateColumnCount++;
 				break;
-			case 'int' :
-				bodyColumn.name = "Integer column " + intColumnCount;
+			case 'integer' :
+				column.name = "Integer column " + intColumnCount;
 				intColumnCount++;
 				break;
 			case 'decimal' :
-				bodyColumn.name = "Decimal column " + decColumnCount;
+				column.name = "Decimal column " + decColumnCount;
 				decColumnCount++;
 				break;
 		}
-		bodyColumn.nextRandomData = getRandomData(bodyColumn);
-		columns.push(bodyColumn);
-		quick_data_fields.push(bodyColumn.name);
-	});
+		column.nextRandomData = getRandomData(column);
+		columns.push(column);
+		quick_data_fields.push(column.name);
+  }
 
 	// then loop from 0 -> maxRows and create new row following column models
 	for(var i = 0; i < maxRows; i++) {
@@ -65,9 +77,10 @@ router.post("/quickdata", function(request, response, next) {
 		columns.forEach(function(column) {
 			row[column.name] = column.nextRandomData;
 			column.intervalCounter--;
-			if(column.intervalCounter < 1) {
-				column.intervalCounter = column.interval;
-				column.nextRandomData = getRandomData(column);
+			if(column.intervalCounter < 1 ||
+        (column.hierarchy == 'child' && columns[column.parentIndex].intervalCounter == columns[column.parentIndex].interval)) {
+  				column.intervalCounter = column.interval;
+  				column.nextRandomData = getRandomData(column);
 			}
 		});
 		quick_data.push(row);
@@ -76,36 +89,36 @@ router.post("/quickdata", function(request, response, next) {
 	function getRandomData (column) {
 	   switch(column.dataType) {
 			case 'text' :
-			    // String.fromCharCode()
+		    // String.fromCharCode()
 				// A-Z: 65-90, a-z: 97-122
-				var randomData = "";
+				var randomString = "";
 				for(var i = 0; i < column.maxValue; i++) {
 					var charNumber = Math.random() * (123-65) + 65;
 					if(charNumber < 97 && charNumber > 90) {
 						charNumber += Math.random() * (20-7) + 7;
 					}
 					var c = String.fromCharCode(charNumber);
-					randomData += c;
+					randomString += c;
 				}
-				return randomData;
+				return randomString;
 			case 'date' :
 				var minDate = new Date(column.maxValue);
 				var date = ((new Date() - minDate.valueOf()) * Math.random()) + minDate.valueOf();
 				return new Date(date).toString();
-			case 'int' :
+			case 'integer' :
 				return Math.floor(Math.random() * (column.maxValue + 1));
 			case 'decimal' :
-				return Math.random() * (column.maxValue + 1);
+				return Math.random() * column.maxValue;
 	   }
    }
 
+   
 	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
-
-	// use path.resolve() here!!!!
+	// use path.resolve() here?
 	fs.writeFile(__dirname + '/quickData.csv', csv, function(err) {
 		if (err) throw err;
 		console.log('file saved');
-		// send csv file
+		// send success code to redirect client to url path of new csv file
 		response.status(200).end();
 	});
 });
