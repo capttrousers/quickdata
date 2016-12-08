@@ -6,11 +6,20 @@ import store from './store';
 import VueMaterial from 'vue-material';
 // import 'css!vue-material/dist/vue-material.css';
 Vue.use(VueMaterial);
-Vue.material.theme.register('default', {
-  primary: 'cyan',
-  accent: 'pink'
+Vue.material.theme.registerAll({
+  app : {
+    primary: 'cyan',
+    accent: 'pink',
+    warn: 'red'
+  },
+  row : {
+    primary: {
+      color: 'cyan',
+      hue: 200
+    }
+  }
 });
-  
+
 var VueResource = require('vue-resource');
 Vue.use(VueResource);
 
