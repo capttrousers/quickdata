@@ -104,7 +104,7 @@ router.post("/quickdata", function(request, response, next) {
 			case 'date' :
 				var minDate = new Date(column.maxValue);
 				var date = ((new Date() - minDate.valueOf()) * Math.random()) + minDate.valueOf();
-				return new Date(date).toString();
+				return new Date(date).toISOString();
 			case 'integer' :
 				return Math.floor(Math.random() * (column.maxValue + 1));
 			case 'decimal' :
