@@ -11,6 +11,7 @@ router.get('/', function(req, response, next) {
 
 router.post("/quickdata", function(request, response, next) {
 	var maxRows = request.body.maxRows;
+  // goes up to at least 5 million
   maxRows = (maxRows <= 10000000 && maxRows > 0 ? maxRows : 50);
 	var bodyColumns = request.body.columns;
 
