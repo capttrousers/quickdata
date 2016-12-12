@@ -19,9 +19,7 @@
             option(v-for="dataType in dataTypes", :value="dataType.value")  {{ dataType.text }}
       td
         md-input-container
-          label(v-if="columnData.dataType == 'date'") Minimum date
-          label(v-if="columnData.dataType == 'integer' || columnData.dataType == 'decimal' ")  Max value:
-          label(v-if="columnData.dataType == 'text' ")  Max length:
+          label {{ MaxValueLabel }}
           span(v-if="columnData.hierarchy == 'child'", class='childDataType')  {{ columnData.maxValue }}
           md-input(v-else, :value="columnData.maxValue", :type="(columnData.dataType == 'date' ? 'date' : 'text')",
           @input="updateColumn(columnIndex, 'maxValue', $event.target.value)")
@@ -52,7 +50,56 @@
   				}
   				return dTypes;
 			  }
-			}
+			},
+      hiearchy: {
+        get() {
+          return this.columnData.hierarchy;
+        },
+        set() {
+
+        }
+      },
+      maxValue: {
+        get() {
+          return this.columnData.maxValue;
+        },
+        set() {
+
+        }
+      },
+      interval: {
+        get() {
+          return this.columnData.interval;
+        },
+        set() {
+
+        }
+      },
+      dataType: {
+        get() {
+          return this.columnData.dataType;
+        },
+        set() {
+
+        }
+      },
+      MaxValueLabel: {
+        get() {
+          var label = "";
+          switch (this.dataType) {
+            case 'date':
+              label = "Minimum date";
+              break;
+            case 'text':
+              label = "Max length:";
+              break;
+            default:
+              label = "Max value:";
+              break;
+          }
+          return label;
+        }
+      }
 		},
 		methods: {
 			updateColumn: function (index, propName, newValue) {

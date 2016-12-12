@@ -19,7 +19,7 @@
         md-button.md-raised.md-primary(@click="getCSV") Get CSV File
       .form-row
         md-input-container
-          label  Rows of random data with setter
+          label  Rows of random data
           md-input(v-model="maxRowCount")
       table
         myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
@@ -34,10 +34,10 @@
     },
     computed: {
         maxRowCount: {
-          get: function () {
+          get () {
             return this.$store.state.maxrows;
           },
-          set: function (value){
+          set (value) {
             this.$store.dispatch('setMaxRows', {value});
           }
         },
