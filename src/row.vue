@@ -26,8 +26,7 @@
       td(v-if="columnData.dataType == 'text' || columnData.dataType == 'integer' || columnData.dataType == 'decimal' ")
         md-input-container
           label  Interval:
-          md-input(v-if="columnData.hierarchy == 'child'", :value="columnData.interval", @input="updateColumn(columnIndex, 'child-interval', $event.target.value)")
-          md-input(v-else, :value="columnData.interval", @input="updateColumn(columnIndex, 'interval', $event.target.value)")
+          md-input(v-model="interval")
     br
     Row(v-if="columnData.hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
 </template>
@@ -55,7 +54,7 @@
         get() {
           return this.columnData.hierarchy;
         },
-        set() {
+        set(value) {
 
         }
       },
@@ -63,24 +62,25 @@
         get() {
           return this.columnData.maxValue;
         },
-        set() {
-
+        set(value) {
+          this.$store.dispatch('updateColumn', {this.columnIndex, 'maxValue', value});
         }
       },
       interval: {
         get() {
           return this.columnData.interval;
         },
-        set() {
-
+        set(value) {
+          var propName = this.hierarchy == 'child' ? 'child-interval' : 'interval';
+          this.$store.dispatch('updateColumn', {this.columnIndex, propName, value});
         }
       },
       dataType: {
         get() {
           return this.columnData.dataType;
         },
-        set() {
-
+        set(value) {
+          this.$store.dispatch('updateColumn', {this.columnIndex, 'dataType', value});
         }
       },
       MaxValueLabel: {
