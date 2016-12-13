@@ -45,7 +45,7 @@ export default new Vuex.Store({
 			var index, propName, newValue;
 			index = payload.index;
 			propName = payload.propName;
-			newValue = payload.newValue;
+			newValue = payload.value;
       if(propName == 'child-interval') {
 				console.log(newValue);
 				console.log(state.columns[index].interval);

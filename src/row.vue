@@ -1,34 +1,33 @@
 <template lang="jade">
-  .row(v-md-theme="'default'", :class="{child: columnData.hierarchy == 'child'}")
-    span(v-if="columnData.hierarchy != 'child'")  Column {{ columnIndex + 1 }}
+  .row(v-md-theme="'default'", :class="{child: hierarchy == 'child'}")
+    span(v-if="hierarchy != 'child'")  Column {{ columnIndex + 1 }}
       md-button.md-icon-button.md-warn.md-dense(@click="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
         md-icon clear
     span(v-else) Child column of Column {{ columnIndex + 1 }}
       md-button.md-icon-button.md-warn.md-dense(@click="updateColumn(columnIndex, 'hierarchy', 'none')", style="height: 1.5em; min-height: initial;")
         md-icon clear
     tr
-      td(v-if="columnData.hierarchy != 'child'")
+      td(v-if="hierarchy != 'child'")
         md-button-toggle.md-primary(v-md-theme="'row'")
-          md-button( :class="{'md-toggle': columnData.hierarchy == 'parent'}",
-            @click="updateColumn(columnIndex, 'hierarchy', columnData.hierarchy == 'none' ? 'parent' : 'none')") Parent
+          md-button( :class="{'md-toggle': hierarchy == 'parent'}",
+            @click="toggleHierarchy") Parent
       td
-        md-input-container
+        span(v-if="hierarchy == 'child'", class='childDataType')  {{ "Data type is " + dataType }}
+        md-input-container(v-else)
           label(for='data-type')  Data type
-          span(v-if="columnData.hierarchy == 'child'", class='childDataType')  {{ columnData.dataType }}
-          md-select(name='data-type', v-else, :value="columnData.dataType", @input="updateColumn(columnIndex, 'dataType', $event.target.value)")
-            option(v-for="dataType in dataTypes", :value="dataType.value")  {{ dataType.text }}
+          md-select(name='data-type', v-model="dataType")
+            md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value")  {{ dataTypeOption.text }}
       td
-        md-input-container
+        span(v-if="hierarchy == 'child'", class='childDataType')  {{ MaxValueLabel + ' is ' + maxValue }}
+        md-input-container(v-else)
           label {{ MaxValueLabel }}
-          span(v-if="columnData.hierarchy == 'child'", class='childDataType')  {{ columnData.maxValue }}
-          md-input(v-else, :value="columnData.maxValue", :type="(columnData.dataType == 'date' ? 'date' : 'text')",
-          @input="updateColumn(columnIndex, 'maxValue', $event.target.value)")
-      td(v-if="columnData.dataType == 'text' || columnData.dataType == 'integer' || columnData.dataType == 'decimal' ")
+          md-input(v-model="maxValue", :type="(dataType == 'date' ? 'date' : 'text')")
+      td(v-if="dataType == 'text' || dataType == 'integer' || dataType == 'decimal' ")
         md-input-container
           label  Interval:
           md-input(v-model="interval")
     br
-    Row(v-if="columnData.hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
+    Row(v-if="hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
 </template>
 
 <script>
@@ -43,19 +42,16 @@
 			  get() {
   				var dTypes = JSON.parse(JSON.stringify(this.$store.state.dataTypes));
   				var hierarchy = false;
-  				if(this.columnData.hierarchy == 'parent') {
+  				if(this.hierarchy == 'parent') {
   					// date is at index 3 in default dataTypes array in store
   					dTypes.splice(3,1);
   				}
   				return dTypes;
 			  }
 			},
-      hiearchy: {
+      hierarchy: {
         get() {
           return this.columnData.hierarchy;
-        },
-        set(value) {
-
         }
       },
       maxValue: {
@@ -63,7 +59,9 @@
           return this.columnData.maxValue;
         },
         set(value) {
-          this.$store.dispatch('updateColumn', {this.columnIndex, 'maxValue', value});
+          var propName = 'maxValue';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
       interval: {
@@ -72,7 +70,8 @@
         },
         set(value) {
           var propName = this.hierarchy == 'child' ? 'child-interval' : 'interval';
-          this.$store.dispatch('updateColumn', {this.columnIndex, propName, value});
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
       dataType: {
@@ -80,7 +79,9 @@
           return this.columnData.dataType;
         },
         set(value) {
-          this.$store.dispatch('updateColumn', {this.columnIndex, 'dataType', value});
+          var propName = 'dataType';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
       MaxValueLabel: {
@@ -105,6 +106,12 @@
 			updateColumn: function (index, propName, newValue) {
 				this.$store.dispatch('updateColumn', {index, propName, newValue});
 			},
+      toggleHierarchy: function (){
+        var value = this.hierarchy == 'none' ? 'parent' : 'none';
+        var index = this.columnIndex;
+        var propName = 'hierarchy';
+				this.$store.dispatch('updateColumn', {index, propName, value});
+      },
 			removeColumn: function(index) {
 				this.$store.dispatch('removeColumn', {index});
 			}
