@@ -1,16 +1,14 @@
 <template lang="jade">
   .row(v-md-theme="'default'", :class="{child: hierarchy == 'child'}")
     span(v-if="hierarchy != 'child'")  Column {{ columnIndex + 1 }}
-      md-button.md-icon-button.md-warn.md-dense(@click="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
-        md-icon clear
     span(v-else) Child column of Column {{ columnIndex + 1 }}
-      md-button.md-icon-button.md-warn.md-dense(@click="updateColumn(columnIndex, 'hierarchy', 'none')", style="height: 1.5em; min-height: initial;")
+    md-button.md-icon-button.md-warn.md-dense(@click="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
         md-icon clear
     tr
       td(v-if="hierarchy != 'child'")
         md-button-toggle.md-primary(v-md-theme="'row'")
-          md-button( :class="{'md-toggle': hierarchy == 'parent'}",
-            @click="toggleHierarchy") Parent
+          md-button(@click="toggleHierarchy", :class="{ 'md-toggle': isParent }") Parent
+          // md-button(@click="toggleHierarchy", :class="hierarchy == 'parent' ? 'md-toggle' : '' ") Parent
       td
         span(v-if="hierarchy == 'child'", class='childDataType')  {{ "Data type is " + dataType }}
         md-input-container(v-else)
@@ -103,9 +101,6 @@
       }
 		},
 		methods: {
-			updateColumn: function (index, propName, newValue) {
-				this.$store.dispatch('updateColumn', {index, propName, newValue});
-			},
       toggleHierarchy: function (){
         var value = this.hierarchy == 'none' ? 'parent' : 'none';
         var index = this.columnIndex;
@@ -113,8 +108,15 @@
 				this.$store.dispatch('updateColumn', {index, propName, value});
       },
 			removeColumn: function(index) {
-				this.$store.dispatch('removeColumn', {index});
-			}
+        if(this.hierarchy != 'child') {
+          this.$store.dispatch('removeColumn', {index});
+        } else {
+          this.toggleHierarchy();
+        }				
+			},
+      isParent: function() {
+        return this.hierarchy == 'parent';
+      }
 		}
 	}
 </script>
