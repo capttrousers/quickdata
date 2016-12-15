@@ -51,6 +51,30 @@
         }
       },
       maxValue: {
+          return this.columnData.interval;
+        },
+        set(value) {
+          var propName = this.hierarchy == 'child' ? 'child-interval' : 'interval';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
+      dataType: {
+        get() {
+          return this.columnData.dataType;
+
+          return this.columnData.interval;
+        },
+        set(value) {
+          var propName = this.hierarchy == 'child' ? 'child-interval' : 'interval';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
+      dataType: {
+        get() {
+          return this.columnData.dataType;
+        },
         get() {
           return this.columnData.maxValue;
         },
@@ -78,6 +102,25 @@
           var propName = 'dataType';
           var index = this.columnIndex;
           this.$store.dispatch('updateColumn', {index, propName, value});
+          // dispatch update column for max value based on value
+          propName = 'maxValue'
+          switch (value) {
+            case 'text':
+              value = '10';
+              this.$store.dispatch('updateColumn', {index, propName, value});
+              break;
+            case 'date':
+              var d = new Date();
+              var mm = d.getMonth() + 1;
+              var dd = d.getDate();
+              var yyyy = d.getFullYear();
+              value = mm + '/' + dd + '/' + yyyy;
+              this.$store.dispatch('updateColumn', {index, propName, value});
+              break;
+            default:
+              value = '1000';
+              this.$store.dispatch('updateColumn', {index, propName, value});
+          }
         }
       },
       MaxValueLabel: {

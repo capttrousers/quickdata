@@ -64,13 +64,14 @@ export default new Vuex.Store({
           state.columns[index].dataType = 'text';
 			    state.columns[index].maxValue = 10;
         }
-			} else if(propName == 'dataType') {
-			  if(newValue == 'text') {
-			    state.columns[index].maxValue = 10;
-			  } else {
-			    state.columns[index].maxValue = 1000;
-			  }
-		  }
+			}
+			// else if(propName == 'dataType') {
+			//   if(newValue == 'text') {
+			//     state.columns[index].maxValue = 10;
+			//   } else {
+			//     state.columns[index].maxValue = 1000;
+			//   }
+		  // }
 			if(state.columns[index].hierarchy == 'parent') {
 			  state.columns[index].child.dataType = state.columns[index].dataType;
 				state.columns[index].child.maxValue = state.columns[index].maxValue;
