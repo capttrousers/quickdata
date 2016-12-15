@@ -1,14 +1,13 @@
 <template lang="jade">
   .row(v-md-theme="'default'", :class="{child: hierarchy == 'child'}")
     span(v-if="hierarchy != 'child'")  Column {{ columnIndex + 1 }}
+      md-button.md-icon-button.md-warn.md-dense(@click="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
+          md-icon clear
     span(v-else) Child column of Column {{ columnIndex + 1 }}
-    md-button.md-icon-button.md-warn.md-dense(@click="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
-        md-icon clear
     tr
       td(v-if="hierarchy != 'child'")
         md-button-toggle.md-primary(v-md-theme="'row'")
-          md-button(@click="toggleHierarchy", :class="{ 'md-toggle': isParent }") Parent
-          // md-button(@click="toggleHierarchy", :class="hierarchy == 'parent' ? 'md-toggle' : '' ") Parent
+          md-button(@click="toggleHierarchy") Parent
       td
         span(v-if="hierarchy == 'child'", class='childDataType')  {{ "Data type is " + dataType }}
         md-input-container(v-else)
@@ -39,7 +38,6 @@
 			dataTypes: {
 			  get() {
   				var dTypes = JSON.parse(JSON.stringify(this.$store.state.dataTypes));
-  				var hierarchy = false;
   				if(this.hierarchy == 'parent') {
   					// date is at index 3 in default dataTypes array in store
   					dTypes.splice(3,1);
@@ -112,11 +110,8 @@
           this.$store.dispatch('removeColumn', {index});
         } else {
           this.toggleHierarchy();
-        }				
-			},
-      isParent: function() {
-        return this.hierarchy == 'parent';
-      }
+        }
+			}
 		}
 	}
 </script>
