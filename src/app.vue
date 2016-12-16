@@ -18,8 +18,7 @@
       .form-row
         md-button.md-raised(@click="addNewColumn") Add Column
         md-button.md-raised.md-primary(@click="getCSV") Get CSV File
-      .form-row
-        md-input-container
+        md-input-container(style="display: inline-block;")
           label  Rows of random data
           md-input(v-model="maxRowCount")
       table
