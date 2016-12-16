@@ -16,11 +16,11 @@
 
     #form
       .form-row
-        md-button.md-raised(@click="addNewColumn") Add Column
-        md-button.md-raised.md-primary(@click="getCSV") Get CSV File
         md-input-container(style="display: inline-block;")
           label  Rows of random data
           md-input(v-model="maxRowCount")
+        md-button.md-raised(@click="addNewColumn") Add Column
+        md-button.md-raised.md-primary(@click="getCSV") Get CSV File
       table
         myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
 </template>

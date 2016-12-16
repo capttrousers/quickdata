@@ -9,10 +9,12 @@
         md-button-toggle.md-primary(v-md-theme="'row'")
           md-button(@click="toggleHierarchy") Parent
       td
-        span(v-if="hierarchy == 'child'", class='childDataType')  {{ "Data type is " + dataType }}
-        md-input-container(v-else)
+        //span(v-if="hierarchy == 'child'")  Data type is
+          //span(class='childDataType')  {{ dataType }}
+          //(v-else)
+        md-input-container
           label(for='data-type')  Data type
-          md-select(name='data-type', v-model="dataType")
+          md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
             md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value")  {{ dataTypeOption.text }}
       td
         span(v-if="hierarchy == 'child'", class='childDataType')  {{ MaxValueLabel + ' is ' + maxValue }}
