@@ -51,30 +51,6 @@
         }
       },
       maxValue: {
-          return this.columnData.interval;
-        },
-        set(value) {
-          var propName = this.hierarchy == 'child' ? 'child-interval' : 'interval';
-          var index = this.columnIndex;
-          this.$store.dispatch('updateColumn', {index, propName, value});
-        }
-      },
-      dataType: {
-        get() {
-          return this.columnData.dataType;
-
-          return this.columnData.interval;
-        },
-        set(value) {
-          var propName = this.hierarchy == 'child' ? 'child-interval' : 'interval';
-          var index = this.columnIndex;
-          this.$store.dispatch('updateColumn', {index, propName, value});
-        }
-      },
-      dataType: {
-        get() {
-          return this.columnData.dataType;
-        },
         get() {
           return this.columnData.maxValue;
         },
@@ -111,10 +87,12 @@
               break;
             case 'date':
               var d = new Date();
+              // getMonth() is zero indexed
               var mm = d.getMonth() + 1;
-              var dd = d.getDate();
+              // getDate() is 1 indexed, but minus 1 to start yesterday
+              var dd = d.getDate() - 1;
               var yyyy = d.getFullYear();
-              value = mm + '/' + dd + '/' + yyyy;
+              value = yyyy + '-' + mm + '-' + dd;
               this.$store.dispatch('updateColumn', {index, propName, value});
               break;
             default:
