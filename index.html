@@ -3,6 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>webpack-simple</title>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/dist/vue-material.css">
     <style>
       body {
         margin: 0;
@@ -10,25 +13,24 @@
       h1 {
         margin: 0;
         text-align: center;
-        /*padding: 1.5rem 0;*/
-        font-size: 3em;
+        padding: 1rem 0;
+        font-weight: 400;
+        font-size: 48px;
         line-height: normal;
       }
       header {
-        height: 80px;
+        height: initial;
         width: 100%;
         background-color: #555;
         color: white;
+        z-index: 1;
       }
     </style>
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/dist/vue-material.css">
   </head>
   <body>
-	<header>
-		<h1>Quick Data Generator</h1>
-	</header>
+  	<header>
+  		<h1>Quick Data Generator</h1>
+  	</header>
     <div id="app"></div>
     <script src="/dist/bundle.js"></script>
   </body>

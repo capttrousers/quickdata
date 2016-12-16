@@ -14,7 +14,7 @@
           //(v-else)
         md-input-container
           label(for='data-type')  Data type
-          md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
+          md-select(name='data-type', v-model="dataType", disabled)
             md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value")  {{ dataTypeOption.text }}
       td
         span(v-if="hierarchy == 'child'", class='childDataType')  {{ MaxValueLabel + ' is ' + maxValue }}
