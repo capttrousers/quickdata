@@ -54,13 +54,16 @@ export default new Vuex.Store({
 				var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
 				state.columns[index].hierarchy = newValue;
 				state.columns[index].child = (newValue == 'parent' ? newColumn : {});
-        if(newValue == 'parent' && state.columns[index].dataType == 'date') {
-          state.columns[index].dataType = 'text';
-			    state.columns[index].maxValue = 10;
-        }
-				state.columns[index].child.hierarchy = 'child';
-				state.columns[index].child.maxValue = state.columns[index].maxValue;
-				state.columns[index].child.dataType = state.columns[index].dataType;
+        if(newValue == 'parent') {
+					if(state.columns[index].dataType == 'date') {
+	          state.columns[index].dataType = 'text';
+				    state.columns[index].maxValue = 10;
+	        }
+					state.columns[index].child.hierarchy = 'child';
+					state.columns[index].child.maxValue = state.columns[index].maxValue;
+					state.columns[index].child.dataType = state.columns[index].dataType;
+
+				}
 			} else {
         state.columns[index][propName] = newValue;
 				if(state.columns[index].hierarchy == 'parent') {
