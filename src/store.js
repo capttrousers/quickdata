@@ -28,8 +28,8 @@ export default new Vuex.Store({
 	// 	// , other stuff
 	// },
 	mutations: {
-		SET_MAX_ROWS(state, value) {
-			state.maxrows = value;
+		SET_MAX_ROWS(state, payload) {
+			state.maxrows = payload.value;
 		},
 		ADD_NEW_COLUMN(state) {
 			if(state.columns.length <= 5) {
@@ -45,41 +45,37 @@ export default new Vuex.Store({
 			var index, propName, newValue;
 			index = payload.index;
 			propName = payload.propName;
-			newValue = payload.newValue;
+			newValue = payload.value;
       if(propName == 'child-interval') {
-				console.log(newValue);
-				console.log(state.columns[index].interval);
         newValue = parseInt(newValue, 10) <= parseInt(state.columns[index].interval, 10) ? newValue : "";
         state.columns[index].child.interval = newValue;
-      } else {
-        state.columns[index][propName] = newValue;
-      }
-			// update column props to handle corner cases
-			if(propName == "hierarchy") {
+      } else if(propName == "hierarchy") {
 				// stringify then parse to get deep copy, probably a better way
 				var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
-				newColumn.hierarchy = 'child';
+				state.columns[index].hierarchy = newValue;
 				state.columns[index].child = (newValue == 'parent' ? newColumn : {});
         if(newValue == 'parent' && state.columns[index].dataType == 'date') {
           state.columns[index].dataType = 'text';
 			    state.columns[index].maxValue = 10;
         }
-			} else if(propName == 'dataType') {
-			  if(newValue == 'text') {
-			    state.columns[index].maxValue = 10;
-			  } else {
-			    state.columns[index].maxValue = 1000;
-			  }
-		  }
-			if(state.columns[index].hierarchy == 'parent') {
-			  state.columns[index].child.dataType = state.columns[index].dataType;
+				state.columns[index].child.hierarchy = 'child';
 				state.columns[index].child.maxValue = state.columns[index].maxValue;
-		  }
+				state.columns[index].child.dataType = state.columns[index].dataType;
+			} else {
+        state.columns[index][propName] = newValue;
+				if(state.columns[index].hierarchy == 'parent') {
+					if( propName == 'maxValue' || propName == 'dataType') {
+						state.columns[index].child[propName] = newValue;
+					} else if (propName == 'interval') {
+						 state.columns[index].child[propName] = Math.min(state.columns[index].child[propName] , newValue);
+					}
+				}
+      }
 		}
 	},
 	actions: {
-		setMaxRows({commit}, value) {
-			commit('SET_MAX_ROWS', value);
+		setMaxRows({commit}, payload) {
+			commit('SET_MAX_ROWS', payload);
 		},
 		updateColumn({commit}, payload) {
 			commit('UPDATE_COLUMN', payload);

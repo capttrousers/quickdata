@@ -1,32 +1,30 @@
 <template lang="jade">
-  .row(:class="columnData.hierarchy == 'child' ? columnData.hierarchy : ''")
-    span(v-if="columnData.hierarchy != 'child'")  Column {{ columnIndex + 1 }}
-      button(@click.prevent="removeColumn(columnIndex)")  X
+  .row(v-md-theme="'default'", :class="{child: hierarchy == 'child'}")
+    span(v-if="hierarchy != 'child'")  Column {{ columnIndex + 1 }}
+      md-button.md-icon-button.md-warn.md-dense(@click="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
+          md-icon clear
     span(v-else) Child column of Column {{ columnIndex + 1 }}
-      button(@click.prevent="updateColumn(columnIndex, 'hierarchy', 'none')")  X
     tr
-      td(v-if="columnData.hierarchy != 'child'")
-        label Is parent column
-        input(type="checkbox", value="hierarchy", :checked="columnData.hierarchy == 'parent'",
-        @change="updateColumn(columnIndex, 'hierarchy', (columnData.hierarchy == 'none' ? 'parent' : 'none'))")
+      td(v-if="hierarchy != 'child'")
+        md-button-toggle.md-primary(v-md-theme="'row'")
+          md-button(@click="toggleHierarchy") Parent
       td
-        label  Data type:
-        span(v-if="columnData.hierarchy == 'child'", class='childDataType')  {{ columnData.dataType }}
-        select(v-else, :value="columnData.dataType", @input="updateColumn(columnIndex, 'dataType', $event.target.value)")
-          option(v-for="dataType in dataTypes", :value="dataType.value")  {{ dataType.text }}
+        span(v-if="hierarchy == 'child'", class='childDataType')  {{ "Data type is " + dataType }}
+        md-input-container(v-else)
+          label(for='data-type')  Data type
+          md-select(name='data-type', v-model="dataType")
+            md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value")  {{ dataTypeOption.text }}
       td
-        label(v-if="columnData.dataType == 'date'") Minimum date
-        label(v-if="columnData.dataType == 'integer' || columnData.dataType == 'decimal' ")  Max value:
-        label(v-if="columnData.dataType == 'text' ")  Max length:
-        span(v-if="columnData.hierarchy == 'child'", class='childDataType')  {{ columnData.maxValue }}
-        input(v-else, :value="columnData.maxValue", :type="(columnData.dataType == 'date' ? 'date' : 'text')",
-        @input="updateColumn(columnIndex, 'maxValue', $event.target.value)")
-      td(v-if="columnData.dataType == 'text' || columnData.dataType == 'integer' || columnData.dataType == 'decimal' ")
-        label  Interval:
-        input(v-if="columnData.hierarchy == 'child'", :value="columnData.interval", @input="updateColumn(columnIndex, 'child-interval', $event.target.value)")
-        input(v-else, :value="columnData.interval", @input="updateColumn(columnIndex, 'interval', $event.target.value)")
+        span(v-if="hierarchy == 'child'", class='childDataType')  {{ MaxValueLabel + ' is ' + maxValue }}
+        md-input-container(v-else)
+          label {{ MaxValueLabel }}
+          md-input(v-model="maxValue", :type="(dataType == 'date' ? 'date' : 'text')")
+      td(v-if="dataType == 'text' || dataType == 'integer' || dataType == 'decimal' ")
+        md-input-container
+          label  Interval:
+          md-input(v-model="interval")
     br
-    Row(v-if="columnData.hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
+    Row(v-if="hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
 </template>
 
 <script>
@@ -40,21 +38,100 @@
 			dataTypes: {
 			  get() {
   				var dTypes = JSON.parse(JSON.stringify(this.$store.state.dataTypes));
-  				var hierarchy = false;
-  				if(this.columnData.hierarchy == 'parent') {
+  				if(this.hierarchy == 'parent') {
   					// date is at index 3 in default dataTypes array in store
   					dTypes.splice(3,1);
   				}
   				return dTypes;
 			  }
-			}
+			},
+      hierarchy: {
+        get() {
+          return this.columnData.hierarchy;
+        }
+      },
+      maxValue: {
+        get() {
+          return this.columnData.maxValue;
+        },
+        set(value) {
+          var propName = 'maxValue';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
+      interval: {
+        get() {
+          return this.columnData.interval;
+        },
+        set(value) {
+          var propName = this.hierarchy == 'child' ? 'child-interval' : 'interval';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
+      dataType: {
+        get() {
+          return this.columnData.dataType;
+        },
+        set(value) {
+          var propName = 'dataType';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+          // dispatch update column for max value based on value
+          propName = 'maxValue'
+          switch (value) {
+            case 'text':
+              value = '10';
+              this.$store.dispatch('updateColumn', {index, propName, value});
+              break;
+            case 'date':
+              var d = new Date();
+              // getMonth() is zero indexed
+              var mm = d.getMonth() + 1;
+              // getDate() is 1 indexed, but minus 1 to start yesterday
+              var dd = d.getDate() - 1;
+              var yyyy = d.getFullYear();
+              value = yyyy + '-' + mm + '-' + dd;
+              this.$store.dispatch('updateColumn', {index, propName, value});
+              break;
+            default:
+              value = '1000';
+              this.$store.dispatch('updateColumn', {index, propName, value});
+          }
+        }
+      },
+      MaxValueLabel: {
+        get() {
+          var label = "";
+          switch (this.dataType) {
+            case 'date':
+              label = "Minimum date";
+              break;
+            case 'text':
+              label = "Max length:";
+              break;
+            default:
+              label = "Max value:";
+              break;
+          }
+          return label;
+        }
+      }
 		},
 		methods: {
-			updateColumn: function (index, propName, newValue) {
-				this.$store.dispatch('updateColumn', {index, propName, newValue});
-			},
+      toggleHierarchy: function (){
+        var value = this.hierarchy == 'none' ? 'parent' : 'none';
+        var index = this.columnIndex;
+        var propName = 'hierarchy';
+				this.$store.dispatch('updateColumn', {index, propName, value});
+      },
 			removeColumn: function(index) {
-				this.$store.dispatch('removeColumn', {index});
+        if(this.hierarchy != 'child') {
+          this.$store.dispatch('removeColumn', {index});
+        } else {
+          this.toggleHierarchy();
+        }
 			}
 		}
 	}

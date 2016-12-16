@@ -1,5 +1,5 @@
 <template lang="jade">
-  #app(v-md-theme="'default'")
+  #app(v-md-theme="'app'")
     #info
       p.
         This tool will quickly generate random data
@@ -16,16 +16,12 @@
 
     #form
       .form-row
-        // @click="$store.dispatch('action')"
-        button(@click.prevent="addNewColumn") Add Column
-        button(@click.prevent="getCSV") Get CSV File
+        md-button.md-raised(@click="addNewColumn") Add Column
+        md-button.md-raised.md-primary(@click="getCSV") Get CSV File
       .form-row
-        label  Rows of random data :
-        input(:value="maxRowCount", @input="setRowCount")
-      //.form-row
-        //md-input-container
-          //label  With label
-          //md-input(placeholder="My nice placeholder")
+        md-input-container
+          label  Rows of random data
+          md-input(v-model="maxRowCount")
       table
         myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
 </template>
@@ -39,13 +35,12 @@
     },
     computed: {
         maxRowCount: {
-          get: function () {
+          get () {
             return this.$store.state.maxrows;
+          },
+          set (value) {
+            this.$store.dispatch('setMaxRows', {value});
           }
-          // , set: function (v){
-          //   this.$store.commit('SET_MAX_ROWS', v);
-          //   // this.$store.dispatch('setMaxRows', e.target.value);
-          // }
         },
         columns: {
           get() {
@@ -69,9 +64,6 @@
             // error
           }
         );
-      },
-      setRowCount: function (e) {
-        this.$store.commit('SET_MAX_ROWS', e.target.value)
       }
     }
   }

@@ -11,7 +11,8 @@ router.get('/', function(req, response, next) {
 
 router.post("/quickdata", function(request, response, next) {
 	var maxRows = request.body.maxRows;
-  maxRows = (maxRows <= 1000 && maxRows > 0 ? maxRows : 50);
+  // goes up to at least 5 million
+  maxRows = (maxRows <= 10000000 && maxRows > 0 ? maxRows : 50);
 	var bodyColumns = request.body.columns;
 
 	// parse and create json to create / overwrite csv file in public
@@ -104,7 +105,7 @@ router.post("/quickdata", function(request, response, next) {
 			case 'date' :
 				var minDate = new Date(column.maxValue);
 				var date = ((new Date() - minDate.valueOf()) * Math.random()) + minDate.valueOf();
-				return new Date(date).toString();
+				return new Date(date).toISOString();
 			case 'integer' :
 				return Math.floor(Math.random() * (column.maxValue + 1));
 			case 'decimal' :
