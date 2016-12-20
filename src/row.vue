@@ -1,12 +1,12 @@
 <template lang="jade">
-  .row(v-md-theme="'default'", :class="{child: hierarchy == 'child'}")
+  .row(:class="{child: hierarchy == 'child'}")
     span(v-if="hierarchy != 'child'")  Column {{ columnIndex + 1 }}
       md-button.md-icon-button.md-warn.md-dense(@click="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
           md-icon clear
     span(v-else) Child column of Column {{ columnIndex + 1 }}
     tr
       td(v-if="hierarchy != 'child'")
-        md-button-toggle.md-primary(v-md-theme="'row'")
+        md-button-toggle.md-primary(md-theme="'row'")
           md-button(@click="toggleHierarchy") Parent
       td
         //span(v-if="hierarchy == 'child'")  Data type is
