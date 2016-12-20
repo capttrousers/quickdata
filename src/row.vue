@@ -1,23 +1,22 @@
 <template lang="jade">
   .row(:class="{child: hierarchy == 'child'}")
-    span(v-if="hierarchy != 'child'")  Column {{ columnIndex + 1 }}
+    span.parentLabel(v-if="hierarchy != 'child'")  Column {{ columnIndex + 1 }}
       md-button.md-icon-button.md-warn.md-dense(@click="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
           md-icon clear
-    span(v-else) Child column of Column {{ columnIndex + 1 }}
-    md-layout(md-gutter)
-      md-layout(v-if="hierarchy != 'child'", md-flex="15")
-        md-button-toggle.md-primary(md-theme="'row'")
+    span.childLabel(v-else) Child column of Column {{ columnIndex + 1 }}
+    md-layout
+      md-layout(v-if="hierarchy != 'child'", md-flex="15", md-theme="'row'")
+        md-button-toggle.md-primary
           md-button(@click="toggleHierarchy") Parent
       md-layout(md-flex="20")
         md-input-container
           label(for='data-type')  Data type
           md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
             md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value")  {{ dataTypeOption.text }}
-      md-layout()
-        span(v-if="hierarchy == 'child'", class='childDataType')  {{ MaxValueLabel + ' is ' + maxValue }}
-        md-input-container(v-else)
+      md-layout
+        md-input-container
           label {{ MaxValueLabel }}
-          md-input(v-model="maxValue", :type="(dataType == 'date' ? 'date' : 'text')")
+          md-input(v-model="maxValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
       md-layout(v-if="dataType == 'text' || dataType == 'integer' || dataType == 'decimal' ")
         md-input-container
           label  Interval:
@@ -25,7 +24,6 @@
     br
     Row(v-if="hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
 </template>
-
 <script>
 	export default {
 		props: [
@@ -108,10 +106,10 @@
               label = "Minimum date";
               break;
             case 'text':
-              label = "Max length:";
+              label = "Max length";
               break;
             default:
-              label = "Max value:";
+              label = "Max value";
               break;
           }
           return label;
@@ -139,11 +137,11 @@
   .child {
     padding-left: 1em;
   }
-  .childDataType {
+  .parentLabel {
     font-weight: bold;
-    margin: auto;
-    font-size: 1rem;
-    vertical-align: middle;
-
+    font-size: 1.1rem;
+  }
+  .childLabel {
+    font-size: 1.05rem;
   }
 </style>
