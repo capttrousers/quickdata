@@ -1,5 +1,5 @@
 <template lang="jade">
-  #app(v-md-theme="'app'")
+  #app
     #info
       p.
         This tool will quickly generate random data

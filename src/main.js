@@ -7,8 +7,8 @@ import VueMaterial from 'vue-material';
 // import 'css!vue-material/dist/vue-material.css';
 Vue.use(VueMaterial);
 
-Vue.material.theme.registerAll({
-  app : {
+Vue.material.registerTheme({
+  default : {
     primary: 'cyan',
     accent: 'pink',
     warn: 'red'
