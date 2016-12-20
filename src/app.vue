@@ -21,8 +21,7 @@
           md-input(v-model="maxRowCount")
         md-button.md-raised(@click="addNewColumn") Add Column
         md-button.md-raised.md-primary(@click="getCSV") Get CSV File
-      table
-        myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
+      myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
 </template>
 
 <script>
@@ -76,7 +75,7 @@
     margin: 0 auto;
     width: 50%;
   }
-  .form-row, table {
+  .form-row{
     margin: 1em 0;
   }
   @media screen and (max-width: 1400px) {

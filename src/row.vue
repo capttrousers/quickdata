@@ -4,24 +4,21 @@
       md-button.md-icon-button.md-warn.md-dense(@click="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
           md-icon clear
     span(v-else) Child column of Column {{ columnIndex + 1 }}
-    tr
-      td(v-if="hierarchy != 'child'")
+    md-layout(md-gutter)
+      md-layout(v-if="hierarchy != 'child'", md-flex="15")
         md-button-toggle.md-primary(md-theme="'row'")
           md-button(@click="toggleHierarchy") Parent
-      td
-        //span(v-if="hierarchy == 'child'")  Data type is
-          //span(class='childDataType')  {{ dataType }}
-          //(v-else)
+      md-layout(md-flex="20")
         md-input-container
           label(for='data-type')  Data type
-          md-select(name='data-type', v-model="dataType", disabled)
+          md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
             md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value")  {{ dataTypeOption.text }}
-      td
+      md-layout()
         span(v-if="hierarchy == 'child'", class='childDataType')  {{ MaxValueLabel + ' is ' + maxValue }}
         md-input-container(v-else)
           label {{ MaxValueLabel }}
           md-input(v-model="maxValue", :type="(dataType == 'date' ? 'date' : 'text')")
-      td(v-if="dataType == 'text' || dataType == 'integer' || dataType == 'decimal' ")
+      md-layout(v-if="dataType == 'text' || dataType == 'integer' || dataType == 'decimal' ")
         md-input-container
           label  Interval:
           md-input(v-model="interval")
@@ -144,5 +141,9 @@
   }
   .childDataType {
     font-weight: bold;
+    margin: auto;
+    font-size: 1rem;
+    vertical-align: middle;
+
   }
 </style>
