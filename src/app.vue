@@ -16,7 +16,7 @@
 
     #form
       .form-row
-        md-input-container(style="display: inline-block;")
+        md-input-container(style="display: inline-block; min-width:182px;")
           label  Rows of random data
           md-input(v-model="maxRowCount")
         md-button.md-raised(@click="addNewColumn") Add Column
