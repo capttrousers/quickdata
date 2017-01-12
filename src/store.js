@@ -7,6 +7,13 @@ export default new Vuex.Store({
 	state: {
 		columns: [],
 		maxrows: "50",
+    dataSource: "csv",
+    dataSources: [
+      {label: "CSV", value: "csv"},
+      {label: "MySQL", value: "mysql"},
+      {label: "MS SQL Server", value: "mssql"},
+      {label: "PostgreSQL", value: "postgresql"}
+    ],
 		dataTypes: [
         {text: "Text", value: "text"},
         {text: "Integer", value: "integer"},
@@ -28,6 +35,9 @@ export default new Vuex.Store({
 	// 	// , other stuff
 	// },
 	mutations: {
+		SET_DATASOURCE(state, payload) {
+			state.dataSource = payload.value;
+		},
 		SET_MAX_ROWS(state, payload) {
 			state.maxrows = payload.value;
 		},
@@ -77,6 +87,9 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
+		setDataSource({commit}, payload) {
+			commit('SET_DATASOURCE', payload);
+		},
 		setMaxRows({commit}, payload) {
 			commit('SET_MAX_ROWS', payload);
 		},
