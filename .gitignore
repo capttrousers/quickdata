@@ -3,3 +3,5 @@ node_modules
 *.logs
 *.logs.bk
 dist
+*.db
+config/config.work.json
