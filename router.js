@@ -114,6 +114,10 @@ router.post("/quickdata", function(request, response, next) {
    }
 
    
+   
+  // models.AppTable.insert new table name, other table transaction info like user, email, sf case, db type
+  // then process response
+  
 	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
 	// use path.resolve() here?
 	fs.writeFile(__dirname + '/quickData.csv', csv, function(err) {

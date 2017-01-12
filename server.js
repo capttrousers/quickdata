@@ -7,6 +7,7 @@ console.log('Dont forget to run the command `npm run build` before starting the 
 var app = require('./app');
 var debug = require('debug')('express:server');
 var http = require('http');
+var models = require('./models');
 
 /**
  * Get port from environment and store in Express.
@@ -25,10 +26,13 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+ 
+// sync() will create all tables if they doesn't exist in database
+models.sequelize.sync().then(function(){
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
+});
 
 /**
  * Normalize a port into a number, string, or false.
