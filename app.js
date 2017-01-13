@@ -49,8 +49,8 @@ var app = express();
 // }));
 
 // view engine setup
-app.set('views', path.join(__dirname, './jade-views'));
-app.set('view engine', 'jade');
+app.set('views', path.join(__dirname, './pug-views'));
+app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -61,7 +61,6 @@ app.use(cookieParser());
 
 // app.use( [URL path],  express.static( relative file path ) )
 app.use('/index.html', express.static('./index.html'));
-app.use('/quickData.csv', express.static('./quickData.csv'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/dist', express.static(path.join(__dirname, 'dist')));

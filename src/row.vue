@@ -4,7 +4,7 @@
       md-button.md-icon-button.md-warn.md-dense(@click="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
           md-icon clear
     span.childLabel(v-else) Child column of Column {{ columnIndex + 1 }}
-    md-layout
+    md-layout(md-gutter="40")
       md-layout(v-if="hierarchy != 'child'", md-flex="15", md-theme="'row'")
         md-button-toggle.md-primary
           md-button(@click="toggleHierarchy") Parent
@@ -13,11 +13,11 @@
           label(for='data-type')  Data type
           md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
             md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value")  {{ dataTypeOption.text }}
-      md-layout
+      md-layout(md-flex="30")
         md-input-container
           label {{ MaxValueLabel }}
           md-input(v-model="maxValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
-      md-layout(v-if="dataType == 'text' || dataType == 'integer' || dataType == 'decimal' ")
+      md-layout(md-flex="20", v-if="dataType == 'text' || dataType == 'integer' || dataType == 'decimal' ")
         md-input-container
           label  Interval:
           md-input(v-model="interval")

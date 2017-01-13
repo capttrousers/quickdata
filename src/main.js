@@ -2,7 +2,6 @@ import Vue from 'vue';
 // import App from './App.vue'
 import app from './app.vue';
 import store from './store';
-
 import VueMaterial from 'vue-material';
 // import 'css!vue-material/dist/vue-material.css';
 Vue.use(VueMaterial);

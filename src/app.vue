@@ -16,23 +16,34 @@
 
     #form
       .form-row
-        md-button.md-raised(@click="addNewColumn") Add Column
-        md-button.md-raised.md-primary(@click="getCSV") Get CSV File
-
-        md-input-container(style="display: inline-block; width: auto;")
-            label(for='data-source')  Data Source
-            md-select(name='data-source', v-model="dataSource")
-              md-option(v-for="dataSourceOption in dataSources", :value="dataSourceOption.value")  {{ dataSourceOption.label }}
+        md-layout(md-gutter="40")
+          md-layout
+            md-button.md-raised(@click="addNewColumn") Add Column
+          md-layout
+            md-button.md-raised.md-primary(@click="getCSV") {{ fileButtonLabel }}
+          md-layout
+            md-input-container(style="display: inline-block; width: auto;")
+                label(for='data-source')  Data Source
+                md-select(name='data-source', v-model="dataSource")
+                  md-option(v-for="dataSourceOption in dataSources", :value="dataSourceOption.value")  {{ dataSourceOption.label }}
+          md-layout          
+            md-input-container(style="display: inline-block; width: auto;")
+                label(for="max-rows")  Rows of random data
+                md-input(name='max-rows', v-model="maxRowCount")
       .form-row
-        md-input-container(style="display: inline-block; width: auto;")
-          label(for="max-rows")  Rows of random data
-          md-input(name='max-rows', v-model="maxRowCount")
-        md-input-container(style="display: inline-block; width: auto;")
-          label(for="max-rows")  Sales Force Case
-          md-input(name='max-rows', v-model="maxRowCount")
-        md-input-container(style="display: inline-block; width: auto;")
-          label(for="max-rows")  User email @ tableau.com
-          md-input(name='max-rows', v-model="maxRowCount")
+        md-layout(md-gutter="40")
+          md-layout(md-flex="33")
+            md-input-container
+              label(for="table-name")  {{ tableNameLabel }}
+              md-input(name='table-name', v-model="tableName")
+          md-layout(md-flex="33")
+            md-input-container
+              label(for="case")  Sales Force Case
+              md-input(name='case', v-model="sfCase")
+          md-layout(md-flex="33")
+            md-input-container
+                label(for="user")  User email @ tableau.com
+                md-input(name='user', v-model="user")
 
 
       myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
@@ -40,12 +51,32 @@
 
 <script>
   import row from './row.vue';
+  var FileSaver = require('file-saver');
   export default {
     name: 'app',
     components: {
       'myRow': row
     },
     computed: {
+        fileButtonLabel: {
+          get() {
+            return this.dataSource == 'csv' ? 'GET CSV FILE' : 'GET TXT FILE';
+          }
+        },
+        tableNameLabel: {
+          get() {
+            return (this.dataSource == 'csv' ? 'File' : 'Table') + ' Name (no spaces)';
+          }
+        },
+        tableName: {
+          get () {
+            return this.$store.state.tableName;
+          },
+          set (value) {
+            value = value.replace(' ', '_')
+            this.$store.dispatch('setTableName', {value});
+          }
+        },
         maxRowCount: {
           get () {
             return this.$store.state.maxrows;
@@ -95,16 +126,28 @@
       },
       getCSV: function () {
         // ajax post columns, maxRows
+        // add user, sfcase, datasource
         var body = {};
+        body.user = this.user;
+        body.tableName = this.tableName;
+        body.dataSource = this.dataSource;
+        body.sfCase = this.sfCase;
         body.columns = this.columns;
         body.maxRows = this.maxRowCount;
+        
         this.$http.post('/quickdata', body).then(
-          () => {
-            window.location = '/quickData.csv';
+          (response) => {
+            var data = response.body;
+            var binaryData = [];
+            binaryData.push(data);
+            var fileName = this.sfCase + '-' + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+            FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
+            // window.location = '/quickData.csv';
           }, () => {
             // error
           }
         );
+        
       }
     }
   }
@@ -116,10 +159,13 @@
   }
   #form {
     margin: 0 auto;
-    width: 50%;
+    width: 60%;
   }
   .form-row{
     margin: 1em 0;
+  }
+  .md-button {
+    height:40px;
   }
   @media screen and (max-width: 1400px) {
     #form {

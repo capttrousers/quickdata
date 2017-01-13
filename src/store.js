@@ -9,7 +9,8 @@ export default new Vuex.Store({
 		maxrows: "50",
     dataSource: "csv",
     user: "somebody@tableau.com",
-    sfCase: "#########",
+    sfCase: "########",
+    tableName: "TableName",
     dataSources: [
       {label: "CSV", value: "csv"},
       {label: "MySQL", value: "mysql"},
@@ -31,13 +32,18 @@ export default new Vuex.Store({
 			"child": {}
 		}
 	},
+  
 	// // getters allow custom computed functions on the state
 	// getters: {
 	// 	maxRows : state => state.maxRows
 	// 	// , other stuff
 	// },
+  
 	mutations: {
-		SET_DATASOURCE(state, payload) {
+		SET_TABLE_NAME(state, payload) {
+			state.tableName = payload.value
+		},
+		SET_DATA_SOURCE(state, payload) {
 			state.dataSource = payload.value;
 		},
 		SET_SFCASE(state, payload) {
@@ -94,9 +100,13 @@ export default new Vuex.Store({
       }
 		}
 	},
+  
 	actions: {
+		setTableName({commit}, payload) {
+			commit('SET_TABLE_NAME', payload);
+		},
 		setDataSource({commit}, payload) {
-			commit('SET_DATASOURCE', payload);
+			commit('SET_DATA_SOURCE', payload);
 		},
 		setUser({commit}, payload) {
 			commit('SET_USER', payload);

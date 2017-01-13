@@ -1,0 +1,36 @@
+/*
+router actions 
+client posts json body with info and column models
+
+POST /quickdata
+  body.user = this.user;
+  body.tableName = this.tableName;
+  body.dataSource = this.dataSource;
+  body.sfCase = this.sfCase;
+  body.columns = this.columns;
+  body.maxRows = this.maxRowCount;
+
+  
+max rows is # of records to make
+
+user, sfcase, tableName  
+
+var name = sfCase+ '-' + tableName;
+
+USE dataSource;
+CREATE TABLE name (attrs = columns)
+INSERT random data INTO name;
+USE dataSource.app (Usage);
+INSERT date, date + 30 days, user, sfCase, name INTO dataSource.app;
+
+
+
+if dataSource = 'csv'
+  create csv file from json, send to client
+else
+  use sequelize db for dataSource
+  create table, insert random data
+  create txt file of connection info, send to client
+
+
+*/

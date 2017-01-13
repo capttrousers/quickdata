@@ -119,6 +119,10 @@ router.post("/quickdata", function(request, response, next) {
   // then process response
   
 	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
+  // created string for csv file. send as response to save on client
+  response.status(200).send(csv);
+  
+  /*
 	// use path.resolve() here?
 	fs.writeFile(__dirname + '/quickData.csv', csv, function(err) {
 		if (err) throw err;
@@ -126,6 +130,7 @@ router.post("/quickdata", function(request, response, next) {
 		// send success code to redirect client to url path of new csv file
 		response.status(200).end();
 	});
+  */
 });
 
 module.exports = router;
