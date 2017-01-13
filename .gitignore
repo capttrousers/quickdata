@@ -6,3 +6,4 @@ dist
 *.db
 config/config.work.json
 data/
+*.png
