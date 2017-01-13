@@ -5,3 +5,4 @@ node_modules
 dist
 *.db
 config/config.work.json
+data/
