@@ -16,15 +16,25 @@
 
     #form
       .form-row
+        md-button.md-raised(@click="addNewColumn") Add Column
+        md-button.md-raised.md-primary(@click="getCSV") Get CSV File
+
+        md-input-container(style="display: inline-block; width: auto;")
+            label(for='data-source')  Data Source
+            md-select(name='data-source', v-model="dataSource")
+              md-option(v-for="dataSourceOption in dataSources", :value="dataSourceOption.value")  {{ dataSourceOption.label }}
+      .form-row
         md-input-container(style="display: inline-block; width: auto;")
           label(for="max-rows")  Rows of random data
           md-input(name='max-rows', v-model="maxRowCount")
-        md-button.md-raised(@click="addNewColumn") Add Column
-        md-button.md-raised.md-primary(@click="getCSV") Get CSV File
         md-input-container(style="display: inline-block; width: auto;")
-          label(for='data-source')  Data Source
-          md-select(name='data-source', v-model="dataSource")
-            md-option(v-for="dataSourceOption in dataSources", :value="dataSourceOption.value")  {{ dataSourceOption.label }}
+          label(for="max-rows")  Sales Force Case
+          md-input(name='max-rows', v-model="maxRowCount")
+        md-input-container(style="display: inline-block; width: auto;")
+          label(for="max-rows")  User email @ tableau.com
+          md-input(name='max-rows', v-model="maxRowCount")
+
+
       myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
 </template>
 
@@ -42,6 +52,22 @@
           },
           set (value) {
             this.$store.dispatch('setMaxRows', {value});
+          }
+        },
+        sfCase: {
+          get () {
+            return this.$store.state.sfCase;
+          },
+          set (value) {
+            this.$store.dispatch('setSFCase', {value});
+          }
+        },
+        user: {
+          get () {
+            return this.$store.state.user;
+          },
+          set (value) {
+            this.$store.dispatch('setUser', {value});
           }
         },
         dataSources: {
