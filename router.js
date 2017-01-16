@@ -12,12 +12,15 @@ router.get('/', function(req, response, next) {
 router.post("/quickdata", function(request, response, next) {
 	var maxRows = request.body.maxRows;
   // goes up to at least 5 million
+  // but for now will limit to 1000 records for in memory bulkInsert db operations
   maxRows = (maxRows <= 10000000 && maxRows > 0 ? maxRows : 50);
 	var bodyColumns = request.body.columns;
 
 	// parse and create json to create / overwrite csv file in public
 	// quick_data will be json parsed to csv: json2csv({ data: quick_data, fields: quick_data_fields })
+  // quick_date is array of objs, each obj is row of key value pairs
 	var quick_data = [];
+  // quick_data_fields is array of column names: column.name
 	var quick_data_fields = [];
 
 	// first loop thru columns, find interval profile for each column
@@ -37,6 +40,7 @@ router.post("/quickdata", function(request, response, next) {
     }
 	});
 
+  // take column, add a few attrs and push column.name to quick_data_fields
   function processColumn(column) {
     column.interval = (1 <= column.interval && column.interval <= maxRows
                                 ? column.interval : 1);
@@ -87,6 +91,7 @@ router.post("/quickdata", function(request, response, next) {
 		quick_data.push(row);
 	}
 
+  // take a column model and generate a random value based on data type, maxValue
 	function getRandomData (column) {
 	   switch(column.dataType) {
 			case 'text' :
@@ -113,15 +118,15 @@ router.post("/quickdata", function(request, response, next) {
 	   }
    }
 
-   
-   
+
+
   // models.AppTable.insert new table name, other table transaction info like user, email, sf case, db type
   // then process response
-  
+
 	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
   // created string for csv file. send as response to save on client
   response.status(200).send(csv);
-  
+
   /*
 	// use path.resolve() here?
 	fs.writeFile(__dirname + '/quickData.csv', csv, function(err) {

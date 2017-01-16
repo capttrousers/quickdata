@@ -1,36 +1,62 @@
 /*
-router actions 
+router actions
 client posts json body with info and column models
 
+RIGHT NOW:
 POST /quickdata
   body.user = this.user;
-  body.tableName = this.tableName;
-  body.dataSource = this.dataSource;
   body.sfCase = this.sfCase;
+  body.tableName = this.tableName;
+
+  body.dataSource = this.dataSource;
+
   body.columns = this.columns;
   body.maxRows = this.maxRowCount;
 
-  
-max rows is # of records to make
 
-user, sfcase, tableName  
+process max rows 50 <= x <= 10,000,000
 
-var name = sfCase+ '-' + tableName;
-
-USE dataSource;
-CREATE TABLE name (attrs = columns)
-INSERT random data INTO name;
-USE dataSource.app (Usage);
-INSERT date, date + 30 days, user, sfCase, name INTO dataSource.app;
+process columns
+ push to data_fields
+ if child process child
 
 
+create rows
+  row = {}
+  data.push(row)
+
+randomDataGenerator(dataType,maxValue)
 
 if dataSource = 'csv'
   create csv file from json, send to client
 else
+  // map quick_data and quick_data_fields to attrs and values to insert
   use sequelize db for dataSource
   create table, insert random data
   create txt file of connection info, send to client
+
+
+
+
+user, sfcase, tableName
+
+var name = sfCase+ '-' + tableName;
+
+USE dataSource;
+seq = dbs[dataSource] // gets sequelize instance of config[dataSource]
+seq.getQueryInterface.createTable(attrs).then()
+CREATE TABLE name (attrs = columns)
+
+// use columns and max rows to generate random data
+INSERT random data INTO name;
+// seq.getQueryInterface.bulkInsert(name, values)
+// values are an array of objects, each object is row with key value pairs
+
+USE dataSource.app (Usage table);
+INSERT date, date + 30 days, user, sfCase, name INTO dataSource.app;
+// seq.AppModel.create(tableInstance)
+
+
 
 
 */
