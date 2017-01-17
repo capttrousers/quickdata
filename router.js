@@ -166,20 +166,43 @@ router.post("/quickdata", function(request, response, next) {
           }
           attrs[column.name] = dataType;
         });
+        
+        // get proper connection instance of sequelize
+        var seq = models.mssqlConnection;
+        
+        seq.getQueryInterface().createTable(
+          name,
+          attrs
+        ).then( function () {
+            // values are an array of objects, each object is row with key value pairs
+            seq.getQueryInterface().bulkInsert(name, quick_data);          
+        });
+        
+        /*
         models.mysqlConnection.getQueryInterface().createTable(
           name,
           attrs
         );
+        */
         var connectionText = "";
         connectionText += "This is the connection info for the random data generated\n";
         connectionText += "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
         connectionText += "|  For Salesforce case # " + sfCase + "  \n|\n";
         connectionText += "|     data source connection       :   " + dataSource.toUpperCase() + "  \n";
-        connectionText += "|     database name                :   " + models.mysqlConnection.config.database + " \n";
-        connectionText += "|     host                         :   " + models.mysqlConnection.config.host + " \n";
-        connectionText += "|     port                         :   " + models.mysqlConnection.config.port + " \n|\n";
-        connectionText += "|     username of test db          :   " + models.mysqlConnection.config.username + " \n";
-        connectionText += "|     password of test db          :   " + models.mysqlConnection.config.password + " \n|\n";
+        /*
+        connectionText += "|     database name                :   databaseName \n";
+        connectionText += "|     host                         :   hostName \n";
+        connectionText += "|     port                         :   port \n|\n";
+        connectionText += "|     username of test db          :   username \n";
+        connectionText += "|     password of test db          :   password \n|\n";
+        */
+        connectionText += "|     database name                :   " + seq.config.database + " \n";
+        connectionText += "|     host                         :   " + seq.config.host + " \n";
+        connectionText += "|     port                         :   " + seq.config.port + " \n|\n";
+        connectionText += "|     username of test db          :   " + seq.config.username + " \n";
+        connectionText += "|     password of test db          :   " + seq.config.password + " \n|\n";
+        
+        
         connectionText += "|     user requesting random data  :   " + user + " \n";
         connectionText += "|     random data created on       :   " + createdAt.toString() + " \n";
         response.status(200).send(connectionText);
