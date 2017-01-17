@@ -26,13 +26,14 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
- 
+
 // sync() will create all tables if they doesn't exist in database
-models.sequelize.sync().then(function(){
-  server.listen(port);
-  server.on('error', onError);
-  server.on('listening', onListening);
-});
+models.sequelize.sync().then( function() {
+  models.mysqlConnection.sync().then( function() {
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+})});
 
 /**
  * Normalize a port into a number, string, or false.

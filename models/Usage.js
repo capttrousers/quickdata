@@ -9,10 +9,10 @@ app usage table to log all created tables:
  - table name  // custom name provided by user
  - create date // TODAY()
  - delete data  // should be a date calculated in the future, maybe default to 1 month in the future
- 
- 
- 
- 
+
+
+
+
 */
 
 module.exports = function(sequelize, DataTypes) {
@@ -23,13 +23,14 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     User: DataTypes.STRING,
-    TableName: DataTypes.STRING,    
+    TableName: DataTypes.STRING,
     SFCase: DataTypes.STRING,
     Created: DataTypes.DATE,
-    Delete: DataTypes.DATE  
+    DataSource: DataTypes.STRING,
+    Delete: DataTypes.DATE
   }, {
     freezeTableName: true,
-    timestamps: false    
+    timestamps: false
   });
   return Usage;
 };

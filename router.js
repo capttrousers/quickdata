@@ -4,6 +4,8 @@ var path = require('path');
 var express = require('express');
 var router = express.Router();
 
+var models = require('./models');
+
 /* GET home page. */
 router.get('/', function(req, response, next) {
   response.redirect("/index.html")
@@ -118,14 +120,71 @@ router.post("/quickdata", function(request, response, next) {
 	   }
    }
 
+  var user = request.body.user;
+  var tableName = request.body.tableName;
+  var sfCase =  request.body.sfCase;
+  var name = sfCase+ '-' + tableName;
+  var dataSource = request.body.dataSource;
 
+  var createdAt = new Date();
 
-  // models.AppTable.insert new table name, other table transaction info like user, email, sf case, db type
-  // then process response
+  var deleteOn = new Date(createdAt).setMonth(createdAt.getMonth() + 1);
+  models.Usage.create({
+    User: user,
+    TableName: name,
+    SFCase: sfCase,
+    DataSource: dataSource,
+    Created: createdAt,
+    Delete: deleteOn
+  }).then( function() {
 
-	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
-  // created string for csv file. send as response to save on client
-  response.status(200).send(csv);
+      // models.AppTable.insert new table name, other table transaction info like user, email, sf case, db type
+      // then process response, either make and send csv, or create table on db and insert data
+
+      if(dataSource == 'csv') {
+      	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
+        // created string for csv file. send as response to save on client
+        response.status(200).send(csv);
+      } else {
+        var attrs = {};
+        columns.forEach(function(column) {
+          var dataType = null;
+          var columnName = column.name.replace(' ', '_')
+          switch (column.dataType) {
+            case 'text' :
+              dataType = models.Sequelize.STRING;
+              break;
+            case 'date' :
+              dataType = models.Sequelize.DATE;
+              break;
+            case 'integer' :
+              dataType = models.Sequelize.INTEGER;
+              break;
+            case 'decimal' :
+              dataType = models.Sequelize.DOUBLE;
+              break;
+          }
+          attrs[column.name] = dataType;
+        });
+        models.mysqlConnection.getQueryInterface().createTable(
+          name,
+          attrs
+        );
+        var connectionText = "";
+        connectionText += "This is the connection info for the random data generated\n";
+        connectionText += "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        connectionText += "|  For Salesforce case # " + sfCase + "  \n|\n";
+        connectionText += "|     data source connection       :   " + dataSource.toUpperCase() + "  \n";
+        connectionText += "|     database name                :   " + models.mysqlConnection.config.database + " \n";
+        connectionText += "|     host                         :   " + models.mysqlConnection.config.host + " \n";
+        connectionText += "|     port                         :   " + models.mysqlConnection.config.port + " \n|\n";
+        connectionText += "|     username of test db          :   " + models.mysqlConnection.config.username + " \n";
+        connectionText += "|     password of test db          :   " + models.mysqlConnection.config.password + " \n|\n";
+        connectionText += "|     user requesting random data  :   " + user + " \n";
+        connectionText += "|     random data created on       :   " + createdAt.toString() + " \n";
+        response.status(200).send(connectionText);
+      }
+    });
 
   /*
 	// use path.resolve() here?

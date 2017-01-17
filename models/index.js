@@ -5,13 +5,16 @@ var path      = require('path');
 var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || 'development';
-var config    = require(__dirname + '/../config/config.json')[env];
+var configFile    = require(__dirname + '/../config/config.json');
 var db        = {};
 
+var config = configFile[env];
 if (config.use_env_variable) {
   var sequelize = new Sequelize(process.env[config.use_env_variable]);
 } else {
+  var mysqlConfig = configFile['mysqlTestDB'];
   var sequelize = new Sequelize(config.database, config.username, config.password, config);
+  var mysqlConnection = new Sequelize(mysqlConfig.database, mysqlConfig.username, mysqlConfig.password, mysqlConfig);
 }
 
 fs
@@ -30,6 +33,7 @@ Object.keys(db).forEach(function(modelName) {
   }
 });
 
+db.mysqlConnection = mysqlConnection;
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

@@ -3,11 +3,11 @@
     "dialect": "sqlite",
     "storage": "./sqlite.test.db"
   },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
+  "mysqlTestDB": {
+    "username": "quickdata",
+    "password": "password",
+    "database": "quickdata",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
