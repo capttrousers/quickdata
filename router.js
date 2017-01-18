@@ -168,7 +168,8 @@ router.post("/quickdata", function(request, response, next) {
         });
         
         // get proper connection instance of sequelize
-        var seq = models.mssqlConnection;
+        // var seq = models.mssqlConnection;
+        var seq = models.postgresConnection;
         
         seq.getQueryInterface().createTable(
           name,
@@ -187,24 +188,16 @@ router.post("/quickdata", function(request, response, next) {
         var connectionText = "";
         connectionText += "This is the connection info for the random data generated\n";
         connectionText += "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-        connectionText += "|  For Salesforce case # " + sfCase + "  \n|\n";
-        connectionText += "|     data source connection       :   " + dataSource.toUpperCase() + "  \n";
-        /*
-        connectionText += "|     database name                :   databaseName \n";
-        connectionText += "|     host                         :   hostName \n";
-        connectionText += "|     port                         :   port \n|\n";
-        connectionText += "|     username of test db          :   username \n";
-        connectionText += "|     password of test db          :   password \n|\n";
-        */
-        connectionText += "|     database name                :   " + seq.config.database + " \n";
+        connectionText += "    For Salesforce case # " + sfCase + "  \n\n";
+        connectionText += "|     data source type             :   " + dataSource.toUpperCase() + "  \n|\n";
         connectionText += "|     host                         :   " + seq.config.host + " \n";
         connectionText += "|     port                         :   " + seq.config.port + " \n|\n";
+        connectionText += "|     database name                :   " + seq.config.database + " \n";
+        connectionText += "|     table name                   :   " + name + " \n|\n";
         connectionText += "|     username of test db          :   " + seq.config.username + " \n";
         connectionText += "|     password of test db          :   " + seq.config.password + " \n|\n";
-        
-        
         connectionText += "|     user requesting random data  :   " + user + " \n";
-        connectionText += "|     random data created on       :   " + createdAt.toString() + " \n";
+        connectionText += "|     random data created on       :   " + createdAt.toString();
         response.status(200).send(connectionText);
       }
     });
