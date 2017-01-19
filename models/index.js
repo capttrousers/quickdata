@@ -5,12 +5,12 @@ var path      = require('path');
 var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || 'development';
-var configHome    = require(__dirname + '/../config/config.json');
-// var configWork    = require(__dirname + '/../config/config.work.json');
+// var configHome    = require(__dirname + '/../config/config.json');
+var configWork    = require(__dirname + '/../config/config.work.json');
 var db        = {};
 
 // to modify when at home or work while in dev
-var configFile = configHome;
+var configFile = configWork;
 
 var config = configFile[env];
 
