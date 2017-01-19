@@ -29,14 +29,14 @@ var server = http.createServer(app);
 
 // sync() will create all tables if they doesn't exist in database
 models.sequelize.sync().then( function() {
-  models.postgresConnection.sync().then( function() {
-  models.mssqlConnection.sync().then( function() {
-//  models.mysqlConnection.sync().then( function() {
+  // models.postgresConnection.sync().then( function() {
+  // models.mssqlConnection.sync().then( function() {
+  models.mysqlConnection.sync().then( function() {
     server.listen(port);
     server.on('error', onError);
     server.on('listening', onListening);
 // })
-})
+// })
 })
 });
 

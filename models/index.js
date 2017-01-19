@@ -5,19 +5,24 @@ var path      = require('path');
 var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || 'development';
-var configFile    = require(__dirname + '/../config/config.work.json');
+var configHome    = require(__dirname + '/../config/config.json');
+// var configWork    = require(__dirname + '/../config/config.work.json');
 var db        = {};
 
+// to modify when at home or work while in dev
+var configFile = configHome;
+
 var config = configFile[env];
+
 if (config.use_env_variable) {
   var sequelize = new Sequelize(process.env[config.use_env_variable]);
 } else {
   var mysqlConfig = configFile['mysqlTestDB'];
   var postgresConfig = configFile['postgresTestDB'];
   var mssqlConfig = configFile['mssqlTestDB'];
-  
+
   var sequelize = new Sequelize(config.database, config.username, config.password, config);
-  // var mysqlConnection = new Sequelize(mysqlConfig.database, mysqlConfig.username, mysqlConfig.password, mysqlConfig);
+  var mysqlConnection = new Sequelize(mysqlConfig.database, mysqlConfig.username, mysqlConfig.password, mysqlConfig);
   var postgresConnection = new Sequelize(postgresConfig.database, postgresConfig.username, postgresConfig.password, postgresConfig);
   var mssqlConnection = new Sequelize(mssqlConfig.database, mssqlConfig.username, mssqlConfig.password, mssqlConfig);
 }
@@ -38,7 +43,7 @@ Object.keys(db).forEach(function(modelName) {
   }
 });
 
-// db.mysqlConnection = mysqlConnection;
+db.mysqlConnection = mysqlConnection;
 db.mssqlConnection = mssqlConnection;
 db.postgresConnection = postgresConnection;
 db.sequelize = sequelize;

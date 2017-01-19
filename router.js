@@ -33,12 +33,16 @@ router.post("/quickdata", function(request, response, next) {
 	var columns = [];
 
 	bodyColumns.forEach(function(bodyColumn) {
-		processColumn(bodyColumn);
+		var column = processColumn(bodyColumn);
+		columns.push(column);
+		quick_data_fields.push(column.name);
     // handle child column
     if(bodyColumn.hierarchy == 'parent') {
       var child = bodyColumn.child;
       child.parentIndex = columns.indexOf(bodyColumn);
-      processColumn(child);
+  		child = processColumn(child);
+  		columns.push(child);
+  		quick_data_fields.push(child.name);
     }
 	});
 
@@ -74,8 +78,7 @@ router.post("/quickdata", function(request, response, next) {
 				break;
 		}
 		column.nextRandomData = getRandomData(column);
-		columns.push(column);
-		quick_data_fields.push(column.name);
+    return column;
   }
 
 	// then loop from 0 -> maxRows and create new row following column models
@@ -84,8 +87,8 @@ router.post("/quickdata", function(request, response, next) {
 		columns.forEach(function(column) {
 			row[column.name] = column.nextRandomData;
 			column.intervalCounter--;
-			if(column.intervalCounter < 1 ||
-        (column.hierarchy == 'child' && columns[column.parentIndex].intervalCounter == columns[column.parentIndex].interval)) {
+			if( column.intervalCounter < 1 ||
+         (column.hierarchy == 'child' && columns[column.parentIndex].intervalCounter == columns[column.parentIndex].interval)) {
   				column.intervalCounter = column.interval;
   				column.nextRandomData = getRandomData(column);
 			}
@@ -127,8 +130,10 @@ router.post("/quickdata", function(request, response, next) {
   var dataSource = request.body.dataSource;
 
   var createdAt = new Date();
-
   var deleteOn = new Date(createdAt).setMonth(createdAt.getMonth() + 1);
+
+  // models.AppTable.insert new table name, other table transaction info like user, email, sf case, db type
+  // then process response, either make and send csv, or create table on db and insert data
   models.Usage.create({
     User: user,
     TableName: name,
@@ -137,10 +142,6 @@ router.post("/quickdata", function(request, response, next) {
     Created: createdAt,
     Delete: deleteOn
   }).then( function() {
-
-      // models.AppTable.insert new table name, other table transaction info like user, email, sf case, db type
-      // then process response, either make and send csv, or create table on db and insert data
-
       if(dataSource == 'csv') {
       	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
         // created string for csv file. send as response to save on client
@@ -166,51 +167,46 @@ router.post("/quickdata", function(request, response, next) {
           }
           attrs[column.name] = dataType;
         });
-        
+
         // get proper connection instance of sequelize
-        // var seq = models.mssqlConnection;
-        var seq = models.postgresConnection;
-        
+        var seq = null;
+        switch(dataSource) {
+          case 'mssql':
+            // seq = models.mssqlConnection;
+            // break;
+          case 'postgresql':
+            // comment this out when at home
+            // seq = models.postgresConnection;
+            // break;
+          case 'mysql':
+            seq = models.mysqlConnection;
+            break;
+        }
+
         seq.getQueryInterface().createTable(
           name,
           attrs
         ).then( function () {
             // values are an array of objects, each object is row with key value pairs
-            seq.getQueryInterface().bulkInsert(name, quick_data);          
+            seq.getQueryInterface().bulkInsert(name, quick_data);
         });
-        
-        /*
-        models.mysqlConnection.getQueryInterface().createTable(
-          name,
-          attrs
-        );
-        */
+
         var connectionText = "";
         connectionText += "This is the connection info for the random data generated\n";
         connectionText += "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
         connectionText += "    For Salesforce case # " + sfCase + "  \n\n";
-        connectionText += "|     data source type             :   " + dataSource.toUpperCase() + "  \n|\n";
-        connectionText += "|     host                         :   " + seq.config.host + " \n";
-        connectionText += "|     port                         :   " + seq.config.port + " \n|\n";
-        connectionText += "|     database name                :   " + seq.config.database + " \n";
-        connectionText += "|     table name                   :   " + name + " \n|\n";
-        connectionText += "|     username of test db          :   " + seq.config.username + " \n";
-        connectionText += "|     password of test db          :   " + seq.config.password + " \n|\n";
-        connectionText += "|     user requesting random data  :   " + user + " \n";
-        connectionText += "|     random data created on       :   " + createdAt.toString();
+        connectionText += "|     data source type               :       " + dataSource.toUpperCase() + "  \n|\n";
+        connectionText += "|     host                           :       " + seq.config.host + " \n";
+        connectionText += "|     port                           :       " + seq.config.port + " \n|\n";
+        connectionText += "|     database name                  :       " + seq.config.database + " \n";
+        connectionText += "|     table name                     :       " + name + " \n|\n";
+        connectionText += "|     username of test db            :       " + seq.config.username + " \n";
+        connectionText += "|     password of test db            :       " + seq.config.password + " \n|\n";
+        connectionText += "|     user requesting random data    :       " + user + " \n";
+        connectionText += "|     random data created on         :       " + createdAt.toString();
         response.status(200).send(connectionText);
       }
     });
-
-  /*
-	// use path.resolve() here?
-	fs.writeFile(__dirname + '/quickData.csv', csv, function(err) {
-		if (err) throw err;
-		console.log('file saved');
-		// send success code to redirect client to url path of new csv file
-		response.status(200).end();
-	});
-  */
 });
 
 module.exports = router;
