@@ -1,6 +1,6 @@
 <template lang="pug">
   .row(:class="{child: hierarchy == 'child'}")
-    span.parentLabel(v-if="hierarchy != 'child'")  Column {{ columnIndex + 1 }}
+    span.parentLabel(v-if="hierarchy != 'child'")  {{ "Column " + (columnIndex + 1) }}
       md-button.md-icon-button.md-warn.md-dense(@click="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
           md-icon clear
     span.childLabel(v-else) Child column of Column {{ columnIndex + 1 }}

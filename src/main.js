@@ -8,8 +8,11 @@ Vue.use(VueMaterial);
 
 Vue.material.registerTheme({
   default : {
-    primary: 'cyan',
-    accent: 'pink',
+    primary: {
+      color: 'green',
+      hue: '600'
+    },
+    accent: 'cyan',
     warn: 'red'
   },
   row : {

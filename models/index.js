@@ -5,15 +5,16 @@ var path      = require('path');
 var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || 'development';
-// var configHome    = require(__dirname + '/../config/config.json');
-var configWork    = require(__dirname + '/../config/config.work.json');
-var db        = {};
+
 
 // to modify when at home or work while in dev
-var configFile = configWork;
+
+var configHome    = require(__dirname + '/../config/config.json');
+// var configWork    = require(__dirname + '/../config/config.work.json');
+
+var configFile = configHome;
 
 var config = configFile[env];
-
 if (config.use_env_variable) {
   var sequelize = new Sequelize(process.env[config.use_env_variable]);
 } else {
@@ -26,6 +27,8 @@ if (config.use_env_variable) {
   var postgresConnection = new Sequelize(postgresConfig.database, postgresConfig.username, postgresConfig.password, postgresConfig);
   var mssqlConnection = new Sequelize(mssqlConfig.database, mssqlConfig.username, mssqlConfig.password, mssqlConfig);
 }
+
+var db        = {};
 
 fs
   .readdirSync(__dirname)

@@ -14,19 +14,24 @@
       p.
         Dates allow a minimum date property, to create a range of possible dates between the min date and today.
 
+    md-dialog(md-open-from="#getDataButton", md-close-to="#getDataButton", ref="alert")
+      md-dialog-title Invalid form
+      md-dialog-content {{ alertMessage }}
+      md-dialog-actions
+        md-button(@click="closeDialog('alert')") OK
     #form
       .form-row
         md-layout(md-gutter="40")
           md-layout
             md-button.md-raised(@click="addNewColumn") Add Column
           md-layout
-            md-button.md-raised.md-primary(@click="getCSV") {{ fileButtonLabel }}
+            md-button.md-raised.md-primary(@click="getData") {{ fileButtonLabel }}
           md-layout
             md-input-container(style="display: inline-block; width: auto;")
                 label(for='data-source')  Data Source
                 md-select(name='data-source', v-model="dataSource")
                   md-option(v-for="dataSourceOption in dataSources", :value="dataSourceOption.value")  {{ dataSourceOption.label }}
-          md-layout          
+          md-layout
             md-input-container(style="display: inline-block; width: auto;")
                 label(for="max-rows")  Rows of random data
                 md-input(name='max-rows', v-model="maxRowCount")
@@ -34,12 +39,12 @@
         md-layout(md-gutter="40")
           md-layout(md-flex="33")
             md-input-container
-              label(for="table-name")  {{ tableNameLabel }}
-              md-input(name='table-name', v-model="tableName")
-          md-layout(md-flex="33")
-            md-input-container
               label(for="case")  Sales Force Case
               md-input(name='case', v-model="sfCase")
+          md-layout(md-flex="33")
+            md-input-container
+              label(for="table-name")  {{ tableNameLabel }}
+              md-input(name='table-name', v-model="tableName")
           md-layout(md-flex="33")
             md-input-container
                 label(for="user")  User email @ tableau.com
@@ -58,6 +63,16 @@
       'myRow': row
     },
     computed: {
+        isValid: {
+          get() {
+            return false;
+          }
+        },
+        alertMessage: {
+          get() {
+            return "alert message that explains whats invalid"
+          }
+        },
         fileButtonLabel: {
           get() {
             return this.dataSource == 'csv' ? 'GET CSV FILE' : 'GET TXT FILE';
@@ -121,33 +136,44 @@
         }
     },
     methods: {
+      openDialog(ref) {
+        this.$refs[ref].open();
+      },
+      closeDialog(ref) {
+        this.$refs[ref].close();
+      },
       addNewColumn: function () {
         this.$store.commit('ADD_NEW_COLUMN')
       },
-      getCSV: function () {
-        // ajax post columns, maxRows
-        // add user, sfcase, datasource
-        var body = {};
-        body.user = this.user;
-        body.tableName = this.tableName;
-        body.dataSource = this.dataSource;
-        body.sfCase = this.sfCase;
-        body.columns = this.columns;
-        body.maxRows = this.maxRowCount;
-        
-        this.$http.post('/quickdata', body).then(
-          (response) => {
-            var data = response.body;
-            var binaryData = [];
-            binaryData.push(data);
-            var fileName = this.sfCase + '-' + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
-            FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
-            // window.location = '/quickData.csv';
-          }, () => {
-            // error
-          }
-        );
-        
+      getData: function () {
+        if(this.isValid) {  // ajax post columns, maxRows
+          // add user, sfcase, datasource
+          var body = {};
+          body.user = this.user;
+          body.tableName = this.tableName;
+          body.dataSource = this.dataSource;
+          body.sfCase = this.sfCase;
+          body.columns = this.columns;
+          body.maxRows = this.maxRowCount;
+
+          this.$http.post('/quickdata', body).then(
+            (response) => {
+              var data = response.body;
+              var binaryData = [];
+              binaryData.push(data);
+              var fileName = this.sfCase + '-' + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+              FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
+              // window.location = '/quickData.csv';
+            }, () => {
+              // error
+            }
+          );
+        } else {
+          // open alert and say why not valid
+          // alert message
+          this.openDialog('alert');
+        }
+
       }
     }
   }

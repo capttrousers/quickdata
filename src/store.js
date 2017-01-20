@@ -32,13 +32,13 @@ export default new Vuex.Store({
 			"child": {}
 		}
 	},
-  
+
 	// // getters allow custom computed functions on the state
 	// getters: {
 	// 	maxRows : state => state.maxRows
 	// 	// , other stuff
 	// },
-  
+
 	mutations: {
 		SET_TABLE_NAME(state, payload) {
 			state.tableName = payload.value
@@ -100,7 +100,7 @@ export default new Vuex.Store({
       }
 		}
 	},
-  
+
 	actions: {
 		setTableName({commit}, payload) {
 			commit('SET_TABLE_NAME', payload);
