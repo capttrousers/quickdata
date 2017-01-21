@@ -6,9 +6,9 @@ var router = express.Router();
 
 var models = require('./models');
 var processColumns = require('./utils/processColumns');
-var getRandomData = require('./utils/getRandomData');
+var generateData = require('./utils/generateData');
 
-/* GET home page. */
+/* GET home page. test */
 router.get('/', function(req, response, next) {
   response.redirect("/index.html")
 });
@@ -24,29 +24,13 @@ router.post("/quickdata", function(request, response, next) {
 	// parse and create json to create / overwrite csv file in public
 	// quick_data will be json parsed to csv: json2csv({ data: quick_data, fields: quick_data_fields })
   // quick_date is array of objs, each obj is row of key value pairs
-	var quick_data = [];
+	var quick_data = generateData(columns, maxRows);
   // quick_data_fields is array of column names: column.name
 	var quick_data_fields = [];
 
   columns.forEach((column) => {
       quick_data_fields.push(column.name);
-  });  
-
-	// then loop from 0 -> maxRows and create new row following column models
-	for(var i = 0; i < maxRows; i++) {
-		var row = {};
-		columns.forEach(function(column) {
-			row[column.name] = column.nextRandomData;
-			column.intervalCounter--;
-			if( column.intervalCounter < 1 ||
-         (column.hierarchy == 'child' && columns[column.parentIndex].intervalCounter == columns[column.parentIndex].interval)) {
-  				column.intervalCounter = column.interval;
-  				column.nextRandomData = getRandomData(column);
-			}
-		});
-		quick_data.push(row);
-	}
-
+  });
 
 
   var user = request.body.user;

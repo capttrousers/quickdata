@@ -2,12 +2,9 @@
 // takes the columns got from the json obj in the http request body
 // processes each to add a few attrs, returns new columns array
 
-var getRandomData = require('./getRandomData');
+var getRandomDataValue = require('./getRandomDataValue');
 
-
-
-
-var processColumns = (bodyColumns, maxRows) => {
+module.exports = (bodyColumns, maxRows) => {
   var fields = bodyColumns;
   // # of columns for each datatype for column names:
   var textColumnCount = decColumnCount = intColumnCount = dateColumnCount = 1;
@@ -58,9 +55,7 @@ var processColumns = (bodyColumns, maxRows) => {
         decColumnCount++;
         break;
     }
-    column.nextRandomData = getRandomData(column);
+    column.nextRandomData = getRandomDataValue(column);
     return column;
   }
 }
-
-module.exports = processColumns;

@@ -6,13 +6,13 @@ var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || 'development';
 
-
+var configFile;
 // to modify when at home or work while in dev
-
-var configHome    = require(__dirname + '/../config/config.json');
-// var configWork    = require(__dirname + '/../config/config.work.json');
-
-var configFile = configHome;
+if(env == "work") {
+  var configFile    = require(__dirname + '/../config/config.work.json');
+}else {
+var configFile    = require(__dirname + '/../config/config.json');
+}
 
 var config = configFile[env];
 if (config.use_env_variable) {
