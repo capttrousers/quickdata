@@ -9,24 +9,21 @@ var env       = process.env.NODE_ENV || 'development';
 var configFile;
 // to modify when at home or work while in dev
 if(env == "work") {
-  var configFile    = require(__dirname + '/../config/config.work.json');
-}else {
-var configFile    = require(__dirname + '/../config/config.json');
+  configFile    = require(__dirname + '/../config/config.work.json');
+} else {
+  configFile    = require(__dirname + '/../config/config.json');
 }
 
 var config = configFile[env];
-if (config.use_env_variable) {
-  var sequelize = new Sequelize(process.env[config.use_env_variable]);
-} else {
-  var mysqlConfig = configFile['mysqlTestDB'];
-  var postgresConfig = configFile['postgresTestDB'];
-  var mssqlConfig = configFile['mssqlTestDB'];
+var mysqlConfig = configFile['mysqlTestDB'];
+var postgresConfig = configFile['postgresTestDB'];
+var mssqlConfig = configFile['mssqlTestDB'];
 
-  var sequelize = new Sequelize(config.database, config.username, config.password, config);
-  var mysqlConnection = new Sequelize(mysqlConfig.database, mysqlConfig.username, mysqlConfig.password, mysqlConfig);
-  var postgresConnection = new Sequelize(postgresConfig.database, postgresConfig.username, postgresConfig.password, postgresConfig);
-  var mssqlConnection = new Sequelize(mssqlConfig.database, mssqlConfig.username, mssqlConfig.password, mssqlConfig);
-}
+var sequelize = new Sequelize(config.database, config.username, config.password, config);
+var mysqlConnection = new Sequelize(mysqlConfig.database, mysqlConfig.username, mysqlConfig.password, mysqlConfig);
+var postgresConnection = new Sequelize(postgresConfig.database, postgresConfig.username, postgresConfig.password, postgresConfig);
+var mssqlConnection = new Sequelize(mssqlConfig.database, mssqlConfig.username, mssqlConfig.password, mssqlConfig);
+
 
 var db        = {};
 
