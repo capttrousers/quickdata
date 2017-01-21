@@ -1,5 +1,7 @@
 console.log('Dont forget to run the command `npm run build` before starting the server');
 console.log("NODE_ENV: " + process.env.NODE_ENV);
+console.log("Server started @ " + new Date().toString());
+
 /**
  * Module dependencies.
  */
