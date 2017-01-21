@@ -8,3 +8,4 @@ config/config.work.json
 config/config.prod.json
 data/
 *.png
+view-logs.sh
