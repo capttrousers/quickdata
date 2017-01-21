@@ -65,7 +65,7 @@
     computed: {
         isValid: {
           get() {
-            return false;
+            return true;
           }
         },
         alertMessage: {
