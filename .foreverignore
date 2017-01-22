@@ -1,7 +1,13 @@
 *.logs
 *.logs.bk
 dist
+*.txt
 *.csv
 *.db
+
+.git/
 node_modules
+
 src
+*.sh
+
