@@ -7,7 +7,7 @@ import VueMaterial from 'vue-material';
 Vue.use(VueMaterial);
 
 Vue.material.registerTheme({
-  default : {
+  "default" : {
     primary: {
       color: 'green',
       hue: '600'
