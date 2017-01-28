@@ -13,6 +13,8 @@
         will be a new random value every record, whereas an interval of 5 means there will be a new random value every 5 records.
       p.
         Dates allow a minimum date property, to create a range of possible dates between the min date and today.
+      p.
+        Note, there's a bug with the text inputs where you edit the text in the middle and the cursor jumps to the end. This is an issue with the upstream UI library and is due to be fixed soon.
 
     md-dialog(md-open-from="#getDataButton", md-close-to="#getDataButton", ref="alert")
       md-dialog-title Invalid form
