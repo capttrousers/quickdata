@@ -27,7 +27,11 @@ module.exports = function(sequelize, DataTypes) {
     SFCase: DataTypes.STRING,
     Created: DataTypes.DATE,
     DataSource: DataTypes.STRING,
-    Delete: DataTypes.DATE
+    DeleteOn: DataTypes.DATE,
+    Deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   }, {
     freezeTableName: true,
     timestamps: false

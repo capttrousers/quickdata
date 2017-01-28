@@ -8,9 +8,7 @@ var env       = process.env.NODE_ENV || 'development';
 
 var configFile;
 // to modify when at home or work while in dev
-if(env == "work") {
-  configFile    = require(__dirname + '/../config/config.work.json');
-} else if(env == "production") {
+if(env == "work" || env == "production") {
   configFile    = require(__dirname + '/../config/config.prod.json');
 } else {
   configFile    = require(__dirname + '/../config/config.json');
