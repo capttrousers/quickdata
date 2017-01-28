@@ -9,7 +9,7 @@ export default new Vuex.Store({
 		maxrows: "50",
     dataSource: "csv",
     user: "somebody@tableau.com",
-    sfCase: "########",
+    sfCase: "01234",
     tableName: "TableName",
     dataSources: [
       {label: "CSV", value: "csv"},
