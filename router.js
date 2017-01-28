@@ -50,7 +50,7 @@ router.post("/quickdata", function(request, response, next) {
     SFCase: sfCase,
     DataSource: dataSource,
     Created: createdAt,
-    Delete: deleteOn
+    DeleteOn: deleteOn
   }).then( function() {
       if(dataSource == 'csv') {
       	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
