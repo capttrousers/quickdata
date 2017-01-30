@@ -1,10 +1,9 @@
-
-var models = require('./models');
+// models and utils are in same dir
+// utils/cleaner/script.js
+var models = require('../../models');
 
 var today = new Date();
 
-var dbs = {};
-models.sequelize.sync().then(() => {
   models.Usage.findAll({
     attributes: ['id', 'TableName', 'DataSource', 'DeleteOn', 'Deleted'],
     // potentially remove this and do the processing of the entire results
@@ -37,4 +36,3 @@ models.sequelize.sync().then(() => {
       console.log("No tables to delete on " + today);
     }
   });
-});

@@ -66,24 +66,28 @@
     components: {
       'myRow': row
     },
-    data: {
-      alerts: []
-    },
     computed: {
         isValid: {
           get() {
             // check that columns are valid
             // check max rows, email, sfcase, table name
-            if( this.maxRows < 1
+            /* 
+	    if( this.maxRows < 1
               || this.maxRows > 1000
               || this.columns.length < 1
               || this.user.indexOf('@tableau.com') < 1 // not zero so user@tableau, charset
               || this.tableName.length > 0
               || parseInt(this.sfCase, 10) != NaN
             ) return false;
-            return true;
+            */
+	    return true;
           }
         },
+	alerts : {
+	  get() {
+		return [];
+	  }
+	},
         fileButtonLabel: {
           get() {
             return this.dataSource == 'csv' ? 'GET CSV FILE' : 'GET TXT FILE';
@@ -182,7 +186,7 @@
         } else {
           // open alert and say why not valid
           // alert message
-
+          /*
           var temp = [];
           console.log("len after clearing " + this.alerts.length);
           if( this.maxRows < 1) { this.alerts.push("Max Rows must be greater than 0"); }
@@ -194,6 +198,7 @@
           if(parseInt(this.sfCase, 10) != NaN) { this.alerts.push("Salesforce case must be a number"); }
           console.log("len after pushing this.alerts " + this.alerts.length);
           this.alerts = temp;
+	  */
           this.openDialog('alert');
         }
 
