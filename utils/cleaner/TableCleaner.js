@@ -3,6 +3,10 @@ var models = require('../../models');
 
 var today = new Date();
 
+// when running Table Cleaner, with cron script, models/config will be read from this dir
+// need to update options storage for relative file path to sqlite db
+models.sequelize.options.storage = '../.' + models.sequelize.options.storage;
+console.log(models.sequelize.options.storage);
 models.sequelize.sync().then(() => {
   models.Usage.findAll({
     attributes: ['id', 'TableName', 'DataSource', 'DeleteOn', 'Deleted'],
@@ -36,6 +40,8 @@ models.sequelize.sync().then(() => {
       console.log("No tables to delete on " + today);
     }
   }).catch((err) => {
-    console.log('error when syncing table cleaner with sqlite usage db');
+    console.log('error finding all records from usage table');
   });
+}).catch((err) => {
+  console.log("error while syncing db for table cleaner: " + err);
 });

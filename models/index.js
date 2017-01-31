@@ -5,7 +5,7 @@ var path      = require('path');
 var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || 'development';
-
+var debug     = require('debug');
 var configFile;
 // to modify when at home or work while in dev
 if(env == "work" || env == "production") {
@@ -13,6 +13,9 @@ if(env == "work" || env == "production") {
 } else {
   configFile    = require(__dirname + '/../config/config.json');
 }
+
+debug('dirname of models.index at runtime:')
+debug(__dirname);
 
 var mysqlConfig = configFile['mysqlTestDB'];
 var postgresConfig = configFile['postgresTestDB'];

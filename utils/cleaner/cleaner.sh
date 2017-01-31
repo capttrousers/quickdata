@@ -1,4 +1,3 @@
 #!/bin/bash
 pwd=$(dirname $(readlink -f $0));
-printf "$pwd\n";
-node $pwd/TableCleaner.js >> $pwd/dailyCleaner.logs;
+/home/sam/.nvm/versions/node/v7.4.0/bin/node $pwd/TableCleaner.js >> $pwd/dailyCleaner.logs;
