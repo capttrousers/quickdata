@@ -14,10 +14,19 @@ if(env == "work" || env == "production") {
   configFile    = require(__dirname + '/../config/config.json');
 }
 
-var config = configFile[env];
 var mysqlConfig = configFile['mysqlTestDB'];
 var postgresConfig = configFile['postgresTestDB'];
 var mssqlConfig = configFile['mssqlTestDB'];
+
+if(env == 'test') {
+  var config = configFile['test'];
+  config.logging = false;
+  mysqlConfig.logging = false;
+  mssqlConfig.logging = false;
+  postgresConfig.logging = false;
+} else {
+  var config = configFile['usage'];
+}
 
 var sequelize = new Sequelize(config.database, config.username, config.password, config);
 var mysqlConnection = new Sequelize(mysqlConfig.database, mysqlConfig.username, mysqlConfig.password, mysqlConfig);

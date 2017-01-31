@@ -1,5 +1,9 @@
 {
-  "development": {
+  "usage": {
+    "dialect": "sqlite",
+    "storage": "./sqlite.usage.db"
+  },
+  "test": {
     "dialect": "sqlite",
     "storage": "./sqlite.test.db"
   },
