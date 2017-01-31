@@ -7,8 +7,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "test": "NODE_ENV=test mocha",
-    "clean": "./utils/cleaner/cleaner.sh"
+    "test": "NODE_ENV=test mocha"
   },
   "author": "",
   "license": "ISC",

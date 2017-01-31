@@ -27,21 +27,21 @@ describe("Quickdata generator", function() {
           done();
         }, (err) => {
           done(err);
-        })
+        });
       });
       it("authenticates mssql connection", function(done) {
         models.mssqlConnection.authenticate().then(() => {
           done();
         }, (err) => {
           done(err);
-        })
+        });
       });
       it("authenticates postgres connection", function(done) {
         models.postgresConnection.authenticate().then(() => {
           done();
         }, (err) => {
           done(err);
-        })
+        });
       });
     });
 
@@ -55,7 +55,9 @@ describe("Quickdata generator", function() {
 
     describe("logs that table in the Usage db with a delete date of today", function() {
 
-      it('checks usage table to see if previously made table exists with delete on today', function() {});
+      it('checks usage table to see if previously made table exists with delete on today', function() {
+
+      });
 
     });
 
@@ -111,6 +113,7 @@ describe("Quickdata generator", function() {
         // date max value is actually min date
         var date = getRandomData({dataType: 'date', maxValue: new Date('2007-08-08')});
         expect(new Date(date)).to.be.at.least(new Date('2007-08-08'));
+        expect(new Date(date)).to.be.at.most(new Date());
 
         var string1 = getRandomData({dataType: 'text', maxValue: 10});
         expect(string1).to.have.lengthOf(10);

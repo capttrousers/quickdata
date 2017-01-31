@@ -1,9 +1,8 @@
 
-var models = require('./models');
+var models = require('../../models');
 
 var today = new Date();
 
-var dbs = {};
 models.sequelize.sync().then(() => {
   models.Usage.findAll({
     attributes: ['id', 'TableName', 'DataSource', 'DeleteOn', 'Deleted'],
@@ -36,5 +35,7 @@ models.sequelize.sync().then(() => {
     } else {
       console.log("No tables to delete on " + today);
     }
+  }).catch((err) => {
+    console.log('error when syncing table cleaner with sqlite usage db');
   });
 });
