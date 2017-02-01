@@ -5,7 +5,7 @@ var path      = require('path');
 var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || 'development';
-var debug     = require('debug');
+var debug     = require('debug')('models');
 var configFile;
 // to modify when at home or work while in dev
 if(env == "work" || env == "production") {
@@ -30,6 +30,7 @@ if(env == 'test') {
 } else {
   var config = configFile['usage'];
 }
+debug("config file %o", config);
 
 var sequelize = new Sequelize(config.database, config.username, config.password, config);
 var mysqlConnection = new Sequelize(mysqlConfig.database, mysqlConfig.username, mysqlConfig.password, mysqlConfig);
