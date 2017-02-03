@@ -2,6 +2,7 @@ node_modules
 *.csv
 *.logs
 *.logs.bk
+*.log
 dist
 *.db
 config/config.work.json

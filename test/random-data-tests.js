@@ -1,5 +1,5 @@
   var expect = require('chai').expect;
-  
+
   describe("Random data generator", function() {
     var getRandomData = require('../utils/getRandomDataValue');
     it("returns value of type : datatype", function() {
@@ -14,7 +14,7 @@
     });
 
     it("generates a random value between min and max constraints", function() {
-      // min is one so just check that values are between 1 and maxValue
+        // min is one so just check that values are between 1 and maxValue
         var integer = getRandomData({dataType: 'integer', maxValue: 10000});
         expect(integer).to.be.below(10000);
         var decimal = getRandomData({dataType: 'decimal', maxValue: 10000});
