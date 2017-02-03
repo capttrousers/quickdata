@@ -5,6 +5,7 @@ var path      = require('path');
 var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || 'development';
+var testing   = process.env.NODE_TESTING || false;
 var logging   = require('../utils/logger');
 var logger    = logging.logger;
 
@@ -13,7 +14,7 @@ var configFile;
 if(env == "work" || env == "production") {
   configFile    = require(__dirname + '/../config/config.prod.json');
 } else {
-  configFile    = require(__dirname + '/../config/config.json');
+  configFile    = require(__dirname + '/../config/config.dev.json');
 }
 
 logger.debug('dirname of models.index at runtime:')
@@ -22,14 +23,15 @@ logger.debug(__dirname);
 var mysqlConfig = configFile['mysqlTestDB'];
 var postgresConfig = configFile['postgresTestDB'];
 var mssqlConfig = configFile['mssqlTestDB'];
-
-if(env == 'test') {
+if(testing) {
   logger.add(logging.winston.transports.File, {name: 'tests', filename: path.join(__dirname, '../test/tests.log')} );
   logger.remove(logging.winston.transports.Console);
   var config = configFile['test'];
 } else {
   var config = configFile['usage'];
 }
+logger.info('NODE_TESTING env variable is ', testing);
+
 config.logging = logger.info;
 mysqlConfig.logging = logger.info;
 mssqlConfig.logging = logger.info;

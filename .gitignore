@@ -1,10 +1,9 @@
 node_modules
 *.csv
-*.logs
-*.logs.bk
-*.log
+*.log*
 dist
 *.db
+config/config.dev.json
 config/config.work.json
 config/config.prod.json*
 data/
