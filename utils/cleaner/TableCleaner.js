@@ -30,21 +30,36 @@ module.exports = () => {
     }).then(function (results) {
         logger.info('results that meet match for delete <= today: ', results.length);
         if(results != null && results.length > 0) {
-          results.forEach((table) => {
-            var ds = table.DataSource + 'Connection';
-            models[ds].getQueryInterface().dropTable(table.TableName).then(() => {
-              return models.Usage.update({Deleted: true}, {fields: ['Deleted'], where: {id: table.id}});
-            }).then(() => {
+
+          //
+          return results.reduce(function(loop,table) {
+            return loop.then(function(){
+              var ds = table.DataSource + 'Connection';
+              return models[ds].getQueryInterface().dropTable(table.TableName).then(() => {
+                return models.Usage.update({Deleted: true}, {fields: ['Deleted'], where: {id: table.id}});
+              });
+            }).then(function() {
               logger.info(table.TableName + ' on db ' + table.DataSource + ', deleted on ' + today);
-            }).catch((err) => {
-              logger.info("error dropping table ");
             });
-          });
+          }, Promise.resolve());
+          //
+
+          // results.forEach((table) => {
+          //   var ds = table.DataSource + 'Connection';
+          //   models[ds].getQueryInterface().dropTable(table.TableName).then(() => {
+          //     return models.Usage.update({Deleted: true}, {fields: ['Deleted'], where: {id: table.id}});
+          //   }).then(() => {
+          //     logger.info(table.TableName + ' on db ' + table.DataSource + ', deleted on ' + today);
+          //   }).catch((err) => {
+          //     logger.info("error dropping table ");
+          //   });
+          // });
         } else {
           logger.info("No tables to delete on " + today);
         }
-        logger.remove('cleaner');
     }).catch((err) => {
       logger.info("error while syncing db for table cleaner: " + err);
+    }).then(function() {
+      logger.remove('cleaner');
     });
 }

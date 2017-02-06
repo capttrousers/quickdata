@@ -14,10 +14,12 @@ app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-if(process.env.NODE_ENV == 'production') {
-  app.use(morgan('combined'));
-} else {
-  app.use(morgan('dev'));
+if(! process.env.NODE_TESTING) {
+  if(process.env.NODE_ENV == 'production') {
+    app.use(morgan('combined'));
+  } else {
+    app.use(morgan('dev'));
+  }
 }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
