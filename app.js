@@ -40,30 +40,31 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-// error handlers
+// error handlers if not testing
+if(! process.env.NODE_TESTING) {
+  // development error handler
+  // will print stacktrace
+  if (app.get('env') === 'development' ) {
+    console.log("NODE_ENV = " + process.env.NODE_ENV);
+    app.use(function(err, req, res, next) {
+      res.status(err.status || 500);
+      res.render('error', {
+        message: err.message,
+        error: err
+      });
+    });
+  }
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  console.log("NODE_ENV = " + process.env.NODE_ENV);
+  // production error handler
+  // no stacktraces leaked to user
+
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
-      error: err
+      error: {}
     });
   });
 }
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
-
 
 module.exports = app;

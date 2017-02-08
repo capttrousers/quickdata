@@ -14,7 +14,17 @@ router.get('/', function(req, response, next) {
 });
 
 router.post("/quickdata", function(request, response, next) {
-
+  if(! request.body
+    || request.body == null
+    || request.body.maxRows == null
+    || request.body.columns == null
+    || request.body.user == null
+    || request.body.tableName == null
+    || request.body.sfCase == null
+  ) {
+    response.status(400).end();
+    return ;
+  }
 	var maxRows = request.body.maxRows;
   // goes up to at least a million
   // but for now will limit to 100000 records for in memory bulkInsert db operations
