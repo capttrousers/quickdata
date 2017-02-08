@@ -24,7 +24,7 @@ var mysqlConfig = configFile['mysqlTestDB'];
 var postgresConfig = configFile['postgresTestDB'];
 var mssqlConfig = configFile['mssqlTestDB'];
 if(testing) {
-  logger.add(logging.winston.transports.File, {name: 'tests', filename: path.join(__dirname, '../test/tests.log')} );
+  logger.add(logging.winston.transports.File, {name: 'tests', filename: path.join(__dirname, '../test/log.tests.log')} );
   logger.remove(logging.winston.transports.Console);
   var config = configFile['test'];
 } else {

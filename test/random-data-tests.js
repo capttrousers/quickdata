@@ -1,6 +1,6 @@
   var expect = require('chai').expect;
 
-  describe("Random data generator", function() {
+  describe.skip("Random data generator", function() {
     var getRandomData = require('../utils/getRandomDataValue');
     it("returns value of type string", function() {
       var string = getRandomData({dataType: 'text', maxValue: 10});

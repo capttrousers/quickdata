@@ -82,18 +82,12 @@ describe("Quickdata generator", function() {
     ];
     body.maxRows = 5;
 
-    it.only("POST /quickdata with valid parameters returns valid json with max rows", function() {
+    it("POST /quickdata with valid parameters returns valid json with max rows", function() {
       chai.request(app).post('/quickdata').send(body).then(function(res) {
-        expect(res).to.have.deep.property('maxRows', 6);
-      });
-    });
-
-    // check the intervals for each column, get data value or new random data
-    it("row of data, one random value for each column", function() {
-      chai.request(app).post('/quickdata').send(body).then(function(response) {
-        // expect(response).to.equal(1);
-        // expect(response).to.have.deep.property('data.columns')
-        //         .that.is.an('array').with.lengthOf(4);
+        expect(res).to.have.status(300);
+        // expect(res.body).to.be.text;
+        // var count = (res.body.match(/\n/g) || []).length;
+        // expect(count).to.equal(6);
       });
     });
 

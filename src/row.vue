@@ -1,13 +1,13 @@
 <template lang="pug">
   .row(:class="{child: hierarchy == 'child'}")
     span.parentLabel(v-if="hierarchy != 'child'")  {{ "Column " + (columnIndex + 1) }}
-      md-button.md-icon-button.md-warn.md-dense(@click="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
+      md-button.md-icon-button.md-warn.md-dense(@click.native="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
           md-icon clear
     span.childLabel(v-else) Child column of Column {{ columnIndex + 1 }}
     md-layout(md-gutter="40")
       md-layout(v-if="hierarchy != 'child'", md-flex="15", md-theme="'row'")
         md-button-toggle.md-primary
-          md-button(@click="toggleHierarchy") Parent
+          md-button(@click.native="toggleHierarchy") Parent
       md-layout(md-flex="20")
         md-input-container
           label(for='data-type')  Data type
