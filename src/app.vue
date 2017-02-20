@@ -14,7 +14,7 @@
       p.
         Dates allow a minimum date property, to create a range of possible dates between the min date and today.
       p.
-        Note, there's a bug with the text inputs where you edit the text in the middle and the cursor jumps to the end. This is an issue with the upstream UI library and is due to be fixed soon.
+        The Parent button allows text and number fields to contain a child column to act as a hierarchy where random values are only repeated until the parent's random value resets.
 
     md-dialog(md-open-from="#getDataButton", md-close-to="#getDataButton", ref="alert")
       md-dialog-title Invalid form
@@ -22,14 +22,14 @@
         md-list
           md-list-item(v-for="alert in this.alerts") {{ alert }}
       md-dialog-actions
-        md-button(@click="closeDialog('alert')") OK
+        md-button(@click.native="closeDialog('alert')") OK
     #form
       .form-row
         md-layout(md-gutter="40")
           md-layout
-            md-button.md-raised(@click="addNewColumn") Add Column
+            md-button.md-raised(@click.native="addNewColumn") Add Column
           md-layout
-            md-button.md-raised.md-primary(@click="getData") {{ fileButtonLabel }}
+            md-button.md-raised.md-primary(@click.native="getData") {{ fileButtonLabel }}
           md-layout
             md-input-container(style="display: inline-block; width: auto;")
                 label(for='data-source')  Data Source
