@@ -1,13 +1,11 @@
 node_modules
 *.csv
-*.logs
-*.log
-*.logs.bk
+*.log*
 dist
 *.db
+config/config.dev.json
 config/config.work.json
 config/config.prod.json*
-config/config.dev.json
 data/
 *.png
 .foreverignore

@@ -1,26 +1,12 @@
 {
-  "development": {
+  "sqliteExample": {
     "dialect": "sqlite",
-    "storage": "./sqlite.test.db"
+    "storage": "./sqlite.db"
   },
-  "mysqlTestDB": {
-    "username": "quickdata",
+  "mysqlExample": {
+    "username": "user",
     "password": "password",
-    "database": "quickdata",
-    "host": "localhost",
-    "dialect": "mysql"
-  },
-  "postgresTestDB": {
-    "username": "quickdata",
-    "password": "password",
-    "database": "quickdata",
-    "host": "localhost",
-    "dialect": "mysql"
-  },
-  "mssqlTestDB": {
-    "username": "quickdata",
-    "password": "password",
-    "database": "quickdata",
+    "database": "database",
     "host": "localhost",
     "dialect": "mysql"
   }

@@ -6,7 +6,7 @@
         based on the parameters selected below.
       p.
         Possible data types to select are Date, Text, Integers, and Decimals.
-        You can also set the number of rows of random data to generate.
+        You can also set the number of rows of random data to generate. Limit of 100,000
       p.
         Data types of Text, Integers, and Decimals allow maximum lengths / values respectively.
         They also allow an #[i interval] property. An interval value of 1 means there
@@ -22,14 +22,14 @@
         md-list
           md-list-item(v-for="alert in this.alerts") {{ alert }}
       md-dialog-actions
-        md-button(@click="closeDialog('alert')") OK
+        md-button(@click.native="closeDialog('alert')") OK
     #form
       .form-row
         md-layout(md-gutter="40")
           md-layout
-            md-button.md-raised(@click="addNewColumn") Add Column
+            md-button.md-raised(@click.native="addNewColumn") Add Column
           md-layout
-            md-button.md-raised.md-primary(@click="getData") {{ fileButtonLabel }}
+            md-button.md-raised.md-primary(@click.native="getData") {{ fileButtonLabel }}
           md-layout
             md-input-container(style="display: inline-block; width: auto;")
                 label(for='data-source')  Data Source
@@ -66,14 +66,12 @@
     components: {
       'myRow': row
     },
-    data: {
-      alerts: []
-    },
     computed: {
         isValid: {
           get() {
             // check that columns are valid
             // check max rows, email, sfcase, table name
+            /*
             if( this.maxRows < 1
               || this.maxRows > 1000
               || this.columns.length < 1
@@ -81,7 +79,13 @@
               || this.tableName.length > 0
               || parseInt(this.sfCase, 10) != NaN
             ) return false;
+            */
             return true;
+          }
+        },
+        alerts : {
+          get() {
+            return [];
           }
         },
         fileButtonLabel: {
@@ -182,7 +186,7 @@
         } else {
           // open alert and say why not valid
           // alert message
-
+          /*
           var temp = [];
           console.log("len after clearing " + this.alerts.length);
           if( this.maxRows < 1) { this.alerts.push("Max Rows must be greater than 0"); }
@@ -194,6 +198,7 @@
           if(parseInt(this.sfCase, 10) != NaN) { this.alerts.push("Salesforce case must be a number"); }
           console.log("len after pushing this.alerts " + this.alerts.length);
           this.alerts = temp;
+          */
           this.openDialog('alert');
         }
 

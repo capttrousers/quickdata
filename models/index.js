@@ -5,19 +5,38 @@ var path      = require('path');
 var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || 'development';
+var testing   = process.env.NODE_TESTING || false;
+var logging   = require('../utils/logger');
+var logger    = logging.logger;
 
 var configFile;
 // to modify when at home or work while in dev
 if(env == "work" || env == "production") {
   configFile    = require(__dirname + '/../config/config.prod.json');
 } else {
-  configFile    = require(__dirname + '/../config/config.json');
+  configFile    = require(__dirname + '/../config/config.dev.json');
 }
 
-var config = configFile[env];
+logger.debug('dirname of models.index at runtime:')
+logger.debug(__dirname);
+
 var mysqlConfig = configFile['mysqlTestDB'];
 var postgresConfig = configFile['postgresTestDB'];
 var mssqlConfig = configFile['mssqlTestDB'];
+if(testing) {
+  logger.add(logging.winston.transports.File, {name: 'tests', filename: path.join(__dirname, '../test/log.tests.log')} );
+  logger.remove(logging.winston.transports.Console);
+  var config = configFile['test'];
+} else {
+  var config = configFile['usage'];
+}
+logger.info('NODE_TESTING env variable is ', testing);
+
+config.logging = logger.info;
+mysqlConfig.logging = logger.info;
+mssqlConfig.logging = logger.info;
+postgresConfig.logging = logger.info;
+logger.debug("config file %o", config);
 
 var sequelize = new Sequelize(config.database, config.username, config.password, config);
 var mysqlConnection = new Sequelize(mysqlConfig.database, mysqlConfig.username, mysqlConfig.password, mysqlConfig);
@@ -36,12 +55,12 @@ fs
     var model = sequelize['import'](path.join(__dirname, file));
     db[model.name] = model;
   });
-
-Object.keys(db).forEach(function(modelName) {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+// dont have any associations
+// Object.keys(db).forEach(function(modelName) {
+//   if (db[modelName].associate) {
+//     db[modelName].associate(db);
+//   }
+// });
 
 db.mysqlConnection = mysqlConnection;
 db.mssqlConnection = mssqlConnection;
