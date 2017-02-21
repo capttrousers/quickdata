@@ -14,7 +14,7 @@
       p.
         Dates allow a minimum date property, to create a range of possible dates between the min date and today.
       p.
-        Note, there's a bug with the text inputs where you edit the text in the middle and the cursor jumps to the end. This is an issue with the upstream UI library and is due to be fixed soon.
+        The Parent button allows text and number fields to contain a child column to act as a hierarchy where random values are only repeated until the parent's random value resets.
 
     md-dialog(md-open-from="#getDataButton", md-close-to="#getDataButton", ref="alert")
       md-dialog-title Invalid form
@@ -71,8 +71,8 @@
           get() {
             // check that columns are valid
             // check max rows, email, sfcase, table name
-            /*
-            if( this.maxRows < 1
+            /* 
+	    if( this.maxRows < 1
               || this.maxRows > 1000
               || this.columns.length < 1
               || this.user.indexOf('@tableau.com') < 1 // not zero so user@tableau, charset
@@ -198,7 +198,7 @@
           if(parseInt(this.sfCase, 10) != NaN) { this.alerts.push("Salesforce case must be a number"); }
           console.log("len after pushing this.alerts " + this.alerts.length);
           this.alerts = temp;
-          */
+	  */
           this.openDialog('alert');
         }
 
