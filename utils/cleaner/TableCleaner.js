@@ -6,6 +6,7 @@ const path = require('path');
 
 module.exports = () => {
   logger.add(logging.winston.transports.File, {name: 'cleaner', filename: path.join(__dirname, 'tablecleaner.log')} );
+  logger.info('table cleaner logger added : tablecleaner.log');
   logger.info('node env is ', process.env.NODE_ENV);
   var today = new Date();
   logger.info('current time while running table cleaner: ', today);
@@ -31,7 +32,6 @@ module.exports = () => {
         logger.info('results that meet match for delete <= today: ', results.length);
         if(results != null && results.length > 0) {
 
-          //
           return results.reduce(function(loop,table) {
             return loop.then(function(){
               var ds = table.DataSource + 'Connection';
@@ -42,7 +42,6 @@ module.exports = () => {
               logger.info(table.TableName + ' on db ' + table.DataSource + ', deleted on ' + today);
             });
           }, Promise.resolve());
-          //
 
           // results.forEach((table) => {
           //   var ds = table.DataSource + 'Connection';
