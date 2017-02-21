@@ -118,7 +118,10 @@ describe("Database connections with sequelize", function() {
       it('checks usage table to make sure there are no tables in test usage db w/ Deleted = 0', function() {
         return expect( models.Usage.findAll({
           where: {
-            Deleted: false
+            Deleted: false,
+            DataSource : {
+              $not: 'csv'
+            }
           }
         })).to.eventually.have.lengthOf(0) ;
       });
