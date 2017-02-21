@@ -9,7 +9,7 @@ var models = require('../models');
 // console.log('models will config the sqlite db to be in the same dir as the script is run (mocha runs in root)');
 // also testing sqlite db will be used here
 
-describe.skip("Database connections with sequelize", function() {
+describe("Database connections with sequelize", function() {
 
   this.slow(200);
 
@@ -128,5 +128,7 @@ describe.skip("Database connections with sequelize", function() {
           .describeTable(tableName)).to.eventually.be.rejectedWith(/table.*does.?n.?t.*exist/i);
       });
     });
+
   });
+
 });
