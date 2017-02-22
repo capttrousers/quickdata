@@ -11,7 +11,7 @@ var models = require('../models');
 
 describe("Database connections with sequelize", function() {
 
-  this.slow(200);
+  this.slow(500);
 
   var tableCleaner = require('../utils/cleaner/TableCleaner.js');
 

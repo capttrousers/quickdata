@@ -8,23 +8,18 @@ chai.use(chaiAsPromised);
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
-describe("Quickdata generator", function() {
+describe.only("Quickdata generator", function() {
 
   describe("quick data api", function() {
 
     it('GET / redirects', function() {
-      return expect(chai.request(app).get('/')).to.eventually.redirect;
+			return chai.request(app).get('/').then(function(response) {
+				expect(response).to.redirect;
+			});
     })
 
     it("GET / returns status 200 and be html", function() {
-      chai.request(app).get('/').then(function(response) {
-        expect(response).to.have.status(200).and.to.be.html;
-      });
-      // return expect(chai.request(app).get('/')).to.have.status(200);
-    });
-
-    it("returns status 200 and be html", function() {
-      chai.request(app).get('/').then(function(response) {
+      return chai.request(app).get('/').then(function(response) {
         expect(response).to.have.status(200).and.to.be.html;
       });
       // return expect(chai.request(app).get('/')).to.have.status(200);
@@ -32,14 +27,11 @@ describe("Quickdata generator", function() {
 
   });
 
-
-
-
   // use morgan to test and log http requests
   describe("Process quickdata post", function() {
     this.slow(500);
     it("POST /quickdata with no parameters is rejected", function() {
-      chai.request(app).post('/quickdata').catch(function(response) {
+      return chai.request(app).post('/quickdata').catch(function(response) {
           expect(response).to.have.status(400);
       });
     });
@@ -83,8 +75,8 @@ describe("Quickdata generator", function() {
     body.maxRows = 5;
 
     it("POST /quickdata with valid parameters returns valid json with max rows", function() {
-      chai.request(app).post('/quickdata').send(body).then(function(res) {
-        expect(res).to.have.status(300);
+      return chai.request(app).post('/quickdata').send(body).then(function(res) {
+        expect(res).to.have.status(200);
         // expect(res.body).to.be.text;
         // var count = (res.body.match(/\n/g) || []).length;
         // expect(count).to.equal(6);
