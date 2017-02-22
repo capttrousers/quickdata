@@ -3,6 +3,7 @@ node_modules
 *.log*
 dist
 *.db
+*.db-journal
 config/config.dev.json
 config/config.work.json
 config/config.prod.json*
