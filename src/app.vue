@@ -173,12 +173,16 @@
 
           this.$http.post('/quickdata', body).then(
             (response) => {
-              var data = response.body;
-              var binaryData = [];
-              binaryData.push(data);
-              var fileName = this.sfCase + '-' + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
-              FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
-              // window.location = '/quickData.csv';
+              if(response.status == 400) {
+                // check error here or in the catch err handler?
+                // error = body.error
+              } else {
+                var data = response.body;
+                var binaryData = [];
+                binaryData.push(data);
+                var fileName = this.sfCase + '-' + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+                FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
+              }
             }, () => {
               // error
             }
