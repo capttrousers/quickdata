@@ -3,8 +3,6 @@ var expect = chai.expect;
 
 var models = require('../models');
 var app = require('../app');
-var chaiAsPromised = require("chai-as-promised");
-chai.use(chaiAsPromised);
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
@@ -37,12 +35,12 @@ describe.only("Quickdata generator", function() {
     });
 
     // does it actually default to values: ?
-      // defaults to acceptable values if none are given
-      // for user, rows, data source, table name, sf case
+    // defaults to acceptable values if none are given
+    // for user, rows, data source, table name, sf case
 
     var body = {};
     body.user = 'testUser1';
-    body.tableName = 'testFile';
+    body.tableName = 'http_test_table';
     body.dataSource = 'csv';
     body.sfCase = '98765';
     body.columns = [
@@ -74,17 +72,16 @@ describe.only("Quickdata generator", function() {
     ];
     body.maxRows = 5;
 
-    it("POST /quickdata with valid parameters returns valid json with max rows", function() {
+    it("POST /quickdata with csv data source returns csv text", function() {
       return chai.request(app).post('/quickdata').send(body).then(function(res) {
         expect(res).to.have.status(200);
-        // expect(res.body).to.be.text;
+        // text bc csv is text/plain
+        expect(res).to.be.text;
         // var count = (res.body.match(/\n/g) || []).length;
         // expect(count).to.equal(6);
       });
     });
 
   });
-
-
 
 });

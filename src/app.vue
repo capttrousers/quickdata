@@ -71,8 +71,8 @@
           get() {
             // check that columns are valid
             // check max rows, email, sfcase, table name
-            /* 
-	    if( this.maxRows < 1
+            /*
+            if( this.maxRows < 1
               || this.maxRows > 1000
               || this.columns.length < 1
               || this.user.indexOf('@tableau.com') < 1 // not zero so user@tableau, charset

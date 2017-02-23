@@ -22,7 +22,7 @@ router.post("/quickdata", function(request, response, next) {
     || request.body.tableName == null
     || request.body.sfCase == null
   ) {
-    response.status(400).end();
+    response.status(400).type('json').send({error: 'request body missing something'});
     return ;
   }
 	var maxRows = request.body.maxRows;
@@ -69,7 +69,7 @@ router.post("/quickdata", function(request, response, next) {
       if(dataSource == 'csv') {
       	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
         // created string for csv file. send as response to save on client
-        response.status(200).send(csv);
+        response.status(200).type('text').send(csv);
       } else {
         var attrs = {};
         columns.forEach(function(column) {

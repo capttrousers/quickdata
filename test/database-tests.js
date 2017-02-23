@@ -34,7 +34,7 @@ describe("Database connections with sequelize", function() {
   describe("create quickdata table:", function() {
     // first define test table info to log, schema, and 'random' data
     var user = 'test@user.com';
-    var name = 'test_table1';
+    var name = 'db_test_table1';
     var sfCase =  '00000';
     var tableName = sfCase + '_' + name;
     var attrs = {
