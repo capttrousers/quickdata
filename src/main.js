@@ -1,5 +1,7 @@
 import "babel-polyfill";
 import Vue from 'vue';
+var VueResource = require('vue-resource');
+Vue.use(VueResource);
 // import App from './App.vue'
 import app from './app.vue';
 import store from './store';
@@ -24,9 +26,6 @@ Vue.material.registerTheme({
     }
   }
 });
-
-var VueResource = require('vue-resource');
-Vue.use(VueResource);
 
 new Vue({
   el: '#app',

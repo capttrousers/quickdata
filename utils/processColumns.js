@@ -44,10 +44,10 @@ module.exports = (bodyColumns, maxRows) => {
       default :
         column.maxValue = (0 < column.maxValue && column.maxValue <= 1000000
                                     ? column.maxValue : 1000000 );
-        if(column.dataType =  'integer') {
+        if(column.dataType ==  'integer') {
           column.name = "Integer column " + intColumnCount;
           intColumnCount++;
-        } else if(column.dataType = 'decimal') {
+        } else if(column.dataType == 'decimal') {
           column.name = "Decimal column " + decColumnCount;
           decColumnCount++;
         }

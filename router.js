@@ -14,16 +14,22 @@ router.get('/', function(req, response, next) {
 });
 
 router.post("/quickdata", function(request, response, next) {
-  if(! request.body
+  if( (! request.body)
     || request.body == null
     || request.body.maxRows == null
+    || request.body.maxRows.length == 0
     || request.body.columns == null
+    || request.body.columns.length == 0
+    || request.body.dataSource == null
+    || request.body.dataSource.length == 0
     || request.body.user == null
+    || request.body.user.length == 0
     || request.body.tableName == null
+    || request.body.tableName.length == 0
     || request.body.sfCase == null
+    || request.body.sfCase.length == 0
   ) {
-    response.status(400).type('json').send({error: 'request body missing something'});
-    return ;
+    return response.status(400).type('json').send({error: 'request body missing something'});
   }
 	var maxRows = request.body.maxRows;
   // goes up to at least a million
@@ -33,7 +39,48 @@ router.post("/quickdata", function(request, response, next) {
 	// first loop thru columns, find interval profile for each column
 	var columns = processColumns(request.body.columns, maxRows);
 
+  var user = request.body.user;
+  var name = request.body.tableName;
+  var sfCase =  request.body.sfCase;
+  var tableName = sfCase + '_' + name;
+  var dataSource = request.body.dataSource;
 
+  // create table attributes object here to check against any existing tables
+  var attributes = {};
+  columns.forEach(function(column) {
+    var dataType = null;
+    switch (column.dataType) {
+      case 'text' :
+        dataType = models.Sequelize.STRING;
+        break;
+      case 'date' :
+        dataType = models.Sequelize.DATE;
+        break;
+      case 'integer' :
+        dataType = models.Sequelize.INTEGER;
+        break;
+      case 'decimal' :
+        dataType = models.Sequelize.DOUBLE;
+        break;
+    }
+    attributes[column.name] = dataType;
+  });
+  var error = {};
+  // check existing tables for same schema
+  if(dataSource != 'csv') {
+    models[dataSource + "Connection"].getQueryInterface().describeTable(tableName).then((attrs) => {
+      if(Object.keys(attributes).sort() != Object.keys(attrs).sort()) {
+        error = {error: 'table exists with a schema incompatible with request'};
+      }
+    }).catch(() => {
+      // table doesnt exist
+    })
+  }
+  if(Object.keys(error).length !== 0 && error.constructor !== Object) {
+    console.log('table exists with different schema, sending response');
+    return response.status(400).type('json').send(error);
+  }
+  console.log("made it past the existing table with schema check");
 	// parse and create json to create / overwrite csv file in public
 	// quick_data will be json parsed to csv: json2csv({ data: quick_data, fields: quick_data_fields })
   // quick_date is array of objs, each obj is row of key value pairs
@@ -45,13 +92,6 @@ router.post("/quickdata", function(request, response, next) {
   columns.forEach((column) => {
       quick_data_fields.push(column.name);
   });
-
-
-  var user = request.body.user;
-  var name = request.body.tableName;
-  var sfCase =  request.body.sfCase;
-  var tableName = sfCase + '_' + name;
-  var dataSource = request.body.dataSource;
 
   var createdAt = new Date();
   var deleteOn = new Date(createdAt).setMonth(createdAt.getMonth() + 1);
@@ -71,26 +111,6 @@ router.post("/quickdata", function(request, response, next) {
         // created string for csv file. send as response to save on client
         response.status(200).type('text').send(csv);
       } else {
-        var attrs = {};
-        columns.forEach(function(column) {
-          var dataType = null;
-          switch (column.dataType) {
-            case 'text' :
-              dataType = models.Sequelize.STRING;
-              break;
-            case 'date' :
-              dataType = models.Sequelize.DATE;
-              break;
-            case 'integer' :
-              dataType = models.Sequelize.INTEGER;
-              break;
-            case 'decimal' :
-              dataType = models.Sequelize.DOUBLE;
-              break;
-          }
-          attrs[column.name] = dataType;
-        });
-
         // get proper connection instance of sequelize
         var seq = null;
         switch(dataSource) {
@@ -106,9 +126,11 @@ router.post("/quickdata", function(request, response, next) {
             break;
         }
         seq.authenticate().then(() => {
-          seq.getQueryInterface().createTable(tableName, attrs).then( function () {
+          return seq.getQueryInterface().createTable(tableName, attributes).then( function () {
               // values are an array of objects, each object is row with key value pairs
-              seq.getQueryInterface().bulkInsert(tableName, quick_data);
+              return seq.getQueryInterface().bulkInsert(tableName, quick_data);
+          }).catch((err) => {
+            console.log('unable to create table: ' + err);
           });
         }).catch((err) => {
           console.log('unable to auth: ' + err);
@@ -126,7 +148,7 @@ router.post("/quickdata", function(request, response, next) {
         connectionText += "|     password of test db            :       " + seq.config.password + " \n|\n";
         connectionText += "|     user requesting random data    :       " + user + " \n";
         connectionText += "|     random data created on         :       " + createdAt.toString();
-        response.status(200).send(connectionText);
+        response.status(200).type('text').send(connectionText);
       }
     });
 });

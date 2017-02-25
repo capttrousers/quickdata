@@ -3,12 +3,15 @@ var models = require('../../models');
 var logging = require('../logger');
 var logger = logging.logger;
 const path = require('path');
+var testing   = process.env.NODE_TESTING || false;
 
 module.exports = () => {
   logger.add(logging.winston.transports.File, {name: 'cleaner', filename: path.join(__dirname, 'tablecleaner.log')} );
   logger.info('table cleaner logger added : tablecleaner.log');
   logger.info('node env is ', process.env.NODE_ENV);
-  var today = new Date();
+  // if testing, will be checking testing usage sqlite db,
+  // so clear out all mysql tables that were created in http tests
+  var today = (testing) ? new Date().setYear((new Date()).getFullYear() + 1) : new Date();
   logger.info('current time while running table cleaner: ', today);
   return models.sequelize.sync().then(() => {
       return models.Usage.findAll();
@@ -34,8 +37,8 @@ module.exports = () => {
 
           return results.reduce(function(loop,table) {
             return loop.then(function(){
-              var ds = table.DataSource + 'Connection';
-              return models[ds].getQueryInterface().dropTable(table.TableName).then(() => {
+              var dataSource = table.DataSource + 'Connection';
+              return models[dataSource].getQueryInterface().dropTable(table.TableName).then(() => {
                 return models.Usage.update({Deleted: true}, {fields: ['Deleted'], where: {id: table.id}});
               });
             }).then(function() {
@@ -44,8 +47,8 @@ module.exports = () => {
           }, Promise.resolve());
 
           // results.forEach((table) => {
-          //   var ds = table.DataSource + 'Connection';
-          //   models[ds].getQueryInterface().dropTable(table.TableName).then(() => {
+          //   var dataSource = table.DataSource + 'Connection';
+          //   models[dataSource].getQueryInterface().dropTable(table.TableName).then(() => {
           //     return models.Usage.update({Deleted: true}, {fields: ['Deleted'], where: {id: table.id}});
           //   }).then(() => {
           //     logger.info(table.TableName + ' on db ' + table.DataSource + ', deleted on ' + today);

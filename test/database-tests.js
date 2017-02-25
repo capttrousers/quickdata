@@ -78,6 +78,7 @@ describe("Database connections with sequelize", function() {
           'Integer Column': models.Sequelize.INTEGER,
           'Double Column': models.Sequelize.DOUBLE
         });
+  // var today = (testing) ? new Date(Number.MAX_SAFE_INTEGER) : new Date();
       });
 
     });
@@ -130,6 +131,7 @@ describe("Database connections with sequelize", function() {
         return expect(models['mysqlConnection'].getQueryInterface()
           .describeTable(tableName)).to.eventually.be.rejectedWith(/table.*does.?n.?t.*exist/i);
       });
+
     });
 
   });
