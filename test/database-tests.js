@@ -5,18 +5,33 @@ chai.use(chaiAsPromised);
 
 var models = require('../models');
 
-// console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-// console.log('models will config the sqlite db to be in the same dir as the script is run (mocha runs in root)');
-// also testing sqlite db will be used here
+var logger   = require('../utils/logger').logger;
+
+var processTables = require('../utils/cleaner/processTables');
 
 describe("Database connections with sequelize", function() {
 
   this.slow(500);
-
-  var tableCleaner = require('../utils/cleaner/TableCleaner.js');
-
-  it('runs table cleaner to clear out dbs for tests', function() {
-     return tableCleaner();
+  before('clears out testing usage db to run clean tests', function() {
+    this.timeout(10000);
+     return models.sequelize.sync().then(() => {
+         return models.Usage.findAll({
+           attributes: ['id', 'TableName', 'DataSource', 'DeleteOn', 'Deleted'],
+           // potentially remove this and do the processing of the entire results
+           // if this check doesn't work properly
+            where: {
+             Deleted: false,
+             DataSource : {
+               $not: 'csv'
+             }
+           }
+         });
+       }).then(function (tables) {
+         logger.info('found ' + tables.length + ' tables to delete from testing sqlite sb');
+          return processTables(tables);
+       }).catch((err) => {
+         logger.info("error while syncing db for table cleaner: " + err);
+       });
   });
 
   describe("authenticates all connections", function() {
@@ -78,7 +93,6 @@ describe("Database connections with sequelize", function() {
           'Integer Column': models.Sequelize.INTEGER,
           'Double Column': models.Sequelize.DOUBLE
         });
-  // var today = (testing) ? new Date(Number.MAX_SAFE_INTEGER) : new Date();
       });
 
     });
@@ -94,12 +108,10 @@ describe("Database connections with sequelize", function() {
           DataSource: 'mysql',
           Created: now,
           DeleteOn: now
-          // try this if now doesnt work;
-          // DeleteOn: new Date().setMonth(today.getMonth() - 1);
         });
       });
 
-      it('checks usage table to see if previously made table exists with delete on today', function() {
+      it('checks usage table to see if previously made table exists with deleted = false', function() {
         return expect( models.Usage.findAll({
           where: {
             SFCase: sfCase,
@@ -111,18 +123,27 @@ describe("Database connections with sequelize", function() {
       });
 
       // table cleaner .js deletes table in sql db and logs table as deleted in Usage table
-      it('runs table cleaner to delete table in usage table and sql database', function() {
-       this.slow(1000);
-       return tableCleaner();
+      it('cleans previously made table in testing usage table and sql database', function() {
+       this.slow(5000);
+       return models.Usage.findAll({
+         where: {
+           SFCase: sfCase,
+           TableName: tableName,
+           User: user,
+           Deleted: false
+         }
+       }).then((tables) => {
+          return processTables(tables);
+       });
       });
 
       it('checks usage table to make sure there are no tables in test usage db w/ Deleted = 0', function() {
         return expect( models.Usage.findAll({
           where: {
-            Deleted: false,
-            DataSource : {
-              $not: 'csv'
-            }
+            SFCase: sfCase,
+            TableName: tableName,
+            User: user,
+            Deleted: false
           }
         })).to.eventually.have.lengthOf(0) ;
       });

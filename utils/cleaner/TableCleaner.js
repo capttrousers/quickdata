@@ -4,6 +4,7 @@ var logging = require('../logger');
 var logger = logging.logger;
 const path = require('path');
 var testing   = process.env.NODE_TESTING || false;
+var processTables = require('./processTables');
 
 module.exports = () => {
   logger.add(logging.winston.transports.File, {name: 'cleaner', filename: path.join(__dirname, 'tablecleaner.log')} );
@@ -11,12 +12,13 @@ module.exports = () => {
   logger.info('node env is ', process.env.NODE_ENV);
   // if testing, will be checking testing usage sqlite db,
   // so clear out all mysql tables that were created in http tests
-  var today = (testing) ? new Date().setYear((new Date()).getFullYear() + 1) : new Date();
+
+  // should not do this, on production server, all tables would get cleaned out
+  // var today = (testing) ? new Date().setYear((new Date()).getFullYear() + 1) : new Date();
+  var today = new Date();
+
   logger.info('current time while running table cleaner: ', today);
   return models.sequelize.sync().then(() => {
-      return models.Usage.findAll();
-    }).then((results) => {
-      logger.info("total of " + results.length + " results found");
       return models.Usage.findAll({
         attributes: ['id', 'TableName', 'DataSource', 'DeleteOn', 'Deleted'],
         // potentially remove this and do the processing of the entire results
@@ -31,31 +33,10 @@ module.exports = () => {
           }
         }
       });
-    }).then(function (results) {
-        logger.info('results that meet match for delete <= today: ', results.length);
-        if(results != null && results.length > 0) {
-
-          return results.reduce(function(loop,table) {
-            return loop.then(function(){
-              var dataSource = table.DataSource + 'Connection';
-              return models[dataSource].getQueryInterface().dropTable(table.TableName).then(() => {
-                return models.Usage.update({Deleted: true}, {fields: ['Deleted'], where: {id: table.id}});
-              });
-            }).then(function() {
-              logger.info(table.TableName + ' on db ' + table.DataSource + ', deleted on ' + today);
-            });
-          }, Promise.resolve());
-
-          // results.forEach((table) => {
-          //   var dataSource = table.DataSource + 'Connection';
-          //   models[dataSource].getQueryInterface().dropTable(table.TableName).then(() => {
-          //     return models.Usage.update({Deleted: true}, {fields: ['Deleted'], where: {id: table.id}});
-          //   }).then(() => {
-          //     logger.info(table.TableName + ' on db ' + table.DataSource + ', deleted on ' + today);
-          //   }).catch((err) => {
-          //     logger.info("error dropping table ");
-          //   });
-          // });
+    }).then(function (tables) {
+        logger.info('tables that meet match for delete <= today: ', tables.length);
+        if(tables != null && tables.length > 0) {
+          return processTables(tables);
         } else {
           logger.info("No tables to delete on " + today);
         }
