@@ -35,9 +35,10 @@ describe.only("Database connections with sequelize", function() {
        });
   });
 
-  describe.only("authenticates all connections", function() {
-    this.timeout(10000);
+  describe("authenticates all connections", function() {
     it("authenticates mysql connection", function() {
+			//	set timeout a minute, 60,000ms, as adhoc mysql testing db is really slow lately: ~40s
+			this.timeout(60000);	
       return models.mysqlConnection.authenticate();
     });
     it("authenticates mssql connection", function() {
@@ -75,11 +76,12 @@ describe.only("Database connections with sequelize", function() {
       'Double Column': 3.14159
       }
     ];
+		
+		// use postgres because in production, the postgres adhoc db is more reliable
+    describe("creates a table in postgres db", function() {
 
-    describe("creates a table in mysql db", function() {
-
-      var seq = models.mysqlConnection;
-      it("creates table in a mysql database", function() {
+      var seq = models.postgresConnection;
+      it("creates table in a postgres database", function() {
         return seq.getQueryInterface().createTable(tableName, attrs);
       });
 
@@ -89,7 +91,7 @@ describe.only("Database connections with sequelize", function() {
       });
 
       it('checks database to make sure the table exists', function() {
-        return expect(models['mysqlConnection'].getQueryInterface().describeTable(tableName)).to.eventually.have.all.keys({
+        return expect(seq.getQueryInterface().describeTable(tableName)).to.eventually.have.all.keys({
           'String Column': models.Sequelize.STRING,
           'Date Column': models.Sequelize.DATE,
           'Integer Column': models.Sequelize.INTEGER,
@@ -101,13 +103,13 @@ describe.only("Database connections with sequelize", function() {
 
     describe("logs that table in the Usage db with a delete date of today", function() {
 
-      it('adds a table to the testing usage db with a delete on of today for mysql', function() {
+      it('adds a table to the testing usage db with a delete on of today for postgres', function() {
         var now = new Date();
         return models.Usage.create({
           User: user,
           TableName: tableName,
           SFCase: sfCase,
-          DataSource: 'mysql',
+          DataSource: 'postgresql',
           Created: now,
           DeleteOn: now
         });
@@ -151,8 +153,8 @@ describe.only("Database connections with sequelize", function() {
       });
 
       it('checks database to make sure the table was deleted', function() {
-        return expect(models['mysqlConnection'].getQueryInterface()
-          .describeTable(tableName)).to.eventually.be.rejectedWith(/table.*does.?n.?t.*exist/i);
+        return expect(models['postgresConnection'].getQueryInterface()
+          .describeTable(tableName)).to.eventually.be.rejectedWith(/no.description.found.*check.*table.name/i);
       });
 
     });
