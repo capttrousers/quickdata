@@ -9,7 +9,7 @@ var logger   = require('../utils/logger').logger;
 
 var processTables = require('../utils/cleaner/processTables');
 
-describe("Database connections with sequelize", function() {
+describe.only("Database connections with sequelize", function() {
 
   this.slow(500);
   before('clears out testing usage db to run clean tests', function() {
@@ -35,7 +35,8 @@ describe("Database connections with sequelize", function() {
        });
   });
 
-  describe("authenticates all connections", function() {
+  describe.only("authenticates all connections", function() {
+    this.timeout(10000);
     it("authenticates mysql connection", function() {
       return models.mysqlConnection.authenticate();
     });

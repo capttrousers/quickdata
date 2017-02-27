@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 describe("HTTP requests", function() {
   before(function() {
     logger.info("Begin http request tests");
-    this.timeout(5000);
+    this.timeout(10000);
     return models.sequelize.sync().then(() => {
      return models.Usage.findAll({
        attributes: ['id', 'TableName', 'DataSource', 'DeleteOn', 'Deleted'],
