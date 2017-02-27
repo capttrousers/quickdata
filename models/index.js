@@ -16,6 +16,8 @@ if(env == "work" || env == "production") {
 } else {
   configFile    = require(__dirname + '/../config/config.dev.json');
 }
+logger.debug("env variable is : ", env);
+logger.debug("configFile %o", configFile);
 
 logger.debug('dirname of models.index at runtime:')
 logger.debug(__dirname);
@@ -23,20 +25,21 @@ logger.debug(__dirname);
 var mysqlConfig = configFile['mysqlTestDB'];
 var postgresConfig = configFile['postgresTestDB'];
 var mssqlConfig = configFile['mssqlTestDB'];
+var config = {};
 if(testing) {
   logger.add(logging.winston.transports.File, {name: 'tests', filename: path.join(__dirname, '../test/log.tests.log')} );
   logger.remove(logging.winston.transports.Console);
-  var config = configFile['test'];
+  config = configFile['test'];
 } else {
-  var config = configFile['usage'];
+  config = configFile['usage'];
 }
-logger.info('NODE_TESTING env variable is ', testing);
+logger.debug('NODE_TESTING env variable is ', testing);
+logger.debug("config for usage db : %o", config);
 
 config.logging = logger.info;
 mysqlConfig.logging = logger.info;
 mssqlConfig.logging = logger.info;
 postgresConfig.logging = logger.info;
-logger.debug("config file %o", config);
 
 var sequelize = new Sequelize(config.database, config.username, config.password, config);
 var mysqlConnection = new Sequelize(mysqlConfig.database, mysqlConfig.username, mysqlConfig.password, mysqlConfig);

@@ -28,7 +28,8 @@ router.post("/quickdata", function(request, response, next) {
 	var maxRows = request.body.maxRows;
   // goes up to at least a million
   // but for now will limit to 100000 records for in memory bulkInsert db operations
-  maxRows = (maxRows <= 100000 && maxRows > 0 ? maxRows : 50);
+  maxRows = (maxRows > 0 ? maxRows : 50);
+  maxRows = Math.min(maxRows, 100000);
 
 	// first loop thru columns, find interval profile for each column
 	var columns = processColumns(request.body.columns, maxRows);
