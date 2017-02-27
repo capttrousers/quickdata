@@ -13,6 +13,7 @@ describe("Database connections with sequelize", function() {
 
   this.slow(500);
   before('clears out testing usage db to run clean tests', function() {
+    logger.info("Begin database action tests");
     this.timeout(10000);
      return models.sequelize.sync().then(() => {
          return models.Usage.findAll({

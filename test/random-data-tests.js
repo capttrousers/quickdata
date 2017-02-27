@@ -5,6 +5,9 @@ var logger   = require('../utils/logger').logger;
 var getRandomData = require('../utils/getRandomDataValue');
 
 describe("Random data generator", function() {
+  before(function() {
+    logger.info("Begin random data generator tests");
+  })
   it("returns value of type string", function() {
     var string = getRandomData({dataType: 'text', maxValue: 10});
     expect(string).to.be.a('string');

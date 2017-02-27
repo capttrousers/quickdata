@@ -42,23 +42,21 @@ router.post("/quickdata", function(request, response, next) {
 });
 
 router.post("/quickdata", function(request, response, next) {
+  logger.info('POST /quickdata recieved a valid request body')
 	var maxRows = request.body.maxRows;
   // goes up to at least a million
   // but for now will limit to 100000 records for in memory bulkInsert db operations
-  maxRows = (maxRows <= 100000 && maxRows > 0 ? maxRows : 50);
+  // mssql currently has a limit of 1000 for bulk insert, fixed in sequelize@4.0
+  var MAXIMUM_RECORDS = (request.body.dataSource != 'mssql' ? 100000 : 1000);
+  request.body.maxRows = (maxRows <= MAXIMUM_RECORDS && maxRows > 0 ? maxRows : 50);
 
 	// first loop thru columns, find interval profile for each column
-	var columns = processColumns(request.body.columns, maxRows);
-
-  var user = request.body.user;
-  var name = request.body.tableName;
-  var sfCase =  request.body.sfCase;
-  var tableName = sfCase + '_' + name;
-  var dataSource = request.body.dataSource;
+	request.body.columns = processColumns(request.body.columns, request.body.maxRows);
+  request.body.tableName = request.body.sfCase + '_' + request.body.tableName;
 
   // create table attributes object here to check against any existing tables
-  var attributes = {};
-  columns.forEach(function(column) {
+  request.body.attributes = {};
+  request.body.columns.forEach(function(column) {
     var dataType = null;
     switch (column.dataType) {
       case 'text' :
@@ -74,37 +72,45 @@ router.post("/quickdata", function(request, response, next) {
         dataType = models.Sequelize.DOUBLE;
         break;
     }
-    attributes[column.name] = dataType;
+    request.body.attributes[column.name] = dataType;
   });
-  var error = {};
-  // check existing tables for same schema
 
-  if(dataSource != 'csv') {
-    models[dataSource + "Connection"].getQueryInterface().describeTable(tableName).then((attrs) => {
+  // check existing tables for same schema
+  if(request.body.dataSource != 'csv') {
+    models[request.body.dataSource + "Connection"].getQueryInterface().describeTable(request.body.tableName).then((attrs) => {
       logger.info('attrs keys length ', Object.keys(attrs).length);
-      if(! _.isEqual(Object.keys(attributes).sort(), Object.keys(attrs).sort()) ) {
+      if(! _.isEqual(Object.keys(request.body.attributes).sort(), Object.keys(attrs).sort()) ) {
         logger.info('schemas are not the same after describe table');
         response.status(400).type('json').send({error: 'table exists with a schema incompatible with request'});
+      } else {
+        logger.info('schemas are the same, skip to generate data and append');
+        next();
       }
     }).catch(() => {
-      logger.info('schemas are the same or the table doesnt exist');
+      logger.info('the table doesnt exist, skip to generate data');
+      next();
     })
+  } else {
+    logger.info('data source is csv, so dont check dbs, skip to generate data');
+    next();
   }
-  logger.info('post response status after schema check = ', response.get('StatusCode'));
-  logger.info("made it past the existing table with schema check");
+});
+
+
+router.post("/quickdata", function(request, response, next) {
+  logger.info('POST /quickdata recieved request with a new or valid existing table or csv file');
 	// parse and create json to create / overwrite csv file in public
 	// quick_data will be json parsed to csv: json2csv({ data: quick_data, fields: quick_data_fields })
   // quick_date is array of objs, each obj is row of key value pairs
-	var quick_data = generateData(columns, maxRows);
-  logger.info("made it past the call to generate data");
+	var quick_data = generateData(request.body.columns, request.body.maxRows);
+  logger.info("Generate data successful");
 
 
   // quick_data_fields is array of column names: column.name
 	var quick_data_fields = [];
-  columns.forEach((column) => {
+  request.body.columns.forEach((column) => {
       quick_data_fields.push(column.name);
   });
-  logger.info("made it past columns for each to quick data fields loop");
 
   var createdAt = new Date();
   var deleteOn = new Date(createdAt);
@@ -115,22 +121,22 @@ router.post("/quickdata", function(request, response, next) {
   // models.AppTable.insert new table name, other table transaction info like user, email, sf case, db type
   // then process response, either make and send csv, or create table on db and insert data
   models.Usage.create({
-    User: user,
-    TableName: tableName,
-    SFCase: sfCase,
-    DataSource: dataSource,
+    User: request.body.user,
+    TableName: request.body.tableName,
+    SFCase: request.body.sfCase,
+    DataSource: request.body.dataSource,
     Created: createdAt,
     DeleteOn: deleteOn
   }).then( function() {
-    logger.info("made it past the create log in usage table");
-    if(dataSource == 'csv') {
+    logger.info("Created log entry in Usage table");
+    if(request.body.dataSource == 'csv') {
     	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
       // created string for csv file. send as response to save on client
       response.status(200).type('text').send(csv);
     } else {
       // get proper connection instance of sequelize
       var seq = null;
-      switch(dataSource) {
+      switch(request.body.dataSource) {
         case 'mssql':
           seq = models.mssqlConnection;
           break;
@@ -143,9 +149,9 @@ router.post("/quickdata", function(request, response, next) {
           break;
       }
       seq.authenticate().then(() => {
-        return seq.getQueryInterface().createTable(tableName, attributes).then( function () {
+        return seq.getQueryInterface().createTable(request.body.tableName, request.body.attributes).then( function () {
             // values are an array of objects, each object is row with key value pairs
-            return seq.getQueryInterface().bulkInsert(tableName, quick_data);
+            return seq.getQueryInterface().bulkInsert(request.body.tableName, quick_data);
         }).catch((err) => {
           logger.info('unable to create table: ' + err);
         });
@@ -155,15 +161,15 @@ router.post("/quickdata", function(request, response, next) {
       var connectionText = "";
       connectionText += "This is the connection info for the random data generated\n";
       connectionText += "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-      connectionText += "    For Salesforce case # " + sfCase + "  \n\n";
-      connectionText += "|     data source type               :       " + dataSource.toUpperCase() + "  \n|\n";
+      connectionText += "    For Salesforce case # " + request.body.sfCase + "  \n\n";
+      connectionText += "|     data source type               :       " + request.body.dataSource.toUpperCase() + "  \n|\n";
       connectionText += "|     host                           :       " + seq.config.host + " \n";
       connectionText += "|     port                           :       " + seq.config.port + " \n|\n";
       connectionText += "|     database name                  :       " + seq.config.database + " \n";
-      connectionText += "|     table name                     :       " + tableName + " \n|\n";
+      connectionText += "|     table name                     :       " + request.body.tableName + " \n|\n";
       connectionText += "|     username of test db            :       " + seq.config.username + " \n";
       connectionText += "|     password of test db            :       " + seq.config.password + " \n|\n";
-      connectionText += "|     user requesting random data    :       " + user + " \n";
+      connectionText += "|     user requesting random data    :       " + request.body.user + " \n";
       connectionText += "|     random data created on         :       " + createdAt.toString();
       response.status(200).type('text').send(connectionText);
     }

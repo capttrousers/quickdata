@@ -10,8 +10,10 @@ var app = require('../app');
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
-describe.only("HTTP requests", function() {
-
+describe("HTTP requests", function() {
+  before(function() {
+    logger.info("Begin http request tests");
+  })
   // after('clears out testing usage db to run clean tests', function() {
   //    this.timeout(10000);
   //    return models.sequelize.sync().then(() => {
@@ -53,7 +55,7 @@ describe.only("HTTP requests", function() {
   });
 
   // use morgan to test and log http requests
-  describe.only("Process quickdata post", function() {
+  describe("Process quickdata post", function() {
     this.slow(500);
     before('clears out testing usage db to run clean tests', function() {
       this.timeout(10000);
@@ -70,8 +72,11 @@ describe.only("HTTP requests", function() {
            }
          });
        }).then(function (tables) {
-         logger.info('found ' + tables.length + ' tables to delete from testing sqlite sb');
-          return processTables(tables);
+          logger.info('found ' + tables.length + ' tables to delete from testing sqlite sb, before testing POST /quickdata');
+          if(tables.length > 0) {
+             processTables(tables);
+          }
+          return ;
        }).catch((err) => {
          logger.info("error while syncing db for table cleaner: " + err);
        });
@@ -134,9 +139,9 @@ describe.only("HTTP requests", function() {
       return models["mysqlConnection"].getQueryInterface().dropTable(body.sfCase + "_" + body.tableName);
     });
 
-    it.only("POST /quickdata with mysql data source returns text file with X newline chars", function() {
+    it("POST /quickdata with mysql data source returns text file with X newline chars", function() {
       body.dataSource = 'mysql';
-      logger.info('body length : ' + body.columns.length)
+      logger.info('body length, for first schema for new table : ' + body.columns.length)
       return chai.request(app).post('/quickdata').send(body).then(function(res) {
         expect(res).to.have.status(200);
         // text bc csv is text/plain
@@ -151,7 +156,7 @@ describe.only("HTTP requests", function() {
       body.dataSource = 'mysql';
       body.tableName = 'http_test_table2';
       body.sfCase = '00000011';
-      logger.info('body length : ' + body.columns.length)
+      logger.info('body length, for second schema for existing table : ' + body.columns.length)
       return chai.request(app).post('/quickdata').send(body).then(function(res) {
         expect(res).to.have.status(200);
         // text bc csv is text/plain
@@ -176,7 +181,7 @@ describe.only("HTTP requests", function() {
 
 
 
-    it.only('POST /quickdata gets rejected with different schema than existing table', function() {
+    it('POST /quickdata gets rejected with different schema than existing table', function() {
         body.dataSource = 'mysql';
         body.columns.push({
           "dataType": "decimal",

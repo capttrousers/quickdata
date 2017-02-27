@@ -1,6 +1,7 @@
 // process columns function
 // takes the columns got from the json obj in the http request body
 // processes each to add a few attrs, returns new columns array
+// adds column name, max value, and first random value
 
 var getRandomDataValue = require('./getRandomDataValue');
 
