@@ -15,6 +15,8 @@
         Dates allow a minimum date property, to create a range of possible dates between the min date and today.
       p.
         The Parent button allows text and number fields to contain a child column to act as a hierarchy where random values are only repeated until the parent's random value resets.
+      p.
+        Current limit of 10,000 records, or 1,000 for MS SQL
 
     md-dialog(md-open-from="#getDataButton", md-close-to="#getDataButton", ref="alert")
       md-dialog-title Invalid form
@@ -23,6 +25,7 @@
           md-list-item(v-for="alert in this.alerts") {{ alert }}
       md-dialog-actions
         md-button(@click.native="closeDialog('alert')") OK
+
     #form
       .form-row
         md-layout(md-gutter="40")
@@ -43,7 +46,7 @@
         md-layout(md-gutter="40")
           md-layout(md-flex="33")
             md-input-container
-              label(for="case")  Sales Force Case
+              label(for="case")  Sales Force Case (optional)
               md-input(name='case', v-model="sfCase")
           md-layout(md-flex="33")
             md-input-container
@@ -54,8 +57,11 @@
                 label(for="user")  User email @ tableau.com
                 md-input(name='user', v-model="user")
 
-
       myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
+
+    md-snackbar(ref="errorsnackbar")
+      span {{ error.message }}
+      md-button.md-accent(@click.native="$refs.errorsnackbar.close()") Close
 </template>
 
 <script>
@@ -66,13 +72,20 @@
     components: {
       'myRow': row
     },
+    data: function() {
+      return {
+        error: {
+          message: 'default error message'
+        }
+      }
+    },
     computed: {
         isValid: {
           get() {
             // check that columns are valid
             // check max rows, email, sfcase, table name
-            /* 
-	    if( this.maxRows < 1
+            /*
+            if( this.maxRows < 1
               || this.maxRows > 1000
               || this.columns.length < 1
               || this.user.indexOf('@tableau.com') < 1 // not zero so user@tableau, charset
@@ -178,9 +191,9 @@
               binaryData.push(data);
               var fileName = this.sfCase + '-' + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
               FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
-              // window.location = '/quickData.csv';
-            }, () => {
-              // error
+            }, (response) => {
+              this.error.message = (response.body.error) || '404 error';
+              this.$refs.errorsnackbar.open();
             }
           );
         } else {

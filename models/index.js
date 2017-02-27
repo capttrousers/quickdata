@@ -27,8 +27,7 @@ var postgresConfig = configFile['postgresTestDB'];
 var mssqlConfig = configFile['mssqlTestDB'];
 var config = {};
 if(testing) {
-  logger.add(logging.winston.transports.File, {name: 'tests', filename: path.join(__dirname, '../test/log.tests.log')} );
-  logger.remove(logging.winston.transports.Console);
+  logger.add(logging.winston.transports.File, {name: 'sequelize', filename: path.join(__dirname, './sequelize.tests.log')} );
   config = configFile['test'];
 } else {
   config = configFile['usage'];
