@@ -46,7 +46,7 @@
         md-layout(md-gutter="40")
           md-layout(md-flex="33")
             md-input-container
-              label(for="case")  Sales Force Case
+              label(for="case")  Sales Force Case (optional)
               md-input(name='case', v-model="sfCase")
           md-layout(md-flex="33")
             md-input-container

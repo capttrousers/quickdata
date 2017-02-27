@@ -81,14 +81,14 @@ router.post("/quickdata", function(request, response, next) {
       logger.info('attrs keys length ', Object.keys(attrs).length);
       if(! _.isEqual(Object.keys(request.body.attributes).sort(), Object.keys(attrs).sort()) ) {
         logger.info('schemas are not the same after describe table');
-        response.status(400).type('json').send({error: 'table exists with a schema incompatible with request'});
+        return response.status(400).type('json').send({error: 'table exists with a schema incompatible with request'});
       } else {
         logger.info('schemas are the same, skip to generate data and append');
-        next();
+        return next();
       }
     }).catch(() => {
       logger.info('the table doesnt exist, skip to generate data');
-      next();
+      return next();
     })
   } else {
     logger.info('data source is csv, so dont check dbs, skip to generate data');
@@ -150,28 +150,31 @@ router.post("/quickdata", function(request, response, next) {
       }
       seq.authenticate().then(() => {
         return seq.getQueryInterface().createTable(request.body.tableName, request.body.attributes).then( function () {
-            // values are an array of objects, each object is row with key value pairs
-            return seq.getQueryInterface().bulkInsert(request.body.tableName, quick_data);
+          // quick_data values are an array of objects, each object is row with key value pairs
+          return seq.getQueryInterface().bulkInsert(request.body.tableName, quick_data).then(() => {
+            var connectionText = "";
+            connectionText += "This is the connection info for the random data generated\n";
+            connectionText += "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+            connectionText += "    For Salesforce case # " + request.body.sfCase + "  \n\n";
+            connectionText += "|     data source type               :       " + request.body.dataSource.toUpperCase() + "  \n|\n";
+            connectionText += "|     host                           :       " + seq.config.host + " \n";
+            connectionText += "|     port                           :       " + seq.config.port + " \n|\n";
+            connectionText += "|     database name                  :       " + seq.config.database + " \n";
+            connectionText += "|     table name                     :       " + request.body.tableName + " \n|\n";
+            connectionText += "|     username of test db            :       " + seq.config.username + " \n";
+            connectionText += "|     password of test db            :       " + seq.config.password + " \n|\n";
+            connectionText += "|     user requesting random data    :       " + request.body.user + " \n";
+            connectionText += "|     random data created on         :       " + createdAt.toString();
+            return response.status(200).type('text').send(connectionText);
+          }).catch((err) => {
+            logger.info('unable to insert into table: ' + err);
+          });
         }).catch((err) => {
           logger.info('unable to create table: ' + err);
         });
       }).catch((err) => {
         logger.info('unable to auth: ' + err);
       });
-      var connectionText = "";
-      connectionText += "This is the connection info for the random data generated\n";
-      connectionText += "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-      connectionText += "    For Salesforce case # " + request.body.sfCase + "  \n\n";
-      connectionText += "|     data source type               :       " + request.body.dataSource.toUpperCase() + "  \n|\n";
-      connectionText += "|     host                           :       " + seq.config.host + " \n";
-      connectionText += "|     port                           :       " + seq.config.port + " \n|\n";
-      connectionText += "|     database name                  :       " + seq.config.database + " \n";
-      connectionText += "|     table name                     :       " + request.body.tableName + " \n|\n";
-      connectionText += "|     username of test db            :       " + seq.config.username + " \n";
-      connectionText += "|     password of test db            :       " + seq.config.password + " \n|\n";
-      connectionText += "|     user requesting random data    :       " + request.body.user + " \n";
-      connectionText += "|     random data created on         :       " + createdAt.toString();
-      response.status(200).type('text').send(connectionText);
     }
   });
 
