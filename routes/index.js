@@ -140,7 +140,7 @@ router.post("/quickdata", function(request, response, next) {
         case 'mssql':
           seq = models.mssqlConnection;
           break;
-        case 'postgresql':
+        case 'postgres':
           // comment this out when at home
           seq = models.postgresConnection;
           break;

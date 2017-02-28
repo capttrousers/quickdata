@@ -10,7 +10,8 @@ var logger   = require('../utils/logger').logger;
 var processTables = require('../utils/cleaner/processTables');
 
 describe.only("Database connections with sequelize", function() {
-
+	
+  var seq = models.postgresConnection;
   this.slow(500);
   before('clears out testing usage db to run clean tests', function() {
     logger.info("Begin database action tests");
@@ -49,7 +50,7 @@ describe.only("Database connections with sequelize", function() {
     });
   });
 
-  describe("create quickdata table:", function() {
+  describe.only("create quickdata table:", function() {
     // first define test table info to log, schema, and 'random' data
     var user = 'test@user.com';
     var name = 'db_test_table1';
@@ -80,7 +81,6 @@ describe.only("Database connections with sequelize", function() {
 		// use postgres because in production, the postgres adhoc db is more reliable
     describe("creates a table in postgres db", function() {
 
-      var seq = models.postgresConnection;
       it("creates table in a postgres database", function() {
         return seq.getQueryInterface().createTable(tableName, attrs);
       });
@@ -109,7 +109,7 @@ describe.only("Database connections with sequelize", function() {
           User: user,
           TableName: tableName,
           SFCase: sfCase,
-          DataSource: 'postgresql',
+          DataSource: 'postgres',
           Created: now,
           DeleteOn: now
         });
@@ -153,8 +153,8 @@ describe.only("Database connections with sequelize", function() {
       });
 
       it('checks database to make sure the table was deleted', function() {
-        return expect(models['postgresConnection'].getQueryInterface()
-          .describeTable(tableName)).to.eventually.be.rejectedWith(/no.description.found.*check.*table.name/i);
+        return expect(seq.getQueryInterface().describeTable(tableName))
+				.to.eventually.be.rejectedWith(/no.description.found.*check.*table.name/i);
       });
 
     });

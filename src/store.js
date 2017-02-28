@@ -15,7 +15,7 @@ export default new Vuex.Store({
       {label: "CSV", value: "csv"},
       {label: "MySQL", value: "mysql"},
       {label: "MS SQL Server", value: "mssql"},
-      {label: "PostgreSQL", value: "postgresql"}
+      {label: "PostgreSQL", value: "postgres"}
     ],
 		dataTypes: [
         {text: "Text", value: "text"},
