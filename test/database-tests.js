@@ -9,7 +9,7 @@ var logger   = require('../utils/logger').logger;
 
 var processTables = require('../utils/cleaner/processTables');
 
-describe.only("Database connections with sequelize", function() {
+describe("Database connections with sequelize", function() {
 	
   var seq = models.postgresConnection;
   this.slow(500);
@@ -50,7 +50,7 @@ describe.only("Database connections with sequelize", function() {
     });
   });
 
-  describe.only("create quickdata table:", function() {
+  describe("create quickdata table:", function() {
     // first define test table info to log, schema, and 'random' data
     var user = 'test@user.com';
     var name = 'db_test_table1';

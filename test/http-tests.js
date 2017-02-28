@@ -129,11 +129,11 @@ describe("HTTP requests", function() {
     });
 
     it("drops the test table in case it still exists from previous tests", function() {
-      return models["mysqlConnection"].getQueryInterface().dropTable(body.sfCase + "_" + body.tableName);
+      return models["postgresConnection"].getQueryInterface().dropTable(body.sfCase + "_" + body.tableName);
     });
 
-    it("POST /quickdata with mysql data source returns text file with 16 newline chars", function() {
-      body.dataSource = 'mysql';
+    it("POST /quickdata with postgres data source returns text file with 16 newline chars", function() {
+      body.dataSource = 'postgres';
       logger.info('body length, for first schema for new table : ' + body.columns.length)
       return chai.request(app).post('/quickdata').send(body).then(function(res) {
         expect(res).to.have.status(200);
@@ -145,11 +145,11 @@ describe("HTTP requests", function() {
       });
     });
 
-    it('checks the mysql db to verify the table exists', function() {
+    it('checks the postgres db to verify the table exists', function() {
         return models[body.dataSource + "Connection"].getQueryInterface().describeTable(body.sfCase + "_" + body.tableName);
     });
 
-    it("POST /quickdata with a different mysql data source to test describe new table", function() {
+    it("POST /quickdata with a different postgres data source to test describe new table", function() {
       var body2 = _.clone(body);
       body2.tableName = 'http_test_table2';
       body2.sfCase = '00000011';
@@ -164,14 +164,14 @@ describe("HTTP requests", function() {
       });
     });
 
-    // it.skip('checks the mysql db to verify the table exists', function() {
-    //     body.dataSource = 'mysql';
+    // it.skip('checks the postgres db to verify the table exists', function() {
+    //     body.dataSource = 'postgres';
     //     return models[dataSource + "Connection"].getQueryInterface().describeTable(tableName).then((attrs) => {
     //       expect(Object.keys(attributes).sort() != Object.keys(attrs).sort())
     // });
 
     it('POST /quickdata gets rejected with different schema than existing table', function() {
-        body.dataSource = 'mysql';
+        body.dataSource = 'postgres';
         body.columns.push({
           "dataType": "decimal",
           "maxValue": "100",
