@@ -2,7 +2,7 @@
 
 ## Tool to generate random data in csv form, built using node.js and vue.js.
 
-### Skip to step 4 if you have git and node installed. The rest of the instructions are OS agnostic.
+### Skip to step 5 if you have git, sqlite3 and node installed. The rest of the instructions are OS agnostic.
 
 1. Install [Node.js](https://nodejs.org/en/)
 2. Install [SQLite3](https://sqlite.org/) by downloading the DLL(s) and putting it in C:\WINDOWS\system32
