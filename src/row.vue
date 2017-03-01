@@ -7,7 +7,7 @@
     md-layout(md-gutter="40")
       md-layout(v-if="hierarchy != 'child'", md-flex="15", md-theme="'row'")
         md-button-toggle.md-primary
-          md-button(@click.native="toggleHierarchy") Parent
+          md-button(@click.native="toggleHierarchy", :disabled="dataType == 'date'") Parent
       md-layout(md-flex="20")
         md-input-container
           label(for='data-type')  Data type
