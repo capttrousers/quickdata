@@ -7,7 +7,6 @@ dist
 config/config.dev.json
 config/config.work.json
 config/config.prod.json*
-data/
 *.png
 .foreverignore
 forever.sh
