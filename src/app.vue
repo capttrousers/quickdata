@@ -30,6 +30,20 @@
 
     #form
       .form-row
+        md-layout(md-gutter="24")
+          md-layout(md-flex)
+            md-input-container
+              label Schema file
+              md-file(v-model="fileName", @selected="pickFile($event)")
+          md-layout(md-flex)
+            md-button.md-raised(:disabled="file == null", @click.native="submitFile") Submit
+      .form-row
+        md-layout(md-gutter="24")
+          md-layout(md-flex)
+          md-layout(md-flex)
+            span(style="margin: 0 auto;") --- OR ---
+          md-layout(md-flex)
+      .form-row
         md-layout(md-gutter="40")
           md-layout
             md-button.md-raised(@click.native="addNewColumn") Add Column
@@ -37,13 +51,13 @@
             md-button.md-raised.md-primary(@click.native="getData") {{ fileButtonLabel }}
           md-layout
             md-input-container(style="display: inline-block; width: auto;")
-                label(for='data-source')  Data Source
-                md-select(name='data-source', v-model="dataSource")
-                  md-option(v-for="dataSourceOption in dataSources", :value="dataSourceOption.value")  {{ dataSourceOption.label }}
+              label(for='data-source')  Data Source
+              md-select(name='data-source', v-model="dataSource")
+                md-option(v-for="dataSourceOption in dataSources", :value="dataSourceOption.value")  {{ dataSourceOption.label }}
           md-layout
             md-input-container(style="display: inline-block; width: auto;")
-                label(for="max-rows")  Rows of random data
-                md-input(name='max-rows', v-model="maxRowCount")
+              label(for="max-rows")  Rows of random data
+              md-input(name='max-rows', v-model="maxRowCount")
       .form-row
         md-layout(md-gutter="40")
           md-layout(md-flex="33")
@@ -82,6 +96,22 @@
       }
     },
     computed: {
+        fileName: {
+          get () {
+            return this.$store.state.fileName;
+          },
+          set (value) {
+            this.$store.dispatch('setFileName', {value});
+          }
+        },
+        file: {
+          get () {
+            return this.$store.state.file;
+          },
+          set (value) {
+            this.$store.dispatch('setFile', {value});
+          }
+        },
         isValid: {
           get() {
             // check that columns are valid
@@ -174,6 +204,30 @@
       },
       addNewColumn: function () {
         this.$store.commit('ADD_NEW_COLUMN')
+      },
+      pickFile: function(e) {
+        var f = e[0];
+        if(f) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+              this.file = e.target.result;
+          };
+          reader.readAsBinaryString(f);
+        }
+        console.log('file name is ' + f.name);
+        console.log('file size is ' + f.size);
+        console.log('file type is ' + f.type);
+      },
+      submitFile: function() {
+        if(this.file) {
+          this.$http.post('/file', this.file).then((response) => {
+              console.log('file uploaded');
+              console.log('status is ' + response.status);
+          }).catch((response) => {
+            this.error.message = (response.body.error) || 'error uploading file';
+            this.$refs.errorsnackbar.open();
+          });
+        }
       },
       getData: function () {
         if(this.isValid) {  // ajax post columns, maxRows

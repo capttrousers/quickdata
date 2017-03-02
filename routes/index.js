@@ -13,9 +13,16 @@ var generateData = require('../utils/generateData');
 
 var testing   = process.env.NODE_TESTING || false;
 
+
 /* GET home page. test */
-router.get('/', function(req, response, next) {
+router.get('/', function(request, response, next) {
   response.redirect("/index.html")
+});
+
+router.post("/file", function(request, response, next) {
+  logger.info('POST on /file');
+  logger.info('request body keys = %j',  Object.keys(request.body));
+  response.status(200).end();
 });
 
 router.post("/quickdata", function(request, response, next) {
