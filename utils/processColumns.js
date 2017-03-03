@@ -33,7 +33,8 @@ module.exports = (bodyColumns, maxRows) => {
     switch (column.dataType) {
       case 'text' :
         column.name = "Text column " + textColumnCount;
-        column.maxValue = Math.min(column.maxValue, 10);
+        // max of 1000 chars for strings, for now
+        column.maxValue = Math.min(column.maxValue, 1000);
         textColumnCount++;
         break;
       case 'date' :
