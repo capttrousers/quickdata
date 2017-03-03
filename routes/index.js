@@ -18,6 +18,11 @@ router.get('/', function(req, response, next) {
   response.redirect("/index.html")
 });
 
+router.post('/fileuploader', function(request, response, next) {
+  logger.info('post on /fileuploader with file %j', request.body.file);
+  response.status(200).end();
+});
+
 router.post("/quickdata", function(request, response, next) {
   if( (! request.body)
     || request.body == null

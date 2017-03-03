@@ -76,6 +76,7 @@
 
 <script>
   import row from './row.vue';
+  import Vue from 'vue';
   var FileSaver = require('file-saver');
   export default {
     name: 'app',
@@ -204,7 +205,19 @@
       submitFile: function() {        
         console.log('file size is ' + this.file.size);
         console.log('file name is ' + this.file.name);
-        console.log('file submitted');
+        var reader = new FileReader
+        var body = {};
+        reader.onload = function(evt) {
+          body.file = evt.target.result;
+          Vue.http.post('/fileuploader', body).then((response) => {
+            console.log('post to /fileuploader successful');
+          }).catch((response) => {
+            this.error.message = (response.body.error) || '404 error';
+            this.$refs.errorsnackbar.open();
+          });
+          console.log('file submitted');
+        }
+        reader.readAsText(this.file);
       },
       getData: function () {
         if(this.isValid) {  // ajax post columns, maxRows
