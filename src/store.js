@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		file: null,
+		fileValue: null,
 		fileName: '',
 		columns: [],
 		maxrows: "50",
@@ -48,8 +48,8 @@ export default new Vuex.Store({
 		SET_DATA_SOURCE(state, payload) {
 			state.dataSource = payload.value;
 		},
-		SET_FILE(state, payload) {
-			state.file = payload.value;
+		SET_FILE_VALUE(state, payload) {
+			state.fileValue = payload.value;
 		},
 		SET_FILE_NAME(state, payload) {
 			state.fileName = payload.value;
@@ -110,8 +110,8 @@ export default new Vuex.Store({
 	},
 
 	actions: {
-		setFile({commit}, payload) {
-			commit('SET_FILE', payload);
+		setFileValue({commit}, payload) {
+			commit('SET_FILE_VALUE', payload);
 		},
 		setFileName({commit}, payload) {
 			commit('SET_FILE_NAME', payload);

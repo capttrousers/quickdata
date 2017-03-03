@@ -19,9 +19,9 @@ router.get('/', function(request, response, next) {
   response.redirect("/index.html")
 });
 
-router.post("/file", function(request, response, next) {
-  logger.info('POST on /file');
-  logger.info('request body keys = %j',  Object.keys(request.body));
+router.post("/fileuploader", function(request, response, next) {
+  logger.info('POST on /fileuploader');
+  // logger.info('request body keys = %j',  Object.keys(request.body));
   response.status(200).end();
 });
 

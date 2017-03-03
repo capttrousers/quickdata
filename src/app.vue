@@ -20,6 +20,8 @@
       p.
         Note, the mysql adhoc testing db is retired as of late, and is performing really slow. Stick with postgres and mssql unless mysql is necessary.
 
+    md-progress(v-show="false", indeterminate, :md-progress="progress")
+
     md-dialog(md-open-from="#getDataButton", md-close-to="#getDataButton", ref="alert")
       md-dialog-title Invalid form
       md-dialog-content
@@ -32,11 +34,15 @@
       .form-row
         md-layout(md-gutter="24")
           md-layout(md-flex)
-            md-input-container
+            vue-clip(:options="options", :on-added-file="pickFile")
+              template(slot="clip-uploader-action")
+                .dz-message
+                  h2 Upload a schema file
+            <!-- md-input-container
               label Schema file
-              md-file(v-model="fileName", @selected="pickFile($event)")
+              md-file(v-model="fileName", accept="text/*" @changed="pickFile($event)") -->
           md-layout(md-flex)
-            md-button.md-raised(:disabled="file == null", @click.native="submitFile") Submit
+            md-button.md-raised(:disabled="fileValue == null", @click.native="submitFile") Submit
       .form-row
         md-layout(md-gutter="24")
           md-layout(md-flex)
@@ -93,9 +99,22 @@
         error: {
           message: 'default error message'
         }
+        , options: {
+            url: '/fileuploader',
+            uploadMultiple: false
+        }
+        , progressValue: 0
       }
     },
     computed: {
+        progress: {
+          get() {
+            return this.progressValue;
+          },
+          set(value){
+            this.progressValue = value;
+          }
+        },
         fileName: {
           get () {
             return this.$store.state.fileName;
@@ -104,12 +123,12 @@
             this.$store.dispatch('setFileName', {value});
           }
         },
-        file: {
+        fileValue: {
           get () {
-            return this.$store.state.file;
+            return this.$store.state.fileValue;
           },
           set (value) {
-            this.$store.dispatch('setFile', {value});
+            this.$store.dispatch('setfileValue', {value});
           }
         },
         isValid: {
@@ -205,22 +224,26 @@
       addNewColumn: function () {
         this.$store.commit('ADD_NEW_COLUMN')
       },
-      pickFile: function(e) {
-        var f = e[0];
-        if(f) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-              this.file = e.target.result;
-          };
-          reader.readAsBinaryString(f);
-        }
-        console.log('file name is ' + f.name);
-        console.log('file size is ' + f.size);
-        console.log('file type is ' + f.type);
+      pickFile: function(file) {
+        this.fileValue = file;
+        console.log('file name is ' + file.name);
+        console.log('file size is ' + file.size);
+        console.log('file type is ' + file.type);
       },
       submitFile: function() {
-        if(this.file) {
-          this.$http.post('/file', this.file).then((response) => {
+        if(this.fileValue) {
+          var body = {};
+          body.file = this.fileValue;
+          console.log('file name is ' + body.name);
+          console.log('file size is ' + body.size);
+          console.log('file type is ' + body.type);
+          // const reader = new FileReader();
+          // reader.onload = (e) => {
+          //     this.fileValue = e.target.result;
+          // };
+          // reader.readAsBinaryString(f);
+          console.log(typeof this.fileValue);
+          this.$http.post('/fileuploader', body).then((response) => {
               console.log('file uploaded');
               console.log('status is ' + response.status);
           }).catch((response) => {
