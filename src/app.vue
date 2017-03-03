@@ -30,6 +30,14 @@
 
     #form
       .form-row
+          md-layout(md-gutter="40")
+            md-layout
+              md-input-container
+                label Schema file
+                md-file(v-model="fileName", :multiple="false", @selected="pickFile($event)")
+            md-layout
+              md-button.md-raised(@click.native="submitFile") Submit file
+      .form-row
         md-layout(md-gutter="40")
           md-layout
             md-button.md-raised(@click.native="addNewColumn") Add Column
@@ -78,7 +86,8 @@
       return {
         error: {
           message: 'default error message'
-        }
+        },
+        fileName: ""
       }
     },
     computed: {
@@ -111,6 +120,14 @@
         tableNameLabel: {
           get() {
             return (this.dataSource == 'csv' ? 'File' : 'Table') + ' Name (no spaces)';
+          }
+        },
+        file: {
+          get () {
+            return this.$store.state.file;
+          },
+          set (value) {
+            this.$store.dispatch('setFile', {value});
           }
         },
         tableName: {
@@ -174,6 +191,20 @@
       },
       addNewColumn: function () {
         this.$store.commit('ADD_NEW_COLUMN')
+      },
+      pickFile: function( event ) {
+        var f = event[0];
+        if(f) {
+          console.log('file size is ' + f.size);
+          console.log('file name is ' + f.name);
+          console.log('file picked');
+          this.file = f;        
+        }
+      },
+      submitFile: function() {        
+        console.log('file size is ' + this.file.size);
+        console.log('file name is ' + this.file.name);
+        console.log('file submitted');
       },
       getData: function () {
         if(this.isValid) {  // ajax post columns, maxRows
