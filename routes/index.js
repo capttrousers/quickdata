@@ -159,10 +159,10 @@ router.post("/quickdata", function(request, response, next) {
             connectionText += "|     data source type               :       " + request.body.dataSource.toUpperCase() + "  \n|\n";
             connectionText += "|     host                           :       " + seq.config.host + " \n";
             connectionText += "|     port                           :       " + seq.config.port + " \n|\n";
-            connectionText += "|     database name                  :       " + seq.config.database + " \n";
-            connectionText += "|     table name                     :       " + request.body.tableName + " \n|\n";
             connectionText += "|     username of test db            :       " + seq.config.username + " \n";
             connectionText += "|     password of test db            :       " + seq.config.password + " \n|\n";
+            connectionText += "|     database name                  :       " + seq.config.database + " \n\n";
+            connectionText += "|     table name                     :       " + request.body.tableName + " \n|\n";
             connectionText += "|     user requesting random data    :       " + request.body.user + " \n";
             connectionText += "|     random data created on         :       " + createdAt.toString();
             return response.status(200).type('text').send(connectionText);
