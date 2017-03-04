@@ -5,8 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		fileValue: null,
-		fileName: '',
+    file: null,
 		columns: [],
 		maxrows: "50",
     dataSource: "csv",
@@ -48,14 +47,11 @@ export default new Vuex.Store({
 		SET_DATA_SOURCE(state, payload) {
 			state.dataSource = payload.value;
 		},
-		SET_FILE_VALUE(state, payload) {
-			state.fileValue = payload.value;
-		},
-		SET_FILE_NAME(state, payload) {
-			state.fileName = payload.value;
-		},
 		SET_SFCASE(state, payload) {
 			state.sfCase = payload.value;
+		},
+		SET_FILE(state, payload) {
+			state.file = payload.value;
 		},
 		SET_USER(state, payload) {
 			state.user = payload.value;
@@ -110,17 +106,14 @@ export default new Vuex.Store({
 	},
 
 	actions: {
-		setFileValue({commit}, payload) {
-			commit('SET_FILE_VALUE', payload);
-		},
-		setFileName({commit}, payload) {
-			commit('SET_FILE_NAME', payload);
-		},
 		setTableName({commit}, payload) {
 			commit('SET_TABLE_NAME', payload);
 		},
 		setDataSource({commit}, payload) {
 			commit('SET_DATA_SOURCE', payload);
+		},
+		setFile({commit}, payload) {
+			commit('SET_FILE', payload);
 		},
 		setUser({commit}, payload) {
 			commit('SET_USER', payload);
