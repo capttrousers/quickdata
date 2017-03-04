@@ -32,7 +32,7 @@ app.use(cookieParser());
 // app.use('/index.html', express.static('./index.html'));
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'dist')));
+// app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use('/', routes);
 app.use('/fileuploader', file);
