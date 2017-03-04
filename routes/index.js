@@ -15,13 +15,7 @@ var testing   = process.env.NODE_TESTING || false;
 
 /* GET home page. test */
 router.get('/', function(request, response, next) {
-  response.redirect("/index.html")
-});
-
-router.post("/fileuploader", function(request, response, next) {
-  logger.info('POST on /fileuploader with file %j', request.body.file);
-  // logger.info('request body keys = %j',  Object.keys(request.body));
-  response.status(200).end();
+  response.type('html').sendFile("/index.html");
 });
 
 router.post("/quickdata", function(request, response, next) {

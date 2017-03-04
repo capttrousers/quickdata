@@ -7,10 +7,10 @@ var logger   = require('../utils/logger').logger;
 
 var testing   = process.env.NODE_TESTING || false;
 
+
 router.post("/", function(request, response, next) {
-  logger.info('POST on /file');
+  logger.info('POST on /fileuploader with file %j', request.body.file);
   // logger.info('request body keys = %j',  Object.keys(request.body));
   response.status(200).end();
 });
-
 module.exports = router;

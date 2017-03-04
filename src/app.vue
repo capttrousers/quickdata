@@ -20,7 +20,7 @@
       p.
         Note, the mysql adhoc testing db is retired as of late, and is performing really slow. Stick with postgres and mssql unless mysql is necessary.
 
-    md-progress(v-show="false", indeterminate, :md-progress="progress")
+    md-progress(v-show="false", indeterminate, :md-progress="progressValue")
 
     md-dialog(md-open-from="#getDataButton", md-close-to="#getDataButton", ref="alert")
       md-dialog-title Invalid form
@@ -36,9 +36,12 @@
           md-layout(md-flex)
             md-input-container
               label Schema file
-              md-file(v-model="fileName", accept="text/*", :multiple="false", @changed="pickFile($event)")
-          md-layout(md-flex)
+              md-file(v-model="fileName", accept="text/*", :multiple="false", @selected="pickFile($event)")
+          md-layout
             md-button.md-raised(:disabled="file == null", @click.native="submitFile") Submit
+          md-layout
+            md-button.md-raised.md-icon-button( @click.native="helpRouter")
+              md-icon help_outline
       .form-row
         md-layout(md-gutter="24")
           md-layout(md-flex)
@@ -212,10 +215,17 @@
           console.log('file size is ' + f.size);
           console.log('file name is ' + f.name);
           console.log('file picked');
-          this.file = f;        
+
+          // process file
+
+          console.log('file processed');
+          this.file = f;
         }
       },
-      submitFile: function() {        
+      helpRouter: function() {
+        console.log('help router to show schema text file')
+      },
+      submitFile: function() {
         console.log('file size is ' + this.file.size);
         console.log('file name is ' + this.file.name);
         var reader = new FileReader

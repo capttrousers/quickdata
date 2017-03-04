@@ -9,12 +9,12 @@ chai.use(chaiHttp);
 
 
 describe.only('server accepts a text or json file to describe schema', function(){
-  it('POST /file accepts a text file and returns 200', function(){
+  it('POST /fileuploader accepts a text file and returns 200', function(){
     // expect(200).to.equal(200);
     var body = {
-        keyTest: 'test'
+        file: 'test'
     }
-    return chai.request(app).post('/file').send(body).then(function(res) {
+    return chai.request(app).post('/fileuploader').send(body).then(function(res) {
       expect(res).to.have.status(200);
       // expect(res).to.be.text;
       // expect(res).to.have.property('text');
@@ -22,4 +22,9 @@ describe.only('server accepts a text or json file to describe schema', function(
       // expect(count).to.equal(body.maxRows);
     });
   });
+
+  it('explodes a string', function() {
+    var str = "abcd";
+    expect(_.split(str, '')).to.have.lengthOf(4).and.be.an('array');
+  })
 });

@@ -29,13 +29,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // app.use( [URL path],  express.static( relative file path ) )
-app.use('/index.html', express.static('./index.html'));
+// app.use('/index.html', express.static('./index.html'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use('/', routes);
-// app.use('/file', file);
+app.use('/fileuploader', file);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
