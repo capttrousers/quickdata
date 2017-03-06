@@ -7,7 +7,7 @@ export default new Vuex.Store({
 	state: {
     file: null,
 		columns: [],
-		maxrows: "50",
+		numberOfRecords: "50",
     dataSource: "csv",
     user: "somebody@tableau.com",
     sfCase: "01234",
@@ -36,7 +36,7 @@ export default new Vuex.Store({
 
 	// // getters allow custom computed functions on the state
 	// getters: {
-	// 	maxRows : state => state.maxRows
+	// 	numberOfRecords : state => state.numberOfRecords
 	// 	// , other stuff
 	// },
 
@@ -56,8 +56,8 @@ export default new Vuex.Store({
 		SET_USER(state, payload) {
 			state.user = payload.value;
 		},
-		SET_MAX_ROWS(state, payload) {
-			state.maxrows = payload.value;
+		SET_NUMBER_OF_RECORDS(state, payload) {
+			state.numberOfRecords = payload.value;
 		},
 		ADD_NEW_COLUMN(state) {
 			if(state.columns.length <= 5) {
@@ -121,8 +121,8 @@ export default new Vuex.Store({
 		setSFCase({commit}, payload) {
 			commit('SET_SFCASE', payload);
 		},
-		setMaxRows({commit}, payload) {
-			commit('SET_MAX_ROWS', payload);
+		setNumberOfRecords({commit}, payload) {
+			commit('SET_NUMBER_OF_RECORDS', payload);
 		},
 		updateColumn({commit}, payload) {
 			commit('UPDATE_COLUMN', payload);

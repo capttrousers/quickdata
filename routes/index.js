@@ -21,8 +21,8 @@ router.get('/', function(request, response, next) {
 router.post("/quickdata", function(request, response, next) {
   if( (! request.body)
     || request.body == null
-    || request.body.maxRows == null
-    || request.body.maxRows.length == 0
+    || request.body.numberOfRecords == null
+    || request.body.numberOfRecords.length == 0
     || request.body.columns == null
     || request.body.columns.length == 0
     || request.body.dataSource == null
@@ -43,15 +43,15 @@ router.post("/quickdata", function(request, response, next) {
 
 router.post("/quickdata", function(request, response, next) {
   logger.info('POST /quickdata recieved a valid request body')
-	var maxRows = request.body.maxRows;
+	var numberOfRecords = request.body.numberOfRecords;
   // goes up to at least a million
   // but for now will limit to 100000 records for in memory bulkInsert db operations
   // mssql currently has a limit of 1000 for bulk insert, fixed in sequelize@4.0
   var MAXIMUM_RECORDS = (request.body.dataSource != 'mssql' ? 100000 : 1000);
-  request.body.maxRows = (maxRows <= MAXIMUM_RECORDS && maxRows > 0 ? maxRows : 50);
+  request.body.numberOfRecords = (numberOfRecords <= MAXIMUM_RECORDS && numberOfRecords > 0 ? numberOfRecords : 50);
 
 	// first loop thru columns, find interval profile for each column
-	request.body.columns = processColumns(request.body.columns, request.body.maxRows);
+	request.body.columns = processColumns(request.body.columns, request.body.numberOfRecords);
   request.body.tableName = request.body.sfCase + '_' + request.body.tableName;
 
   // create table attributes object here to check against any existing tables
@@ -102,7 +102,7 @@ router.post("/quickdata", function(request, response, next) {
 	// parse and create json to create / overwrite csv file in public
 	// quick_data will be json parsed to csv: json2csv({ data: quick_data, fields: quick_data_fields })
   // quick_date is array of objs, each obj is row of key value pairs
-	var quick_data = generateData(request.body.columns, request.body.maxRows);
+	var quick_data = generateData(request.body.columns, request.body.numberOfRecords);
   logger.info("Generate data successful");
 
 

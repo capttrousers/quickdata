@@ -58,12 +58,6 @@ describe("HTTP requests", function() {
 
   describe("quick data api", function() {
 
-    it('GET / redirects', function() {
-			return chai.request(app).get('/').then(function(response) {
-				expect(response).to.redirect;
-			});
-    })
-
     it("GET / returns status 200 and be html", function() {
       return chai.request(app).get('/').then(function(response) {
         expect(response).to.have.status(200).and.to.be.html;
@@ -79,7 +73,7 @@ describe("HTTP requests", function() {
 
     // does it actually default to values: ?
     // defaults to acceptable values if none are given
-    // for user, rows, data source, table name, sf case
+    // for user, records, data source, table name, sf case
 
     var body = {};
     body.user = 'testUser1';
@@ -107,7 +101,7 @@ describe("HTTP requests", function() {
         "child": {}
       }
     ];
-    body.maxRows = 5;
+    body.numberOfRecords = 5;
 
     it("POST /quickdata with no parameters is rejected as Bad Request (400)", function() {
       return chai.request(app).post('/quickdata').catch(function(err) {
@@ -124,7 +118,7 @@ describe("HTTP requests", function() {
         expect(res).to.be.text;
         expect(res).to.have.property('text');
         var count = (res.text.match(/\n/g) || []).length;
-        expect(count).to.equal(body.maxRows);
+        expect(count).to.equal(body.numberOfRecords);
       });
     });
 
@@ -141,7 +135,7 @@ describe("HTTP requests", function() {
         expect(res).to.be.text;
         expect(res).to.have.property('text');
         var count = (res.text.match(/\n/g) || []).length;
-        expect(count).to.equal(16);
+        expect(count).to.equal(17);
       });
     });
 
@@ -160,7 +154,7 @@ describe("HTTP requests", function() {
         expect(res).to.be.text;
         expect(res).to.have.property('text');
         var count = (res.text.match(/\n/g) || []).length;
-        expect(count).to.equal(16);
+        expect(count).to.equal(17);
       });
     });
 

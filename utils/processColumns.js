@@ -5,20 +5,20 @@
 
 var getRandomDataValue = require('./getRandomDataValue');
 
-module.exports = (bodyColumns, maxRows) => {
+module.exports = (bodyColumns, numberOfRecords) => {
   var fields = bodyColumns;
   // # of columns for each datatype for column names:
   var textColumnCount = decColumnCount = intColumnCount = dateColumnCount = 1;
   var columns = [];
 
   fields.forEach(function(bodyColumn) {
-    var column = processColumn(bodyColumn, maxRows);
+    var column = processColumn(bodyColumn, numberOfRecords);
     columns.push(column);
     // handle child column
     if(bodyColumn.hierarchy == 'parent') {
       var child = bodyColumn.child;
       child.parentIndex = columns.indexOf(bodyColumn);
-      child = processColumn(child, maxRows);
+      child = processColumn(child, numberOfRecords);
       columns.push(child);
     }
   });
@@ -26,8 +26,8 @@ module.exports = (bodyColumns, maxRows) => {
   return columns;
 
   // take column, add a few attrs and push column.name to quick_data_fields
-  function processColumn(column, maxRows) {
-    column.interval = (1 <= column.interval && column.interval <= maxRows
+  function processColumn(column, numberOfRecords) {
+    column.interval = (1 <= column.interval && column.interval <= numberOfRecords
                                 ? column.interval : 1);
     column.intervalCounter = column.interval;
     switch (column.dataType) {

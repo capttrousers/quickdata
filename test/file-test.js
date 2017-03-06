@@ -8,7 +8,7 @@ var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
 
-describe.only('server accepts a text or json file to describe schema', function(){
+describe('server accepts a text or json file to describe schema', function(){
   it('POST /fileuploader accepts a text file and returns 200', function(){
     // expect(200).to.equal(200);
     var body = {
@@ -23,8 +23,19 @@ describe.only('server accepts a text or json file to describe schema', function(
     });
   });
 
-  it('explodes a string', function() {
-    var str = "abcd";
-    expect(_.split(str, '')).to.have.lengthOf(4).and.be.an('array');
+  it('explodes a string by the newline characters', function() {
+    var str = "a\nb\nc\nd";
+    expect(_.split(str, '\n')).to.have.lengthOf(4).and.be.an('array');
+  })
+
+  it('counts pipes in the string', function() {
+    var text = "one\n|two\n|\n|three\n|four"
+    expect(text.match(/\|/g)).to.have.lengthOf(4);
+  })
+
+  it('replaces pipes in the string using lodash', function() {
+    var text = "one\n|two\n|\n|three\n|four";
+    var mod = _.replace(text, /\|/g, ' ');
+    expect(mod.indexOf('|')).to.equal(-1);
   })
 });

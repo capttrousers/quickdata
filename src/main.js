@@ -7,7 +7,7 @@ Vue.use(VueResource);
 // Vue.use(VueClip);
 
 // import App from './App.vue'
-import app from './app.vue';
+import app from './components/app.vue';
 import store from './store';
 import router from './router';
 

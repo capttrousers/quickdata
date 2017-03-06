@@ -13,15 +13,15 @@
 
     #form
       .form-row
-        md-layout(md-gutter="24")
-          md-layout(md-flex)
+        md-layout(md-gutter="8")
+          md-layout(md-flex="75")
             md-input-container
               label Schema file
               md-file(v-model="fileName", accept="text/*", :multiple="false", @selected="pickFile($event)")
-          md-layout
+          md-layout(md-flex="15")
             md-button.md-raised(:disabled="file == null", @click.native="submitFile") Submit
-          md-layout
-            md-button.md-raised.md-icon-button( @click.native="helpRouter")
+          md-layout(md-flex="10")
+            md-button.md-raised.md-icon-button.md-dense( @click.native="helpRouter")
               md-icon help_outline
       .form-row
         md-layout(md-gutter="24")
@@ -42,8 +42,8 @@
                 md-option(v-for="dataSourceOption in dataSources", :value="dataSourceOption.value")  {{ dataSourceOption.label }}
           md-layout
             md-input-container(style="display: inline-block; width: auto;")
-              label(for="max-rows")  Rows of random data
-              md-input(name='max-rows', v-model="maxRowCount")
+              label(for="number-of-records")  Records of random data
+              md-input(name='number-of-records', v-model="numberOfRecords")
       .form-row
         md-layout(md-gutter="40")
           md-layout(md-flex="33")
@@ -92,10 +92,10 @@
         isValid: {
           get() {
             // check that columns are valid
-            // check max rows, email, sfcase, table name
+            // check number of records, email, sfcase, table name
             /*
-            if( this.maxRows < 1
-              || this.maxRows > 1000
+            if( this.numberOfRecords < 1
+              || this.numberOfRecords > 1000
               || this.columns.length < 1
               || this.user.indexOf('@tableau.com') < 1 // not zero so user@tableau, charset
               || this.tableName.length > 0
@@ -137,12 +137,12 @@
             this.$store.dispatch('setTableName', {value});
           }
         },
-        maxRowCount: {
+        numberOfRecords: {
           get () {
-            return this.$store.state.maxrows;
+            return this.$store.state.numberOfRecords;
           },
           set (value) {
-            this.$store.dispatch('setMaxRows', {value});
+            this.$store.dispatch('setNumberOfRecords', {value});
           }
         },
         sfCase: {
@@ -209,7 +209,7 @@
       submitFile: function() {
         console.log('file size is ' + this.file.size);
         console.log('file name is ' + this.file.name);
-        var reader = new FileReader
+        var reader = new FileReader();
         var body = {};
         reader.onload = function(evt) {
           body.file = evt.target.result;
@@ -224,7 +224,7 @@
         reader.readAsText(this.file);
       },
       getData: function () {
-        if(this.isValid) {  // ajax post columns, maxRows
+        if(this.isValid) {  // ajax post columns, numberOfRecords
           // add user, sfcase, datasource
           var body = {};
           body.user = this.user;
@@ -232,7 +232,7 @@
           body.dataSource = this.dataSource;
           body.sfCase = this.sfCase;
           body.columns = this.columns;
-          body.maxRows = this.maxRowCount;
+          body.numberOfRecords = this.numberOfRecords;
 
           this.$http.post('/quickdata', body).then(
             (response) => {
@@ -252,8 +252,8 @@
           /*
           var temp = [];
           console.log("len after clearing " + this.alerts.length);
-          if( this.maxRows < 1) { this.alerts.push("Max Rows must be greater than 0"); }
-          if(this.maxRows > 1000) { this.alerts.push("Max Rows must be less than 1000"); }
+          if( this.numberOfRecords < 1) { this.alerts.push("Number of records must be greater than 0"); }
+          if(this.numberOfRecords > 1000) { this.alerts.push("Number of records must be less than 1000"); }
           if(this.columns.length < 1) { this.alerts.push("Must add at least one column of data to the dataset"); }
           // not zero so user@tableau, charset)
           if(this.user.indexOf('@tableau.com') < 1) { this.alerts.push("User must be valid tableau employee"); }
