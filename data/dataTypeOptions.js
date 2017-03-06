@@ -7,9 +7,11 @@
         HIERARCHY, DATATYPE, TREND, INCREMENT, INTERVAL, NULLS, FILE
 
 */
+// var dataColumnObject:
 
-var dataColumnObject:
+module.exports = 
 {
+  
   type: ["int", "date", "float", "string"],      // data type
   // parent/child
   hierarchy: ['parent','child','none'],           // parent child relationship
