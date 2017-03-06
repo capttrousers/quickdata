@@ -152,7 +152,7 @@ describe("Database connections with sequelize", function() {
         })).to.eventually.have.lengthOf(0) ;
       });
 
-      it.only('checks database to make sure the table was deleted', function() {
+      it('checks database to make sure the table was deleted', function() {
 				// need to differntiate between mysql and postgres error messages
 				// postgres at work and in production, mysql at home
 				/*
