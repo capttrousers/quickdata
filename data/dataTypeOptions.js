@@ -1,28 +1,19 @@
 /*
-
+  ** Will need to create a conversion function that can convert text files to json files to dataColumnObjects and back.
   When using the quickdata tool, users will need to input two sets of info (all caps for variables) :
     1. Info about their use case, such as their email, SFCase if applicable, the table/file name, and the number of records to generate.
         SFCASE, TABLENAME, USEREMAIL, NUMBER_OF_RECORDS, DATASOURCE
     2. Then they will need to input the "schema". This can either be an array of dataColumnObjects like below, or a text/json file that represents the schema.
         HIERARCHY, DATATYPE, TREND, INCREMENT, INTERVAL, NULLS, FILE
 
-    ** Will need to create a conversion function that can convert text files to json files to dataColumnObjects and back.
-
-
 */
-
-
 
 var dataColumnObject:
 {
-
   type: ["int", "date", "float", "string"],      // data type
-max rows
   // parent/child
   hierarchy: ['parent','child','none'],           // parent child relationship
-
   child: {},                                      // if hierarchy is parent, child prop will be the the child's dataColumnObject, but I think the processColumns function pulls this out to an individual columnList item, and adds a "parentIndex" field for all columns, which will be the array index of the parent dataColumnObject
-
 
   // these two, trend and increment could be collapsed into a single field, random will be null, then positive or negative trends can be inferred from the increment value
   trend: ["positive","negative","none"],           // 'none' for randomness
@@ -40,7 +31,10 @@ max rows
     maxLength
     maxValue
     minValue
-
+    defaults?
+        dates: min = 1/1/2000, max = today();
+        ints & floats min = 0, max = 1000 ;
+        strings: min = max = 10;
   */
 
   // File overrides all the attrs above besides interval and maybe nulls?
