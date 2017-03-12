@@ -7,7 +7,7 @@ export default new Vuex.Store({
 	state: {
     file: null,
 		columns: [],
-		numberOfRecords: "50",
+		numberOfRecords: "500",
     dataSource: "csv",
     user: "somebody@tableau.com",
     sfCase: "01234",
@@ -22,15 +22,19 @@ export default new Vuex.Store({
         {text: "Text", value: "text"},
         {text: "Integer", value: "integer"},
         {text: "Decimal", value: "decimal"},
-        {text: "Date", value: "date"}
+        {text: "Date", value: "date"},
+        {text: "File", value: "file"}
 		],
 		templateColumn: {
 			"dataType": "text",
-			"maxValue": "10",
+			"maxValue": "10",  // need to do max and min
 			"interval": "1",
 			// possible options: 'none', 'parent', 'child'
 			"hierarchy": "none",
-			"child": {}
+			"child": {},
+			"file": null,
+			"fileName": "", // file name is needed for v model on file input
+			"behavior": "expand"
 		}
 	},
 

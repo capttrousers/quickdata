@@ -4,20 +4,30 @@
       md-button.md-icon-button.md-warn.md-dense(@click.native="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
           md-icon clear
     span.childLabel(v-else) Child column of Column {{ columnIndex + 1 }}
-    md-layout(md-gutter="40")
+    md-layout(md-gutter="24")
       md-layout(v-if="hierarchy != 'child'", md-flex="15", md-theme="'row'")
         md-button-toggle.md-primary
-          md-button(@click.native="toggleHierarchy", :disabled="dataType == 'date'") Parent
+          md-button(@click.native="toggleHierarchy", :disabled="dataType == 'date' || dataType == 'file'") Parent
       md-layout(md-flex="20")
         md-input-container
           label(for='data-type')  Data type
           md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
             md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value")  {{ dataTypeOption.text }}
-      md-layout(md-flex="30")
+      md-layout(md-flex="25", v-if="dataType == 'file'")
+        md-input-container
+          label Data list file
+          md-file(v-model="fileName", accept="text/*", :multiple="false", @selected="pickFile($event)")
+      md-layout(md-flex="20", v-if="dataType == 'file'")
+        md-input-container
+          label Behavior
+          md-select(v-model="behavior")
+            md-option(value="expand") Expand
+            md-option(value="random") Random
+      md-layout(md-flex="30", v-if="dataType != 'file'")
         md-input-container
           label {{ MaxValueLabel }}
           md-input(v-model="maxValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
-      md-layout(md-flex="20", v-if="dataType == 'text' || dataType == 'integer' || dataType == 'decimal' ")
+      md-layout(md-flex="20", v-if="(dataType == 'file' && behavior != 'random') || (dataType != 'date' && dataType != 'file')")
         md-input-container
           label  Interval:
           md-input(v-model="interval")
@@ -37,7 +47,7 @@
   				var dTypes = JSON.parse(JSON.stringify(this.$store.state.dataTypes));
   				if(this.hierarchy == 'parent') {
   					// date is at index 3 in default dataTypes array in store
-  					dTypes.splice(3,1);
+  					dTypes.splice(3,2);
   				}
   				return dTypes;
 			  }
@@ -57,6 +67,36 @@
           this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
+      behavior: {
+        get() {
+          return this.columnData.behavior;
+        },
+        set(value) {
+          var propName = 'behavior';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
+      file: {
+        get() {
+          return this.columnData.file;
+        },
+        set(value) {
+          var propName = 'file';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
+      fileName: {
+        get() {
+          return this.columnData.fileName;
+        },
+        set(value) {
+          var propName = 'fileName';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
       interval: {
         get() {
           return this.columnData.interval;
@@ -64,6 +104,9 @@
         set(value) {
           var propName = this.hierarchy == 'child' ? 'child-interval' : 'interval';
           var index = this.columnIndex;
+          if(this.dataType == 'file') {
+            value = Math.min(value, 10);
+          }
           this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
@@ -92,10 +135,18 @@
               value = yyyy + '-' + mm + '-' + dd;
               this.$store.dispatch('updateColumn', {index, propName, value});
               break;
-            default:
+            case 'integer':
+            case 'decimal':
               value = '1000';
               this.$store.dispatch('updateColumn', {index, propName, value});
           }
+          propName = 'interval';
+          if(this.dataType == 'file') {
+            value = "10";
+          } else {
+            value = '1';
+          }
+          this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
       MaxValueLabel: {
@@ -117,11 +168,16 @@
       }
 		},
 		methods: {
-      toggleHierarchy: function (){
+      toggleHierarchy: function () {
         var value = this.hierarchy == 'none' ? 'parent' : 'none';
         var index = this.columnIndex;
         var propName = 'hierarchy';
 				this.$store.dispatch('updateColumn', {index, propName, value});
+      },
+      pickFile: function(evt) {
+        this.file = evt[0];
+        if(this.file)
+          console.log(this.file.type);
       },
 			removeColumn: function(index) {
         if(this.hierarchy != 'child') {
