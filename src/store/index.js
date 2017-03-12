@@ -27,7 +27,8 @@ export default new Vuex.Store({
 		],
 		templateColumn: {
 			"dataType": "text",
-			"maxValue": "10",  // need to do max and min
+			"minValue": "1",
+			"maxValue": "10",
 			"interval": "1",
 			// possible options: 'none', 'parent', 'child'
 			"hierarchy": "none",
@@ -88,19 +89,16 @@ export default new Vuex.Store({
 				state.columns[index].hierarchy = newValue;
 				state.columns[index].child = (newValue == 'parent' ? newColumn : {});
         if(newValue == 'parent') {
-					if(state.columns[index].dataType == 'date') {
-	          state.columns[index].dataType = 'text';
-				    state.columns[index].maxValue = 10;
-	        }
 					state.columns[index].child.hierarchy = 'child';
 					state.columns[index].child.maxValue = state.columns[index].maxValue;
+					state.columns[index].child.minValue = state.columns[index].minValue;
 					state.columns[index].child.dataType = state.columns[index].dataType;
 
 				}
 			} else {
         state.columns[index][propName] = newValue;
 				if(state.columns[index].hierarchy == 'parent') {
-					if( propName == 'maxValue' || propName == 'dataType') {
+					if( propName == 'maxValue' || propName == 'minValue' || propName == 'dataType') {
 						state.columns[index].child[propName] = newValue;
 					} else if (propName == 'interval') {
 						 state.columns[index].child[propName] = Math.min(state.columns[index].child[propName] , newValue);

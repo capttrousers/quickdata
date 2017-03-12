@@ -5,7 +5,7 @@
           md-icon clear
     span.childLabel(v-else) Child column of Column {{ columnIndex + 1 }}
     md-layout(md-gutter="24")
-      md-layout(v-if="hierarchy != 'child'", md-flex="15", md-theme="'row'")
+      md-layout(v-if="hierarchy != 'child'", md-flex="10", md-theme="'row'")
         md-button-toggle.md-primary
           md-button(@click.native="toggleHierarchy", :disabled="dataType == 'date' || dataType == 'file'") Parent
       md-layout(md-flex="20")
@@ -23,7 +23,11 @@
           md-select(v-model="behavior")
             md-option(value="expand") Expand list
             md-option(value="random") Random
-      md-layout(md-flex="30", v-if="dataType != 'file'")
+      md-layout(md-flex="20", v-if="dataType != 'file'")
+        md-input-container
+          label {{ MinValueLabel }}
+          md-input(v-model="minValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
+      md-layout(md-flex="20", v-if="dataType != 'file'")
         md-input-container
           label {{ MaxValueLabel }}
           md-input(v-model="maxValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
@@ -67,6 +71,16 @@
           this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
+      minValue: {
+        get() {
+          return this.columnData.minValue;
+        },
+        set(value) {
+          var propName = 'minValue';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
       interval: {
         get() {
           return this.columnData.interval;
@@ -86,26 +100,22 @@
           var index = this.columnIndex;
           this.$store.dispatch('updateColumn', {index, propName, value});
           // dispatch update column for max value based on value
-          propName = 'maxValue'
+
           switch (value) {
             case 'text':
-              value = '10';
-              this.$store.dispatch('updateColumn', {index, propName, value});
+              this.maxValue = "10";
+              this.minValue = "1";
               break;
             case 'date':
-              var d = new Date();
-              // getMonth() is zero indexed
-              var mm = d.getMonth() + 1;
-              // getDate() is 1 indexed, but minus 1 to start yesterday
-              var dd = d.getDate() - 1;
-              var yyyy = d.getFullYear();
-              value = yyyy + '-' + mm + '-' + dd;
-              this.$store.dispatch('updateColumn', {index, propName, value});
+              var value = new Date().setFullYear(new Date().getFullYear() - 1);
+              this.minValue = new Date(value).toJSON().substring(0,10);
+              this.maxValue = new Date().toJSON().substring(0,10);
               break;
             case 'decimal':
             case 'integer':
-              value = '1000';
-              this.$store.dispatch('updateColumn', {index, propName, value});
+              this.maxValue = '1000';
+              this.minValue = "0";
+              break;
           }
         }
       },
@@ -114,13 +124,30 @@
           var label = "";
           switch (this.dataType) {
             case 'date':
-              label = "Minimum date";
+              label = "Maximum date";
               break;
             case 'text':
               label = "Max length";
               break;
             default:
               label = "Max value";
+              break;
+          }
+          return label;
+        }
+      },
+      MinValueLabel: {
+        get() {
+          var label = "";
+          switch (this.dataType) {
+            case 'date':
+              label = "Minimum date";
+              break;
+            case 'text':
+              label = "Min length";
+              break;
+            default:
+              label = "Min value";
               break;
           }
           return label;
