@@ -4,25 +4,25 @@
       md-button.md-icon-button.md-warn.md-dense(@click.native="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
           md-icon clear
     span.childLabel(v-else) Child column of Column {{ columnIndex + 1 }}
-    md-layout(md-gutter="40")
+    md-layout(md-gutter="24")
       md-layout(v-if="hierarchy != 'child'", md-flex="15", md-theme="'row'")
         md-button-toggle.md-primary
           md-button(@click.native="toggleHierarchy", :disabled="dataType == 'date' || dataType == 'file'") Parent
       md-layout(md-flex="20")
         md-input-container
-          label(for='data-type')  Data type
+          label(for='data-type') Data type
           md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
             md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value")  {{ dataTypeOption.text }}
       md-layout(md-flex="30", v-if="dataType == 'file'")
         md-input-container
-          label  File
+          label Data list file
           md-file(v-model="fileName", accept="text/*", :multiple="false", @selected="addFile($event)")
       md-layout(md-flex="15", v-if="dataType == 'file'")
         md-input-container
-          label  Behavior
+          label Behavior
           md-select(v-model="behavior")
-            md-option(value="expand")  Expand list
-            md-option(value="random")  Random
+            md-option(value="expand") Expand list
+            md-option(value="random") Random
       md-layout(md-flex="30", v-if="dataType != 'file'")
         md-input-container
           label {{ MaxValueLabel }}
