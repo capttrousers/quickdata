@@ -27,12 +27,12 @@ export default new Vuex.Store({
 		],
 		templateColumn: {
 			"dataType": "text",
-			"maxValue": "10",
+			"maxValue": "10",  // need to do max and min
 			"interval": "1",
 			// possible options: 'none', 'parent', 'child'
 			"hierarchy": "none",
 			"file": null,
-			"fileName": "",
+			"fileName": "", // file name is needed for v model on file input
 			"behavior": "expand",
 			"allowNulls": false,
 			"child": {}
