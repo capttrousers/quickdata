@@ -5,29 +5,33 @@
           md-icon clear
     span.childLabel(v-else) Child column of Column {{ columnIndex + 1 }}
     md-layout(md-gutter="24")
-      md-layout(v-if="hierarchy != 'child'", md-flex="15", md-theme="'row'")
+      md-layout(v-if="hierarchy != 'child'", md-flex="10", md-theme="'row'")
         md-button-toggle.md-primary
           md-button(@click.native="toggleHierarchy", :disabled="dataType == 'date' || dataType == 'file'") Parent
       md-layout(md-flex="20")
         md-input-container
-          label(for='data-type')  Data type
+          label(for='data-type') Data type
           md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
             md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value")  {{ dataTypeOption.text }}
-      md-layout(md-flex="25", v-if="dataType == 'file'")
+      md-layout(md-flex="30", v-if="dataType == 'file'")
         md-input-container
           label Data list file
-          md-file(v-model="fileName", accept="text/*", :multiple="false", @selected="pickFile($event)")
-      md-layout(md-flex="20", v-if="dataType == 'file'")
+          md-file(v-model="fileName", accept="text/*", :multiple="false", @selected="addFile($event)")
+      md-layout(md-flex="15", v-if="dataType == 'file'")
         md-input-container
           label Behavior
           md-select(v-model="behavior")
-            md-option(value="expand") Expand
+            md-option(value="expand") Expand list
             md-option(value="random") Random
-      md-layout(md-flex="30", v-if="dataType != 'file'")
+      md-layout(md-flex="20", v-if="dataType != 'file'")
+        md-input-container
+          label {{ MinValueLabel }}
+          md-input(v-model="minValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
+      md-layout(md-flex="20", v-if="dataType != 'file'")
         md-input-container
           label {{ MaxValueLabel }}
           md-input(v-model="maxValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
-      md-layout(md-flex="20", v-if="(dataType == 'file' && behavior != 'random') || (dataType != 'date' && dataType != 'file')")
+      md-layout(md-flex="20", v-if="(dataType != 'date' && dataType != 'file') || (dataType == 'file' && behavior == 'expand')")
         md-input-container
           label  Interval:
           md-input(v-model="interval")
@@ -67,32 +71,12 @@
           this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
-      behavior: {
+      minValue: {
         get() {
-          return this.columnData.behavior;
+          return this.columnData.minValue;
         },
         set(value) {
-          var propName = 'behavior';
-          var index = this.columnIndex;
-          this.$store.dispatch('updateColumn', {index, propName, value});
-        }
-      },
-      file: {
-        get() {
-          return this.columnData.file;
-        },
-        set(value) {
-          var propName = 'file';
-          var index = this.columnIndex;
-          this.$store.dispatch('updateColumn', {index, propName, value});
-        }
-      },
-      fileName: {
-        get() {
-          return this.columnData.fileName;
-        },
-        set(value) {
-          var propName = 'fileName';
+          var propName = 'minValue';
           var index = this.columnIndex;
           this.$store.dispatch('updateColumn', {index, propName, value});
         }
@@ -104,9 +88,6 @@
         set(value) {
           var propName = this.hierarchy == 'child' ? 'child-interval' : 'interval';
           var index = this.columnIndex;
-          if(this.dataType == 'file') {
-            value = Math.min(value, 10);
-          }
           this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
@@ -119,34 +100,23 @@
           var index = this.columnIndex;
           this.$store.dispatch('updateColumn', {index, propName, value});
           // dispatch update column for max value based on value
-          propName = 'maxValue'
+
           switch (value) {
             case 'text':
-              value = '10';
-              this.$store.dispatch('updateColumn', {index, propName, value});
+              this.maxValue = "10";
+              this.minValue = "1";
               break;
             case 'date':
-              var d = new Date();
-              // getMonth() is zero indexed
-              var mm = d.getMonth() + 1;
-              // getDate() is 1 indexed, but minus 1 to start yesterday
-              var dd = d.getDate() - 1;
-              var yyyy = d.getFullYear();
-              value = yyyy + '-' + mm + '-' + dd;
-              this.$store.dispatch('updateColumn', {index, propName, value});
+              var value = new Date().setFullYear(new Date().getFullYear() - 1);
+              this.minValue = new Date(value).toJSON().substring(0,10);
+              this.maxValue = new Date().toJSON().substring(0,10);
               break;
-            case 'integer':
             case 'decimal':
-              value = '1000';
-              this.$store.dispatch('updateColumn', {index, propName, value});
+            case 'integer':
+              this.maxValue = '1000';
+              this.minValue = "0";
+              break;
           }
-          propName = 'interval';
-          if(this.dataType == 'file') {
-            value = "10";
-          } else {
-            value = '1';
-          }
-          this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
       MaxValueLabel: {
@@ -154,7 +124,7 @@
           var label = "";
           switch (this.dataType) {
             case 'date':
-              label = "Minimum date";
+              label = "Maximum date";
               break;
             case 'text':
               label = "Max length";
@@ -165,19 +135,61 @@
           }
           return label;
         }
+      },
+      MinValueLabel: {
+        get() {
+          var label = "";
+          switch (this.dataType) {
+            case 'date':
+              label = "Minimum date";
+              break;
+            case 'text':
+              label = "Min length";
+              break;
+            default:
+              label = "Min value";
+              break;
+          }
+          return label;
+        }
+      },
+      behavior: {
+        get() {
+          return this.columnData.behavior;
+        },
+        set(value) {
+          var propName = "behavior";
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
+      file: {
+        get() {
+          return this.columnData.file;
+        },
+        set(value) {
+          var propName = "file";
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
+      fileName: {
+        get() {
+          return this.columnData.fileName;
+        },
+        set(value) {
+          var propName = "fileName";
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
       }
 		},
 		methods: {
-      toggleHierarchy: function () {
+      toggleHierarchy: function (){
         var value = this.hierarchy == 'none' ? 'parent' : 'none';
         var index = this.columnIndex;
         var propName = 'hierarchy';
 				this.$store.dispatch('updateColumn', {index, propName, value});
-      },
-      pickFile: function(evt) {
-        this.file = evt[0];
-        if(this.file)
-          console.log(this.file.type);
       },
 			removeColumn: function(index) {
         if(this.hierarchy != 'child') {
@@ -185,7 +197,10 @@
         } else {
           this.toggleHierarchy();
         }
-			}
+			},
+      addFile: function(evt){
+        this.file = evt[0];
+      }
 		}
 	}
 </script>
