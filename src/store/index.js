@@ -30,6 +30,8 @@ export default new Vuex.Store({
 			"minValue": "1",
 			"maxValue": "10",
 			"interval": "1",
+      "trend": "positive",  // ['positive', 'negative', 'random']
+      "increment": "1",
 			// possible options: 'none', 'parent', 'child'
 			"hierarchy": "none",
 			"file": null,
@@ -83,6 +85,8 @@ export default new Vuex.Store({
       if(propName == 'child-interval') {
         newValue = parseInt(newValue, 10) <= parseInt(state.columns[index].interval, 10) ? newValue : "";
         state.columns[index].child.interval = newValue;
+      } else if (propName == "child-nulls") {
+        state.columns[index].child.allowNulls = newValue;
       } else if(propName == "hierarchy") {
 				// stringify then parse to get deep copy, probably a better way
 				var newColumn = JSON.parse(JSON.stringify(state.templateColumn));

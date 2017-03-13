@@ -276,7 +276,7 @@
   }
   #form {
     margin: 0 auto;
-    width: 60%;
+    width: 75%;
   }
   .form-row{
     margin: 1em 0;
@@ -286,7 +286,7 @@
   }
   @media screen and (max-width: 1400px) {
     #form {
-      width: 80%;
+      width: 90%;
     }
   }
 </style>

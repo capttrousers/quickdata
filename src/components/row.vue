@@ -4,37 +4,50 @@
       md-button.md-icon-button.md-warn.md-dense(@click.native="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
           md-icon clear
     span.childLabel(v-else) Child column of Column {{ columnIndex + 1 }}
-    md-layout(md-gutter="24")
-      md-layout(v-if="hierarchy != 'child'", md-flex="10", md-theme="'row'")
+    md-layout(md-gutter="16")
+      md-layout(v-show="hierarchy != 'child'", md-flex="10", md-theme="'row'")
         md-button-toggle.md-primary
           md-button(@click.native="toggleHierarchy", :disabled="dataType == 'date' || dataType == 'file'") Parent
-      md-layout(md-flex="20")
+      md-layout(md-flex="15")
         md-input-container
           label(for='data-type') Data type
           md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
             md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value")  {{ dataTypeOption.text }}
-      md-layout(md-flex="30", v-if="dataType == 'file'")
+      md-layout(md-flex="30", v-show="dataType == 'file'")
         md-input-container
           label Data list file
           md-file(v-model="fileName", accept="text/*", :multiple="false", @selected="addFile($event)")
-      md-layout(md-flex="15", v-if="dataType == 'file'")
+      md-layout(md-flex="15", v-show="dataType == 'file'")
         md-input-container
           label Behavior
           md-select(v-model="behavior")
             md-option(value="expand") Expand list
             md-option(value="random") Random
-      md-layout(md-flex="20", v-if="dataType != 'file'")
+      md-layout(:md-flex="dataType == 'date' ? 15 : 10", v-show="dataType != 'file'")
         md-input-container
           label {{ MinValueLabel }}
           md-input(v-model="minValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
-      md-layout(md-flex="20", v-if="dataType != 'file'")
+      md-layout(:md-flex="dataType == 'date' ? 15 : 10", v-show="dataType != 'file'")
         md-input-container
           label {{ MaxValueLabel }}
           md-input(v-model="maxValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
-      md-layout(md-flex="20", v-if="(dataType != 'date' && dataType != 'file') || (dataType == 'file' && behavior == 'expand')")
+      md-layout(md-flex="10", v-show="(dataType != 'date' && dataType != 'file') || (dataType == 'file' && behavior == 'expand')")
         md-input-container
           label  Interval:
           md-input(v-model="interval")
+      md-layout(md-flex="10", v-show="dataType != 'file' && hierarchy == 'none'")
+        md-input-container
+          label Trend 
+          md-select(v-model="trend")
+            md-option(value="positive") Positive
+            md-option(value="negative") Negative
+            md-option(value="random") Random
+      md-layout(md-flex="10", v-show="dataType != 'file' && hierarchy == 'none' && trend != 'random'")
+        md-input-container
+          label  Trend {{ trend == 'positive' ? 'increment' : 'decrement' }}
+          md-input(v-model="increment")
+      md-layout(md-flex="10", v-show="dataType != 'file'")
+        md-checkbox(v-model="allowNulls") Allow nulls?
     br
     Row(v-if="hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
 </template>
@@ -59,6 +72,38 @@
       hierarchy: {
         get() {
           return this.columnData.hierarchy;
+        }
+      },
+      allowNulls: {
+        get() {
+          return this.columnData.allowNulls;
+        },
+        set(value) {
+          var propName = this.hierarchy == 'child' ? 'child-nulls' : 'allowNulls';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
+      trend: {
+        get() {
+          return this.columnData.trend;
+        },
+        set(value) {
+          var propName = 'trend';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+          if(value == "negative") this.increment = "-1";
+          if(value == "positive") this.increment = "1";
+        }
+      },
+      increment: {
+        get() {
+          return this.columnData.increment;
+        },
+        set(value) {
+          var propName = 'increment';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
       maxValue: {
@@ -99,8 +144,7 @@
           var propName = 'dataType';
           var index = this.columnIndex;
           this.$store.dispatch('updateColumn', {index, propName, value});
-          // dispatch update column for max value based on value
-
+          // dispatch update column for max/min value based on value
           switch (value) {
             case 'text':
               this.maxValue = "10";
@@ -192,11 +236,7 @@
 				this.$store.dispatch('updateColumn', {index, propName, value});
       },
 			removeColumn: function(index) {
-        if(this.hierarchy != 'child') {
-          this.$store.dispatch('removeColumn', {index});
-        } else {
-          this.toggleHierarchy();
-        }
+        this.$store.dispatch('removeColumn', {index});
 			},
       addFile: function(evt){
         this.file = evt[0];
