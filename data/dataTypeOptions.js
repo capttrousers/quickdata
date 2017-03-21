@@ -11,7 +11,7 @@
 module.exports =
 {
 
-  type: ["int", "date", "float", "string"],      // data type
+  type: ["integer", "date", "decimal", "text"],      // data type
   // parent/child
   hierarchy: ['parent','child','none'],           // parent child relationship
   // if hierarchy is parent, child prop will be the the child's dataColumnObject,
@@ -39,8 +39,8 @@ module.exports =
     minValue
     defaults?
         dates: min = 1/1/2000, max = today();
-        ints & floats min = 0, max = 1000 ;// expand will take each value from the file list, and create X number of random records per value
-        strings: min = max = 10;
+        integer & decimal min = 0, max = 1000 ;// expand will take each value from the file list, and create X number of random records per value
+        text: min = max = 10;
   */
   max: "",
   min: "",

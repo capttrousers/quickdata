@@ -23,6 +23,16 @@ describe('server accepts a text or json file to describe schema', function(){
     });
   });
 
+  describe('accepts a file and returns 200 with usage info and 400 with missing values', function() {
+
+      it('well formed body with usage info attrs is accepted on api and returns 200', function () {});
+      it('body with main file attr with well formed body object is accepted on api and returns 200', function () {});
+      it('body missing attr usage info attrs is rejected on api and returns 400', function () {});
+      it('body with more than one file column is rejected on api and returns 400', function () {});
+      it('body missing attr usage info attrs is rejected on api and returns 400', function () {});
+      it('body missing attr usage info attrs is rejected on api and returns 400', function () {});
+  })
+
   it('explodes a string by the newline characters', function() {
     var str = "a\nb\nc\nd";
     expect(_.split(str, '\n')).to.have.lengthOf(4).and.be.an('array');
