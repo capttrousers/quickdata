@@ -11,9 +11,10 @@
 module.exports =
 {
 
-  type: ["integer", "date", "decimal", "text"],      // data type
+  dataType: 'text',       // ["integer", "date", "decimal", "text"],
+
   // parent/child
-  hierarchy: ['parent','child','none'],           // parent child relationship
+  hierarchy: 'none',      // ['parent','child','none']
   // if hierarchy is parent, child prop will be the the child's dataColumnObject,
   // but I think the processColumns function pulls this out to an individual columnList item,
   // and adds a "parentIndex" field for all columns, which will be the array index of the parent dataColumnObject
@@ -21,8 +22,8 @@ module.exports =
   child: {},
 
   // these two, trend and increment could be collapsed into a single field, random will be null, then positive or negative trends can be inferred from the increment value
-  // trend: ["positive","negative","none"],           // 'none' for randomness
-  increment: "1",                           // when trend is positive or negative, this is the increment, Number
+  trend: 'positive',      // ["positive","negative","random"]
+  increment: "1",         // when trend is positive or negative, this is the increment, Number
     // increment: "none" or null means random value, no trend
     // positive increment of 1 is AUTO INCREMENT
 
@@ -42,8 +43,8 @@ module.exports =
         integer & decimal min = 0, max = 1000 ;// expand will take each value from the file list, and create X number of random records per value
         text: min = max = 10;
   */
-  max: "",
-  min: "",
+  maxValue: "",
+  minValue: "",
 
   // File overrides all the attrs above besides interval and maybe nulls?
   // with a list, it can either be randomly selecting one from the list every time, and getting the other random values
@@ -57,6 +58,8 @@ module.exports =
   // expand will take each value from the file list, and create X number of random records per value
   // X could be the max interval from any other non-file columnObjects, or a separate input
   // default could be expand, to be X = numberOfRecords / count of list values
+  // this could be collapsed into the interval attr
+  // really 3 behaviors, randomly select from list (could be < or > list.length), each item in list, expand
   behavior: "expand"      // ['random', 'expand']
 
 }

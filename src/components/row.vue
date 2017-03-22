@@ -37,7 +37,7 @@
           md-input(v-model="interval")
       md-layout(md-flex="10", v-show="dataType != 'file' && hierarchy == 'none'")
         md-input-container
-          label Trend 
+          label Trend
           md-select(v-model="trend")
             md-option(value="positive") Positive
             md-option(value="negative") Negative
@@ -154,6 +154,7 @@
               var value = new Date().setFullYear(new Date().getFullYear() - 1);
               this.minValue = new Date(value).toJSON().substring(0,10);
               this.maxValue = new Date().toJSON().substring(0,10);
+              this.interval = 1;
               break;
             case 'decimal':
             case 'integer':

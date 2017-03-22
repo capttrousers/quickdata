@@ -7,6 +7,8 @@ module.exports = (column) => {
         // String.fromCharCode()
         // A-Z: 65-90, a-z: 97-122
         var randomString = "";
+        // for now strings will all be of length maxValue
+        // could build in randomly selecting length between min and max
         for(var i = 0; i < column.maxValue; i++) {
           var charNumber = Math.random() * (123-65) + 65;
           if(charNumber < 97 && charNumber > 90) {
@@ -17,12 +19,13 @@ module.exports = (column) => {
         }
         return randomString;
       case 'date' :
-        var minDate = new Date(column.maxValue);
-        var date = ((new Date() - minDate.valueOf()) * Math.random()) + minDate.valueOf();
+        var minDate = new Date(column.minValue);
+        var maxDate = new Date(column.maxValue);
+        var date = ( Math.random() * ( maxDate.valueOf() - minDate.valueOf() ) ) + minDate.valueOf();
         return new Date(date).toISOString();
       case 'integer' :
-        return Math.floor(Math.random() * (column.maxValue + 1));
+        return Math.floor( ( Math.random() * ( column.maxValue + 1 - column.minValue ) ) + column.minValue);
       case 'decimal' :
-        return Math.random() * column.maxValue;
+        return ( Math.random() * ( column.maxValue + 1 - column.minValue ) ) + column.minValue;
      }
 }

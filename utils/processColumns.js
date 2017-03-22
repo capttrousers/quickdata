@@ -18,6 +18,9 @@ module.exports = (bodyColumns, numberOfRecords) => {
     if(bodyColumn.hierarchy == 'parent') {
       var child = bodyColumn.child;
       child.parentIndex = columns.indexOf(bodyColumn);
+      if(child.dataType == 'date') {
+        // how to set child's min value to = parent.nextRandomData
+      }
       child = processColumn(child, numberOfRecords);
       columns.push(child);
     }
@@ -27,25 +30,31 @@ module.exports = (bodyColumns, numberOfRecords) => {
 
   // take column, add a few attrs and push column.name to quick_data_fields
   function processColumn(column, numberOfRecords) {
-    column.interval = (1 <= column.interval && column.interval <= numberOfRecords
-                                ? column.interval : 1);
+    column.numberOfRecords = numberOfRecords;
+    column.interval = Math.max(1, column.interval);
+    column.interval = Math.min(column.interval, column.numberOfRecords);
     column.intervalCounter = column.interval;
     switch (column.dataType) {
       case 'text' :
         column.name = "Text column " + textColumnCount;
         // max of 1000 chars for strings, for now
         column.maxValue = Math.min(column.maxValue, 1000);
+        // minValue of 1 char
+        column.minValue = Math.max(column.minValue, 1);
         textColumnCount++;
         break;
       case 'date' :
         column.name = "Date column " + dateColumnCount;
-        // date max value is actually min date value
+        // date max value is actually minValue date value
         column.maxValue = new Date(column.maxValue);
+        column.minValue = new Date(column.minValue);
         dateColumnCount++;
         break;
       default :
         column.maxValue = (0 < column.maxValue && column.maxValue <= 1000000
                                     ? column.maxValue : 1000000 );
+        // minValue of 0 for numbers, can change to be min int
+        column.minValue = Math.max(column.minValue, 0);
         if(column.dataType ==  'integer') {
           column.name = "Integer column " + intColumnCount;
           intColumnCount++;

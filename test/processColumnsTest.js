@@ -13,43 +13,64 @@
 
 var chai = require('chai');
 var expect = chai.expect;
-
-chai.use(require('chai-things'));
 var _ = require('lodash');
 var logger   = require('../utils/logger').logger;
 
 var processColumns = require('../utils/processColumns');
 
 
-describe('function processColumns tests', function(){
-
-    it('processColumns clips the ', function() {
-      var columns = [
+describe.only('function processColumns tests', function(){
+    before(function() {
+      this.columns = [
         {
           "dataType": "text",
           "maxValue": "5",
-          "interval": "1",
+          "minValue": "0",
+          "interval": "100",
+          "increment": "1",
           "hierarchy": "none",
           "child": {}
         },{
           "dataType": "integer",
           "maxValue": "100",
-          "interval": "1",
+          "minValue": "-100",
+          "interval": "500",
+          "increment": "1",
           "hierarchy": "none",
           "child": {}
         },{
           "dataType": "date",
-          "maxValue": "2010-03-05",
-          "interval": "1",
+          "maxValue": "2018-03-05",
+          "minValue": "2010-03-05",
+          "interval": "10000",
+          "increment": "1",
           "hierarchy": "none",
           "child": {}
         }
       ];
-      var numberOfRecords = 5;
-      columns = processColumns(columns, numberOfRecords)
-      for(var i = 0; i < columns.length; i++) {
-        expect(columns[i]).to.have.property('intervalCounter');
-      }
+      this.numberOfRecords = 50;
+    })
+
+    it('processColumns clips the interval to the number of records', function() {
+      _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
+          expect(column).to.have.property('intervalCounter').that.is.at.most(column.numberOfRecords);
+          expect(column).to.have.property('interval').that.is.at.most(column.numberOfRecords);
+      });
+    })
+
+    it('processColumns returns columns array with each has a name attribute', function() {
+      _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
+          expect(column).to.have.property('name');
+          expect(column).to.have.property('hierarchy');
+          expect(column).to.have.property('increment');
+      });
+    })
+
+    it('processColumns returns columns array with each has a min and max value attribute', function() {
+      _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
+          expect(column).to.have.property('minValue');
+          expect(column).to.have.property('maxValue');
+      });
     })
 
 });

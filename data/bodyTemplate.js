@@ -17,62 +17,62 @@ module.exports =
   TABLENAME: "TableName",
   COLUMNS: [
     {
-      type: "integer",             // data type ["integer", "date", "decimal", "text", "file"],
+      dataType: "integer",             // data type ["integer", "date", "decimal", "text", "file"],
       hierarchy: "none",       // parent child relationship ['parent','child','none']
       child: {},
       increment: "1",          // when trend is positive or negative, this is the increment, Number
       allowNulls: false,
       interval : "1",
-      max: "1000",
-      min: "0",
+      maxValue: "1000",
+      minValue: "0",
       file : null,
       behavior: "expand"      // datatype file, randomly select or for each record ['random', 'expand']
     },
     {
-      type: "date",             // data type ["integer", "date", "decimal", "text", "file"],
+      dataType: "date",             // data type ["integer", "date", "decimal", "text", "file"],
       hierarchy: "none",       // parent child relationship ['parent','child','none']
       child: {},
       increment: "1",          // when trend is positive or negative, this is the increment, Number
       allowNulls: false,
       interval : "1",
-      max: "2017-03-18",
-      min: "2010-01-01",
+      maxValue: "2017-03-18",
+      minValue: "2010-01-01",
       file : null,
       behavior: "expand"      // datatype file, randomly select or for each record ['random', 'expand']
     },
     {
-      type: "decimal",             // data type ["integer", "date", "decimal", "text", "file"],
+      dataType: "decimal",             // data type ["integer", "date", "decimal", "text", "file"],
       hierarchy: "none",       // parent child relationship ['parent','child','none']
       child: {},
       increment: "1",          // when trend is positive or negative, this is the increment, Number
       allowNulls: false,
       interval : "1",
-      max: "1000",
-      min: "0",
+      maxValue: "1000",
+      minValue: "0",
       file : null,
       behavior: "expand"      // datatype file, randomly select or for each record ['random', 'expand']
     },
     {
-      type: "text",             // data type ["integer", "date", "decimal", "text", "file"],
+      dataType: "text",             // data type ["integer", "date", "decimal", "text", "file"],
       hierarchy: "none",       // parent child relationship ['parent','child','none']
       child: {},
       increment: "1",          // when trend is positive or negative, this is the increment, Number
       allowNulls: false,
       interval : "1",
-      max: "10",
-      min: "1",
+      maxValue: "10",
+      minValue: "1",
       file : null,
       behavior: "expand"      // datatype file, randomly select or for each record ['random', 'expand']
     },
     {
-      type: "file",             // data type ["integer", "date", "decimal", "text", "file"],
+      dataType: "file",             // data type ["integer", "date", "decimal", "text", "file"],
       hierarchy: "none",       // parent child relationship ['parent','child','none']
       child: {},
       increment: "1",          // when trend is positive or negative, this is the increment, Number
       allowNulls: false,
       interval : "1",
-      max: "0",
-      min: "1000",
+      maxValue: "0",
+      minValue: "1000",
       file : null,
       behavior: "expand"      // datatype file, randomly select or for each record ['random', 'expand']
     }
