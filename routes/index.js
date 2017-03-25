@@ -10,6 +10,7 @@ var logger   = require('../utils/logger').logger;
 var models = require('../models');
 var processColumns = require('../utils/processColumns');
 var generateData = require('../utils/generateData');
+var isValidBody = require('../utils/isValidBody');
 
 var testing   = process.env.NODE_TESTING || false;
 
@@ -19,21 +20,7 @@ router.get('/', function(request, response, next) {
 });
 
 router.post("/quickdata", function(request, response, next) {
-  if( (! request.body)
-    || request.body == null
-    || request.body.numberOfRecords == null
-    || request.body.numberOfRecords.length == 0
-    || request.body.columns == null
-    || request.body.columns.length == 0
-    || request.body.dataSource == null
-    || request.body.dataSource.length == 0
-    || request.body.user == null
-    || request.body.user.length == 0
-    || request.body.tableName == null
-    || request.body.tableName.length == 0
-    || request.body.sfCase == null
-    || request.body.sfCase.length == 0
-  ) {
+  if( ! isValidBody(request.body) ) {
     logger.info('bad request (400), body property is missing something')
     response.status(400).type('json').send({error: 'request body missing something'});
   } else {

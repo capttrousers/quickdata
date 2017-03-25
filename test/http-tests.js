@@ -6,6 +6,7 @@ var logger   = require('../utils/logger').logger;
 var processTables = require('../utils/cleaner/processTables');
 
 var models = require('../models');
+var body = require('../data/bodyTesterNoFiles');
 var app = require('../app');
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
@@ -71,38 +72,6 @@ describe("HTTP requests", function() {
   describe("Process quickdata post", function() {
     this.slow(500);
 
-    // does it actually default to values: ?
-    // defaults to acceptable values if none are given
-    // for user, records, data source, table name, sf case
-
-    var body = {};
-    body.user = 'testUser1';
-    body.dataSource = 'csv';
-    body.tableName = 'http_test_table';
-    body.sfCase = '98765';
-    body.columns = [
-      {
-        "dataType": "text",
-        "maxValue": "5",
-        "interval": "1",
-        "hierarchy": "none",
-        "child": {}
-      },{
-        "dataType": "integer",
-        "maxValue": "100",
-        "interval": "1",
-        "hierarchy": "none",
-        "child": {}
-      },{
-        "dataType": "date",
-        "maxValue": "2010-03-05",
-        "interval": "1",
-        "hierarchy": "none",
-        "child": {}
-      }
-    ];
-    body.numberOfRecords = 5;
-
     it("POST /quickdata with no parameters is rejected as Bad Request (400)", function() {
       return chai.request(app).post('/quickdata').catch(function(err) {
           expect(err.response).to.have.status(400);
@@ -117,8 +86,9 @@ describe("HTTP requests", function() {
         // text bc csv is text/plain
         expect(res).to.be.text;
         expect(res).to.have.property('text');
-        var count = (res.text.match(/\n/g) || []).length;
-        expect(count).to.equal(body.numberOfRecords);
+        var newLineCount = (res.text.match(/\n/g) || []).length;
+        // subtract 0 to convert string to int
+        expect(newLineCount).to.equal(body.numberOfRecords - 0);
       });
     });
 
@@ -134,8 +104,8 @@ describe("HTTP requests", function() {
         // text bc csv is text/plain
         expect(res).to.be.text;
         expect(res).to.have.property('text');
-        var count = (res.text.match(/\n/g) || []).length;
-        expect(count).to.equal(17);
+        var newLineCount = (res.text.match(/\n/g) || []).length;
+        expect(newLineCount).to.equal(17);
       });
     });
 
@@ -153,8 +123,8 @@ describe("HTTP requests", function() {
         // text bc csv is text/plain
         expect(res).to.be.text;
         expect(res).to.have.property('text');
-        var count = (res.text.match(/\n/g) || []).length;
-        expect(count).to.equal(17);
+        var newLineCount = (res.text.match(/\n/g) || []).length;
+        expect(newLineCount).to.equal(17);
       });
     });
 
@@ -169,7 +139,11 @@ describe("HTTP requests", function() {
         body.columns.push({
           "dataType": "decimal",
           "maxValue": "100",
+          "minValue": "0",
           "interval": "1",
+          "increment": "1",
+          "trend": "positive",
+          "allowNulls": false,
           "hierarchy": "none",
           "child": {}
         });

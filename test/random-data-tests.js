@@ -4,7 +4,7 @@ var logger   = require('../utils/logger').logger;
 
 var getRandomData = require('../utils/getRandomDataValue');
 
-describe("Random data generator", function() {
+describe.only("Random data generator", function() {
   before(function() {
     logger.info("Begin random data generator tests");
   })
@@ -23,30 +23,30 @@ describe("Random data generator", function() {
     expect(decimal).to.be.a('number');
   });
 
-  it("returns value of type string", function() {
-    var date = getRandomData({dataType: 'date', maxValue: 10});
+  it("data type of Date returns value of type string", function() {
+    var date = getRandomData({dataType: 'date', maxValue: 10, minValue: 0});
     expect(date).to.be.a('string');
   });
 
   it("generates a random integer value between min and max constraints", function() {
       // min is one so just check that values are between 1 and maxValue
-      var integer = getRandomData({dataType: 'integer', maxValue: 10000});
+      var integer = getRandomData({dataType: 'integer', maxValue: 10000, minValue: 0});
       expect(integer).to.be.below(10000);
   });
 
   it("generates a random decimal value between min and max constraints", function() {
-      var decimal = getRandomData({dataType: 'decimal', maxValue: 10000});
+      var decimal = getRandomData({dataType: 'decimal', maxValue: 10000, minValue: 0});
       expect(decimal).to.be.below(10000);
   });
 
   it("generates a random date value between min and max constraints", function() {
       // dates are strings of length: 24
-      var dateString = getRandomData({dataType: 'date', maxValue: new Date()});
+      var dateString = getRandomData({dataType: 'date', maxValue: new Date(), minValue: '2000-01-01'});
       expect(dateString).to.have.lengthOf(24);
       // date max value is actually min date
-      var date = getRandomData({dataType: 'date', maxValue: new Date('2007-08-08')});
-      expect(new Date(date)).to.be.at.least(new Date('2007-08-08'));
-      expect(new Date(date)).to.be.at.most(new Date());
+      var date = getRandomData({dataType: 'date', minValue: "1988-03-18", maxValue: '2007-08-08'});
+      expect(new Date(date)).to.be.at.least(new Date("1988-03-18"));
+      expect(new Date(date)).to.be.at.most(new Date('2007-08-08'));
   });
 
   it("generates a random string value between min and max constraints", function() {

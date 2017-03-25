@@ -5,6 +5,10 @@
 
 var getRandomDataValue = require('./getRandomDataValue');
 
+// the function can also do appropriate clipping of props
+//
+// should probably do the same type of validation / reactive behavior on props / clipping as on client side
+
 module.exports = (bodyColumns, numberOfRecords) => {
   var fields = bodyColumns;
   // # of columns for each datatype for column names:
@@ -17,12 +21,18 @@ module.exports = (bodyColumns, numberOfRecords) => {
     // handle child column
     if(bodyColumn.hierarchy == 'parent') {
       var child = bodyColumn.child;
+      /*
+          parentIndex and childIndex can be collapsed to hierarchy maybe
+          check where hierarchy is used to see if it can be inferred from the indices existence
+      */
       child.parentIndex = columns.indexOf(bodyColumn);
       if(child.dataType == 'date') {
         // how to set child's min value to = parent.nextRandomData
       }
       child = processColumn(child, numberOfRecords);
       columns.push(child);
+      // then set parent's childIndex = to index of new column child
+      columns[child.parentIndex].childIndex = columns.indexOf(child);
     }
   });
 

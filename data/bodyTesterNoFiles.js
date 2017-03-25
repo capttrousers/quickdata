@@ -14,7 +14,7 @@ module.exports =
   dataSource: "csv",
   user: "somebody@tableau.com",
   sfCase: "01234",
-  tableName: "TableName",
+  tableName: "TesterTableName",
   columns: [
     {
       dataType: "integer",             // data type ["integer", "date", "decimal", "text", "file"],
@@ -67,20 +67,6 @@ module.exports =
       minValue: "1",
       file : null,
       behavior: "expand"      // datatype file, randomly select or for each record ['random', 'expand']
-    },
-    {
-      dataType: "file",             // data type ["integer", "date", "decimal", "text", "file"],
-      hierarchy: "none",       // parent child relationship ['parent','child','none']
-      child: {},
-      trend: 'positive',
-      increment: "1",          // when trend is positive or negative, this is the increment, Number
-      allowNulls: false,
-      interval : "1",
-      maxValue: "0",
-      minValue: "1000",
-      file : null,
-      behavior: "expand"      // datatype file, randomly select or for each record ['random', 'expand']
     }
-
   ]
 }

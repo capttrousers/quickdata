@@ -1,6 +1,8 @@
 // get random data for a column profile
 // take a column model and generate a random value based on data type, maxValue
 
+var logger   = require('./logger').logger;
+
 module.exports = (column) => {
      switch(column.dataType) {
       case 'text' :
