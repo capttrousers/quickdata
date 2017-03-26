@@ -13,14 +13,6 @@ module.exports =
 
   dataType: 'text',       // ["integer", "date", "decimal", "text"],
 
-  // parent/child
-  hierarchy: 'none',      // ['parent','child','none']
-  // if hierarchy is parent, child prop will be the the child's dataColumnObject,
-  // but I think the processColumns function pulls this out to an individual columnList item,
-  // and adds a "parentIndex" field for all columns, which will be the array index of the parent dataColumnObject
-  // so for schema creation function, just keep a child column in the child prop
-  child: {},
-
   // these two, trend and increment could be collapsed into a single field, random will be null, then positive or negative trends can be inferred from the increment value
   trend: 'positive',      // ["positive","negative","random"]
   increment: "1",         // when trend is positive or negative, this is the increment, Number
@@ -60,6 +52,14 @@ module.exports =
   // default could be expand, to be X = numberOfRecords / count of list values
   // this could be collapsed into the interval attr
   // really 3 behaviors, randomly select from list (could be < or > list.length), each item in list, expand
-  behavior: "expand"      // ['random', 'expand']
+  behavior: "expand",      // ['random', 'expand']
+
+  // parent/child
+  hierarchy: 'none',      // ['parent','child','none']
+  // if hierarchy is parent, child prop will be the the child's dataColumnObject,
+  // but I think the processColumns function pulls this out to an individual columnList item,
+  // and adds a "parentIndex" field for all columns, which will be the array index of the parent dataColumnObject
+  // so for schema creation function, just keep a child column in the child prop
+  child: {},
 
 }

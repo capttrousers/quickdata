@@ -7,7 +7,7 @@ var isValidBody = require('../utils/isValidBody');
 var dataColumnObject = require('../data/dataColumnObject');
 var bodyTemplate = require('../data/bodyTemplate');
 
-describe("Tests isValidBody method", function() {
+describe("method: isValidBody tests", function() {
 
   it("returns true with bodyTemplate.js file", function() {
     expect(isValidBody(bodyTemplate)).to.be.true;

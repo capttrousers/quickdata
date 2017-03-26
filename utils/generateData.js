@@ -13,7 +13,7 @@ module.exports = (columns, numberOfRecords) => {
           column.intervalCounter = column.interval;
           column.nextRandomData = getRandomDataValue(column);
           if(column.hierarchy == 'parent') {
-            // set child.minValue = new Date(column.nextRandomData);
+            columns[column.childIndex].minValue = new Date(column.nextRandomData);
           }
       }
     });

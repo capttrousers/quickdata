@@ -17,19 +17,18 @@ module.exports = (bodyColumns, numberOfRecords) => {
 
   fields.forEach(function(bodyColumn) {
     var column = processColumn(bodyColumn, numberOfRecords);
+    column.nextRandomData = getRandomDataValue(column);
     columns.push(column);
     // handle child column
-    if(bodyColumn.hierarchy == 'parent') {
-      var child = bodyColumn.child;
+    if(column.hierarchy == 'parent') {
+      var child = processColumn(column.child, numberOfRecords);
       /*
           parentIndex and childIndex can be collapsed to hierarchy maybe
           check where hierarchy is used to see if it can be inferred from the indices existence
       */
-      child.parentIndex = columns.indexOf(bodyColumn);
-      if(child.dataType == 'date') {
-        // how to set child's min value to = parent.nextRandomData
-      }
-      child = processColumn(child, numberOfRecords);
+      child.parentIndex = columns.indexOf(column);
+      child.minValue = new Date(column.nextRandomData);
+      child.nextRandomData = getRandomDataValue(child);
       columns.push(child);
       // then set parent's childIndex = to index of new column child
       columns[child.parentIndex].childIndex = columns.indexOf(child);
@@ -74,7 +73,6 @@ module.exports = (bodyColumns, numberOfRecords) => {
         }
         break;
     }
-    column.nextRandomData = getRandomDataValue(column);
     return column;
   }
 }

@@ -9,7 +9,7 @@ module.exports = (column) => {
         // String.fromCharCode()
         // A-Z: 65-90, a-z: 97-122
         var randomString = "";
-        // for now strings will all be of length maxValue
+        // for now strings will all be of length maxValue, so minValue is not used for 'text'
         // could build in randomly selecting length between min and max
         for(var i = 0; i < column.maxValue; i++) {
           var charNumber = Math.random() * (123-65) + 65;

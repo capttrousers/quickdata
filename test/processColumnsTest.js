@@ -18,15 +18,16 @@ var logger   = require('../utils/logger').logger;
 
 var processColumns = require('../utils/processColumns');
 
+var body = require('../data/bodyTesterDateHierarchy');
 
-describe('method : processColumns tests', function(){
+describe.only('method : processColumns tests', function(){
     before(function() {
       this.columns = [
         {
           "dataType": "text",
           "maxValue": "5",
           "minValue": "0",
-          "interval": "10",
+          "interval": "100",
           "increment": "1",
           "hierarchy": "parent",
           "child": {
@@ -80,6 +81,22 @@ describe('method : processColumns tests', function(){
         expect(column).to.have.property('minValue');
         expect(column).to.have.property('maxValue');
     })
+
+    it('processColumns clips the interval to the number of records', function() {
+      _.forEach(processColumns(body.columns, body.numberOfRecords), function(column) {
+          expect(column).to.have.property('intervalCounter').that.is.at.most(column.numberOfRecords);
+          expect(column).to.have.property('interval').that.is.at.most(column.numberOfRecords);
+      });
+    });
+
+    it('processColumns with parent/child Date returns array of length 2', function() {
+      expect(processColumns(body.columns, body.numberOfRecords)).to.have.lengthOf(2);
+    });
+
+    it('processColumns with parent/child Date has parent date < child date', function() {
+      var columns = processColumns(body.columns, body.numberOfRecords);
+      expect(new Date(columns[0].nextRandomData)).to.be.below(new Date(columns[1].nextRandomData));
+    });
 
     it('processColumns clips the interval to the number of records', function() {
       _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
