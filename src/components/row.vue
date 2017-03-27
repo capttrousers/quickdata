@@ -7,7 +7,7 @@
     md-layout(md-gutter="16")
       md-layout(v-show="hierarchy != 'child'", md-flex="10", md-theme="'row'")
         md-button-toggle.md-primary
-          md-button(@click.native="toggleHierarchy", :disabled="dataType == 'date' || dataType == 'file'") Parent
+          md-button(@click.native="toggleHierarchy", :disabled="dataType == 'file'") Parent
       md-layout(md-flex="15")
         md-input-container
           label(for='data-type') Data type
@@ -64,7 +64,7 @@
   				var dTypes = JSON.parse(JSON.stringify(this.$store.state.dataTypes));
   				if(this.hierarchy == 'parent') {
   					// date is at index 3 in default dataTypes array in store
-  					dTypes.splice(3,2);
+  					dTypes.splice(4,1);
   				}
   				return dTypes;
 			  }

@@ -84,20 +84,22 @@ export default new Vuex.Store({
 			newValue = payload.value;
       if(propName == 'child-interval') {
         newValue = parseInt(newValue, 10) <= parseInt(state.columns[index].interval, 10) ? newValue : "";
-        state.columns[index].child.interval = newValue;
+        state.columns[index].child.interval = newValue + "";
       } else if (propName == "child-nulls") {
         state.columns[index].child.allowNulls = newValue;
       } else if(propName == "hierarchy") {
-				// stringify then parse to get deep copy, probably a better way
-				var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
-				state.columns[index].hierarchy = newValue;
-				state.columns[index].child = (newValue == 'parent' ? newColumn : {});
-        if(newValue == 'parent') {
-					state.columns[index].child.hierarchy = 'child';
-					state.columns[index].child.maxValue = state.columns[index].maxValue;
-					state.columns[index].child.minValue = state.columns[index].minValue;
-					state.columns[index].child.dataType = state.columns[index].dataType;
-
+				if(newValue == 'parent') {
+					// stringify then parse to get deep copy, probably a better way
+					var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
+					newColumn.hierarchy = 'child';
+					newColumn.maxValue = state.columns[index].maxValue;
+					newColumn.minValue = state.columns[index].minValue;
+					newColumn.dataType = state.columns[index].dataType;
+					state.columns[index].child = newColumn;
+					state.columns[index].hierarchy = newValue;
+				} else {
+					state.columns[index].hierarchy = newValue;
+					state.columns[index].child = {};
 				}
 			} else {
         state.columns[index][propName] = newValue;
