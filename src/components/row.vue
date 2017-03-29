@@ -8,7 +8,7 @@
       md-layout(v-show="hierarchy != 'child'", md-flex="10", md-theme="'row'")
         md-button-toggle.md-primary
           md-button(@click.native="toggleHierarchy", :disabled="dataType == 'file'") Parent
-      md-layout(md-flex="15")
+      md-layout(md-flex="15", v-if="true")
         md-input-container
           label(for='data-type') Data type
           md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
@@ -154,11 +154,11 @@
               var value = new Date().setFullYear(new Date().getFullYear() - 1);
               this.minValue = new Date(value).toJSON().substring(0,10);
               this.maxValue = new Date().toJSON().substring(0,10);
-              this.interval = 1;
+              this.interval = "1";
               break;
             case 'decimal':
             case 'integer':
-              this.maxValue = '1000';
+              this.maxValue = "1000";
               this.minValue = "0";
               break;
           }
