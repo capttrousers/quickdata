@@ -144,24 +144,6 @@
           var propName = 'dataType';
           var index = this.columnIndex;
           this.$store.dispatch('updateColumn', {index, propName, value});
-          // dispatch update column for max/min value based on value
-          switch (value) {
-            case 'text':
-              this.maxValue = "10";
-              this.minValue = "1";
-              break;
-            case 'date':
-              var value = new Date().setFullYear(new Date().getFullYear() - 1);
-              this.minValue = new Date(value).toJSON().substring(0,10);
-              this.maxValue = new Date().toJSON().substring(0,10);
-              this.interval = "1";
-              break;
-            case 'decimal':
-            case 'integer':
-              this.maxValue = "1000";
-              this.minValue = "0";
-              break;
-          }
         }
       },
       MaxValueLabel: {

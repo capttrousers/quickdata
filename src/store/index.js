@@ -82,38 +82,66 @@ export default new Vuex.Store({
 			index = payload.index;
 			propName = payload.propName;
 			newValue = payload.value;
-      if(propName == 'child-interval') {
-        newValue = parseInt(newValue, 10) <= parseInt(state.columns[index].interval, 10) ? newValue : "";
-        state.columns[index].child.interval = newValue + "";
-      } else if (propName == "child-nulls") {
-        state.columns[index].child.allowNulls = newValue;
-      } else if(propName == "hierarchy") {
-				if(newValue == 'parent') {
-					// stringify then parse to get deep copy, probably a better way
-					var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
-					newColumn.hierarchy = 'child';
-					newColumn.maxValue = state.columns[index].maxValue;
-					newColumn.minValue = state.columns[index].minValue;
-					newColumn.dataType = state.columns[index].dataType;
-					state.columns[index].child = newColumn;
-					state.columns[index].hierarchy = newValue;
-				} else {
-					state.columns[index].hierarchy = newValue;
-					state.columns[index].child = {};
-				}
-			} else {
-        state.columns[index][propName] = newValue;
-				if(state.columns[index].hierarchy == 'parent') {
-					if( propName == 'maxValue' || propName == 'minValue' || propName == 'dataType') {
-						state.columns[index].child[propName] = newValue;
-					} else if (propName == 'interval') {
-						 state.columns[index].child[propName] = Math.min(state.columns[index].child[propName] , newValue);
+			switch(propName){
+				case 'child-interval' :
+		        newValue = parseInt(newValue, 10) <= parseInt(state.columns[index].interval, 10) ? newValue : "";
+		        state.columns[index].child.interval = newValue + "";
+						break;
+				case "child-nulls" :
+		        state.columns[index].child.allowNulls = newValue;
+						break;
+				case "hierarchy" :
+						if(newValue == 'parent') {
+							// stringify then parse to get deep copy, probably a better way
+							var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
+							newColumn.hierarchy = 'child';
+							newColumn.maxValue = state.columns[index].maxValue;
+							newColumn.minValue = state.columns[index].minValue;
+							newColumn.dataType = state.columns[index].dataType;
+							state.columns[index].child = newColumn;
+							state.columns[index].hierarchy = newValue;
+						} else {
+							state.columns[index].hierarchy = newValue;
+							state.columns[index].child = {};
+						}
+						break;
+				case "dataType" :
+					state.columns[index].dataType = newValue;
+					// dispatch update column for max/min value based on value
+					switch (newValue) {
+						case 'text':
+							state.columns[index].maxValue = "10";
+							state.columns[index].minValue = "1";
+							break;
+						case 'date':
+							var dateValue = new Date().setFullYear(new Date().getFullYear() - 1);
+							state.columns[index].minValue = new Date(dateValue).toJSON().substring(0,10);
+							state.columns[index].maxValue = new Date().toJSON().substring(0,10);
+							state.columns[index].interval = "1";
+							break;
+						case 'decimal':
+						case 'integer':
+							state.columns[index].maxValue = "1000";
+							state.columns[index].minValue = "0";
+							break;
 					}
-				}
-      }
+					if(state.columns[index].hierarchy == 'parent') {
+						state.columns[index].child.dataType = state.columns[index].dataType;
+					}
+					break;
+				default:
+	        state.columns[index][propName] = newValue;
+					if(state.columns[index].hierarchy == 'parent') {
+						if( propName == 'maxValue' || propName == 'minValue' || propName == 'dataType') {
+							state.columns[index].child[propName] = newValue;
+						} else if (propName == 'interval') {
+							 state.columns[index].child[propName] = Math.min(state.columns[index].child[propName] , newValue);
+						}
+					}
+	      	break;
+			}
 		}
 	},
-
 	actions: {
 		setTableName({commit}, payload) {
 			commit('SET_TABLE_NAME', payload);
