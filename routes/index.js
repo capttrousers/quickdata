@@ -110,6 +110,8 @@ router.post("/quickdata", function(request, response, next) {
 	var quick_data_fields = [];
   request.body.columns.forEach((column) => {
       quick_data_fields.push(column.name);
+      logger.debug("column interval = %s", column.interval);
+      logger.debug('column.interval is typeof ' + typeof column.interval);
   });
 
   var createdAt = new Date();

@@ -5,6 +5,8 @@
 
 var getRandomDataValue = require('./getRandomDataValue');
 
+var logger   = require('../utils/logger').logger;
+
 module.exports = (bodyColumns, maxRows) => {
   var fields = bodyColumns;
   // # of columns for each datatype for column names:
@@ -27,7 +29,9 @@ module.exports = (bodyColumns, maxRows) => {
 
   // take column, add a few attrs and push column.name to quick_data_fields
   function processColumn(column, maxRows) {
-    column.interval = (1 <= column.interval && column.interval <= maxRows
+    logger.debug('column.interval value ' + column.interval);
+    logger.debug('column.interval is typeof ' + typeof column.interval);
+    column.interval = (1 <= column.interval && +column.interval <= +maxRows
                                 ? column.interval : 1);
     column.intervalCounter = column.interval;
     switch (column.dataType) {
