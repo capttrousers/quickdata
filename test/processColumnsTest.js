@@ -19,8 +19,9 @@ var logger   = require('../utils/logger').logger;
 var processColumns = require('../utils/processColumns');
 
 var body = require('../data/bodyTesterDateHierarchy');
+var bodyAllTypes = require('../data/bodyTesterNoFiles');
 
-describe.only('method : processColumns tests', function(){
+describe('method : processColumns tests', function(){
     before(function() {
       this.columns = [
         {
@@ -96,6 +97,13 @@ describe.only('method : processColumns tests', function(){
     it('processColumns with parent/child Date has parent date < child date', function() {
       var columns = processColumns(body.columns, body.numberOfRecords);
       expect(new Date(columns[0].nextRandomData)).to.be.below(new Date(columns[1].nextRandomData));
+    });
+
+    it.only('processColumns with parent/child Date clips child date to be <= parent date', function() {
+      var clone = _.clone(body);
+      clone.columns[0].child.maxValue = "2020-01-01";
+      var columns = processColumns(clone.columns, clone.numberOfRecords);
+      expect(new Date(columns[0].nextRandomData)).to.be.at.most(new Date(columns[1].nextRandomData));
     });
 
     it('processColumns clips the interval to the number of records', function() {

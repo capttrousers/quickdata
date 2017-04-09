@@ -4,10 +4,11 @@ var logger   = require('../utils/logger').logger;
 
 var getRandomData = require('../utils/getRandomDataValue');
 
-describe("Random data generator", function() {
+describe.only("Random data generator", function() {
   before(function() {
     logger.info("Begin random data generator tests");
   })
+
   it("returns value of type string", function() {
     var string = getRandomData({dataType: 'text', maxValue: 10});
     expect(string).to.be.a('string');
@@ -58,4 +59,47 @@ describe("Random data generator", function() {
       expect(string3).to.have.lengthOf(1000);
   });
 
+  it("returns null 10% of the time with column of type string with allowNulls=true", function(){
+    var TEST_NUMBER = 1000;
+    var totalForAverage = 0;
+    for(var j = 1; j <= TEST_NUMBER ; j++) {
+      if(getRandomData({dataType: "text", allowNulls: true}) == null) {
+        totalForAverage++;
+      }
+    }
+    expect(totalForAverage / TEST_NUMBER).to.be.above(.08).and.below(.12);
+  })
+
+  it("returns null 10% of the time with column of type date with allowNulls=true", function(){
+    var TEST_NUMBER = 1000;
+    var totalForAverage = 0;
+    for(var j = 1; j <= TEST_NUMBER ; j++) {
+      if(getRandomData({dataType: "date", allowNulls: true, minValue: "2000-01-01", maxValue: "2017-01-01"}) == null) {
+        totalForAverage++;
+      }
+    }
+    expect(totalForAverage / TEST_NUMBER).to.be.above(.08).and.below(.12);
+  })
+
+  it("returns null 10% of the time with column of type integer with allowNulls=true", function(){
+    var TEST_NUMBER = 1000;
+    var totalForAverage = 0;
+    for(var j = 1; j <= TEST_NUMBER ; j++) {
+      if(getRandomData({dataType: "integer", allowNulls: true}) == null) {
+        totalForAverage++;
+      }
+    }
+    expect(totalForAverage / TEST_NUMBER).to.be.above(.08).and.below(.12);
+  })
+
+  it("returns null 10% of the time with column of type decimal with allowNulls=true", function(){
+    var TEST_NUMBER = 1000;
+    var totalForAverage = 0;
+    for(var j = 1; j <= TEST_NUMBER ; j++) {
+      if(getRandomData({dataType: "decimal", allowNulls: true}) == null) {
+        totalForAverage++;
+      }
+    }
+    expect(totalForAverage / TEST_NUMBER).to.be.above(.08).and.below(.12);
+  })
 });

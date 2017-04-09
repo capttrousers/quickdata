@@ -4,7 +4,10 @@
 var logger   = require('./logger').logger;
 
 module.exports = (column) => {
-     switch(column.dataType) {
+  if(column.allowNulls && Math.random() > .9) {
+    return null;
+  } else {
+    switch(column.dataType) {
       case 'text' :
         // String.fromCharCode()
         // A-Z: 65-90, a-z: 97-122
@@ -29,5 +32,6 @@ module.exports = (column) => {
         return Math.floor( ( Math.random() * ( column.maxValue + 1 - column.minValue ) ) + column.minValue);
       case 'decimal' :
         return ( Math.random() * ( column.maxValue + 1 - column.minValue ) ) + column.minValue;
-     }
+    }
+  }
 }

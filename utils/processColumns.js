@@ -30,6 +30,14 @@ module.exports = (bodyColumns, numberOfRecords) => {
       child.minValue = new Date(column.nextRandomData);
       child.nextRandomData = getRandomDataValue(child);
       columns.push(child);
+      if(column.dataType == "date") {
+        var maxValue = Math.max(column.maxValue, child.maxValue);
+        columns[columns.indexOf(child)].maxValue = maxValue;
+        columns[columns.indexOf(child)].allowNulls = false;
+        // set parent column maxvalue
+        columns[columns.indexOf(column)].maxValue = maxValue;
+        columns[columns.indexOf(column)].allowNulls = false;
+      }
       // then set parent's childIndex = to index of new column child
       columns[child.parentIndex].childIndex = columns.indexOf(child);
     }
@@ -55,8 +63,8 @@ module.exports = (bodyColumns, numberOfRecords) => {
       case 'date' :
         column.name = "Date column " + dateColumnCount;
         // date max value is actually minValue date value
-        column.maxValue = new Date(column.maxValue);
-        column.minValue = new Date(column.minValue);
+        column.maxValue = (column.maxValue) ? new Date(column.maxValue) :  new Date();
+        column.minValue = new Date(column.minValue || "2000-01-01");
         dateColumnCount++;
         break;
       default :
