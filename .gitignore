@@ -1,7 +1,8 @@
 node_modules
+public/bundle.js
+dist/
 *.csv
 *.log*
-dist
 *.db
 *.db-journal
 config/config.dev.json
