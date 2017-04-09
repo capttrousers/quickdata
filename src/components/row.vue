@@ -35,14 +35,14 @@
         md-input-container
           label  Interval:
           md-input(v-model="interval")
-      md-layout(md-flex="10", v-show="dataType != 'file' && hierarchy == 'none'")
+      md-layout(md-flex="10", v-show="! (true && dataType != 'file' && hierarchy == 'none')")
         md-input-container
           label Trend
           md-select(v-model="trend")
             md-option(value="positive") Positive
             md-option(value="negative") Negative
             md-option(value="random") Random
-      md-layout(md-flex="10", v-show="dataType != 'file' && hierarchy == 'none' && trend != 'random'")
+      md-layout(md-flex="10", v-show="! (true && dataType != 'file' && hierarchy == 'none' && trend != 'random')")
         md-input-container
           label  Trend {{ trend == 'positive' ? 'increment' : 'decrement' }}
           md-input(v-model="increment")
@@ -61,12 +61,13 @@
 		computed: {
 			dataTypes: {
 			  get() {
-  				var dTypes = JSON.parse(JSON.stringify(this.$store.state.dataTypes));
-  				if(this.hierarchy == 'parent') {
-  					// date is at index 3 in default dataTypes array in store
-  					dTypes.splice(4,1);
-  				}
-  				return dTypes;
+  				// var dTypes = JSON.parse(JSON.stringify(this.$store.state.dataTypes));
+  				// if(this.hierarchy == 'parent') {
+  				// 	// date is at index 3 in default dataTypes array in store
+  				// 	dTypes.splice(4,1);
+  				// }
+  				// return dTypes;
+          return this.$store.state.dataTypesNoFile;
 			  }
 			},
       hierarchy: {

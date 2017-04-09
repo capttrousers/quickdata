@@ -18,6 +18,12 @@ export default new Vuex.Store({
       {label: "MS SQL Server", value: "mssql"},
       {label: "PostgreSQL", value: "postgres"}
     ],
+		dataTypesNoFile: [
+        {text: "Text", value: "text"},
+        {text: "Integer", value: "integer"},
+        {text: "Decimal", value: "decimal"},
+        {text: "Date", value: "date"}
+		],
 		dataTypes: [
         {text: "Text", value: "text"},
         {text: "Integer", value: "integer"},
