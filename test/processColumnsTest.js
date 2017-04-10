@@ -99,7 +99,7 @@ describe('method : processColumns tests', function(){
       expect(new Date(columns[0].nextRandomData)).to.be.below(new Date(columns[1].nextRandomData));
     });
 
-    it.only('processColumns with parent/child Date clips child date to be <= parent date', function() {
+    it('processColumns with parent/child Date clips child date to be <= parent date', function() {
       var clone = _.clone(body);
       clone.columns[0].child.maxValue = "2020-01-01";
       var columns = processColumns(clone.columns, clone.numberOfRecords);

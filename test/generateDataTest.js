@@ -19,7 +19,7 @@ var body = require('../data/bodyTesterDateHierarchy');
 var bodyNulls = require('../data/bodyTesterNulls');
 var bodyDateNulls = require('../data/bodyTesterDateNulls');
 
-describe.only('method : generateData tests', function(){
+describe('method : generateData tests', function(){
 
     it('generateDate for each row has parent date < child date', function() {
       var columns = processColumns(body.columns, body.numberOfRecords);
@@ -54,7 +54,7 @@ describe.only('method : generateData tests', function(){
               total++;
             }
           });
-          expect(total / bodyNulls.numberOfRecords).to.be.above(.08).and.below(.12);
+          expect(total / bodyNulls.numberOfRecords).to.be.above(.06).and.below(.14);
           total = 0;
       });
     })
@@ -67,7 +67,7 @@ describe.only('method : generateData tests', function(){
           total++;
         }
       });
-      expect(total / bodyNulls.numberOfRecords).to.be.above(.08).and.below(.12);
+      expect(total / bodyNulls.numberOfRecords).to.be.above(.06).and.below(.14);
     })
 
     it("generates data for date type with nulls @ 10%", function() {
@@ -78,7 +78,7 @@ describe.only('method : generateData tests', function(){
           total++;
         }
       });
-      expect(total / bodyNulls.numberOfRecords).to.be.above(.08).and.below(.12);
+      expect(total / bodyNulls.numberOfRecords).to.be.above(.06).and.below(.14);
     })
 
     it("generates data for integer type with nulls @ 10%", function() {
@@ -89,7 +89,7 @@ describe.only('method : generateData tests', function(){
           total++;
         }
       });
-      expect(total / bodyNulls.numberOfRecords).to.be.above(.08).and.below(.12);
+      expect(total / bodyNulls.numberOfRecords).to.be.above(.06).and.below(.14);
     });
 
     it("generates data for text type with nulls @ 10%", function() {
@@ -100,7 +100,7 @@ describe.only('method : generateData tests', function(){
           total++;
         }
       });
-      expect(total / bodyNulls.numberOfRecords).to.be.above(.08).and.below(.12);
+      expect(total / bodyNulls.numberOfRecords).to.be.above(.06).and.below(.14);
     });
 
 
