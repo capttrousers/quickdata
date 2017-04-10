@@ -10,7 +10,7 @@ var logger   = require('../utils/logger').logger;
 var processTables = require('../utils/cleaner/processTables');
 
 describe("Database connections with sequelize", function() {
-	
+
   var seq = models.postgresConnection;
   this.slow(500);
   before('clears out testing usage db to run clean tests', function() {
@@ -39,7 +39,7 @@ describe("Database connections with sequelize", function() {
   describe("authenticates all connections", function() {
     it("authenticates mysql connection", function() {
 			//	set timeout a minute, 60,000ms, as adhoc mysql testing db is really slow lately: ~40s
-			this.timeout(60000);	
+			this.timeout(60000);
       return models.mysqlConnection.authenticate();
     });
     it("authenticates mssql connection", function() {
@@ -77,7 +77,7 @@ describe("Database connections with sequelize", function() {
       'Double Column': 3.14159
       }
     ];
-		
+
 		// use postgres because in production, the postgres adhoc db is more reliable
     describe("creates a table in postgres db", function() {
 
@@ -153,8 +153,16 @@ describe("Database connections with sequelize", function() {
       });
 
       it('checks database to make sure the table was deleted', function() {
-        return expect(seq.getQueryInterface().describeTable(tableName))
-				.to.eventually.be.rejectedWith(/no.description.found.*check.*table.name/i);
+				// need to differntiate between mysql and postgres error messages
+				// postgres at work and in production, mysql at home
+				/*
+					mysql - /table.*does.?n.?t.*exist/i
+					postgres - /no.description.found.*check.*table.name/i
+				*/
+				var errorRegex = process.env.NODE_ENV == 'development' ?
+									/table.*does.?n.?t.*exist/i : /no.description.found.*check.*table.name/i
+			  return expect(seq.getQueryInterface().describeTable(tableName))
+				.to.eventually.be.rejectedWith(errorRegex);
       });
 
     });

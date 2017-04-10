@@ -5,6 +5,10 @@
 
 var getRandomDataValue = require('./getRandomDataValue');
 
+// the function can also do appropriate clipping of props
+//
+// should probably do the same type of validation / reactive behavior on props / clipping as on client side
+
 var logger   = require('../utils/logger').logger;
 
 module.exports = (bodyColumns, maxRows) => {
@@ -14,41 +18,62 @@ module.exports = (bodyColumns, maxRows) => {
   var columns = [];
 
   fields.forEach(function(bodyColumn) {
-    var column = processColumn(bodyColumn, maxRows);
+    var column = processColumn(bodyColumn, numberOfRecords);
+    column.nextRandomData = getRandomDataValue(column);
     columns.push(column);
     // handle child column
-    if(bodyColumn.hierarchy == 'parent') {
-      var child = bodyColumn.child;
-      child.parentIndex = columns.indexOf(bodyColumn);
-      child = processColumn(child, maxRows);
+    if(column.hierarchy == 'parent') {
+      var child = processColumn(column.child, numberOfRecords);
+      /*
+          parentIndex and childIndex can be collapsed to hierarchy maybe
+          check where hierarchy is used to see if it can be inferred from the indices existence
+      */
+      child.parentIndex = columns.indexOf(column);
+      child.minValue = new Date(column.nextRandomData);
+      child.nextRandomData = getRandomDataValue(child);
       columns.push(child);
+      if(column.dataType == "date") {
+        var maxValue = Math.max(column.maxValue, child.maxValue);
+        columns[columns.indexOf(child)].maxValue = maxValue;
+        columns[columns.indexOf(child)].allowNulls = false;
+        // set parent column maxvalue
+        columns[columns.indexOf(column)].maxValue = maxValue;
+        columns[columns.indexOf(column)].allowNulls = false;
+      }
+      // then set parent's childIndex = to index of new column child
+      columns[child.parentIndex].childIndex = columns.indexOf(child);
     }
   });
 
   return columns;
 
   // take column, add a few attrs and push column.name to quick_data_fields
-  function processColumn(column, maxRows) {
-    logger.debug('column.interval value ' + column.interval);
-    logger.debug('column.interval is typeof ' + typeof column.interval);
-    column.interval = (1 <= column.interval && +column.interval <= +maxRows
-                                ? column.interval : 1);
+  function processColumn(column, numberOfRecords) {
+    column.numberOfRecords = numberOfRecords;
+    column.interval = Math.max(1, column.interval);
+    column.interval = Math.min(column.interval, column.numberOfRecords);
     column.intervalCounter = column.interval;
     switch (column.dataType) {
       case 'text' :
         column.name = "Text column " + textColumnCount;
-        column.maxValue = Math.min(column.maxValue, 10);
+        // max of 1000 chars for strings, for now
+        column.maxValue = Math.min(column.maxValue, 1000);
+        // minValue of 1 char
+        column.minValue = Math.max(column.minValue, 1);
         textColumnCount++;
         break;
       case 'date' :
         column.name = "Date column " + dateColumnCount;
-        // date max value is actually min date value
-        column.maxValue = new Date(column.maxValue);
+        // date max value is actually minValue date value
+        column.maxValue = (column.maxValue) ? new Date(column.maxValue) :  new Date();
+        column.minValue = new Date(column.minValue || "2000-01-01");
         dateColumnCount++;
         break;
       default :
         column.maxValue = (0 < column.maxValue && column.maxValue <= 1000000
                                     ? column.maxValue : 1000000 );
+        // minValue of 0 for numbers, can change to be min int
+        column.minValue = Math.max(column.minValue, 0);
         if(column.dataType ==  'integer') {
           column.name = "Integer column " + intColumnCount;
           intColumnCount++;
@@ -58,7 +83,6 @@ module.exports = (bodyColumns, maxRows) => {
         }
         break;
     }
-    column.nextRandomData = getRandomDataValue(column);
     return column;
   }
 }

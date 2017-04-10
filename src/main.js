@@ -2,13 +2,19 @@ import "babel-polyfill";
 import Vue from 'vue';
 var VueResource = require('vue-resource');
 Vue.use(VueResource);
+
+// import VueClip from 'vue-clip';
+// Vue.use(VueClip);
+
 // import App from './App.vue'
-import app from './app.vue';
+import app from './components/app.vue';
 import store from './store';
+import router from './router';
 
 import VueMaterial from 'vue-material';
 // import 'css!vue-material/dist/vue-material.css';
 Vue.use(VueMaterial);
+
 
 Vue.material.registerTheme({
   "default" : {
@@ -30,5 +36,6 @@ Vue.material.registerTheme({
 new Vue({
   el: '#app',
   store,
+  router,
   render: h => h(app)
 });

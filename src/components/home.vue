@@ -1,24 +1,7 @@
 <template lang="pug">
-  #app
-    #info
-      p.
-        This tool will quickly generate random data
-        based on the parameters selected below.
-      p.
-        Possible data types to select are Date, Text, Integers, and Decimals.
-        You can also set the number of rows of random data to generate. Limit of 100,000
-      p.
-        Data types of Text, Integers, and Decimals allow maximum lengths / values respectively.
-        They also allow an #[i interval] property. An interval value of 1 means there
-        will be a new random value every record, whereas an interval of 5 means there will be a new random value every 5 records.
-      p.
-        Dates allow a minimum date property, to create a range of possible dates between the min date and today.
-      p.
-        The Parent button allows text and number fields to contain a child column to act as a hierarchy where random values are only repeated until the parent's random value resets.
-      p.
-        Current limit of 10,000 records, or 1,000 for MS SQL
-      p.
-        Note, the mysql adhoc testing db is retired as of late, and is performing really slow. Stick with postgres and mssql unless mysql is necessary.
+  #control
+
+    md-progress(v-show="false", indeterminate, :md-progress="progressValue")
 
     md-dialog(md-open-from="#getDataButton", md-close-to="#getDataButton", ref="alert")
       md-dialog-title Invalid form
@@ -29,6 +12,23 @@
         md-button(@click.native="closeDialog('alert')") OK
 
     #form
+      .form-row(v-show="false")
+        md-layout(md-gutter="8")
+          md-layout(md-flex="75")
+            md-input-container
+              label Schema file
+              md-file(v-model="fileName", accept="text/*", :multiple="false", @selected="pickFile($event)")
+          md-layout(md-flex="15")
+            md-button.md-raised(:disabled="file == null", @click.native="submitFile") Submit
+          md-layout(md-flex="10")
+            md-button.md-raised.md-icon-button.md-dense( @click.native="helpRouter")
+              md-icon help_outline
+      .form-row(v-show="false")
+        md-layout(md-gutter="24")
+          md-layout(md-flex)
+          md-layout(md-flex)
+            span(style="margin: 0 auto;") --- OR ---
+          md-layout(md-flex)
       .form-row
         md-layout(md-gutter="40")
           md-layout
@@ -37,13 +37,13 @@
             md-button.md-raised.md-primary(@click.native="getData") {{ fileButtonLabel }}
           md-layout
             md-input-container(style="display: inline-block; width: auto;")
-                label(for='data-source')  Data Source
-                md-select(name='data-source', v-model="dataSource")
-                  md-option(v-for="dataSourceOption in dataSources", :value="dataSourceOption.value")  {{ dataSourceOption.label }}
+              label(for='data-source')  Data Source
+              md-select(name='data-source', v-model="dataSource")
+                md-option(v-for="dataSourceOption in dataSources", :value="dataSourceOption.value")  {{ dataSourceOption.label }}
           md-layout
             md-input-container(style="display: inline-block; width: auto;")
-                label(for="max-rows")  Rows of random data
-                md-input(name='max-rows', v-model="maxRowCount")
+              label(for="number-of-records")  Records of random data
+              md-input(name='number-of-records', v-model="numberOfRecords")
       .form-row
         md-layout(md-gutter="40")
           md-layout(md-flex="33")
@@ -64,13 +64,14 @@
     md-snackbar(ref="errorsnackbar")
       span {{ error.message }}
       md-button.md-accent(@click.native="$refs.errorsnackbar.close()") Close
+
 </template>
 
 <script>
   import row from './row.vue';
+  import Vue from 'vue';
   var FileSaver = require('file-saver');
   export default {
-    name: 'app',
     components: {
       'myRow': row
     },
@@ -79,16 +80,22 @@
         error: {
           message: 'default error message'
         }
+        , options: {
+            url: '/fileuploader',
+            uploadMultiple: false
+        }
+        , progressValue: 0
+        , fileName: ''
       }
     },
     computed: {
         isValid: {
           get() {
             // check that columns are valid
-            // check max rows, email, sfcase, table name
+            // check number of records, email, sfcase, table name
             /*
-            if( this.maxRows < 1
-              || this.maxRows > 1000
+            if( this.numberOfRecords < 1
+              || this.numberOfRecords > 1000
               || this.columns.length < 1
               || this.user.indexOf('@tableau.com') < 1 // not zero so user@tableau, charset
               || this.tableName.length > 0
@@ -113,6 +120,14 @@
             return (this.dataSource == 'csv' ? 'File' : 'Table') + ' Name (no spaces)';
           }
         },
+        file: {
+          get () {
+            return this.$store.state.file;
+          },
+          set (value) {
+            this.$store.dispatch('setFile', {value});
+          }
+        },
         tableName: {
           get () {
             return this.$store.state.tableName;
@@ -122,12 +137,12 @@
             this.$store.dispatch('setTableName', {value});
           }
         },
-        maxRowCount: {
+        numberOfRecords: {
           get () {
-            return this.$store.state.maxrows;
+            return this.$store.state.numberOfRecords;
           },
           set (value) {
-            this.$store.dispatch('setMaxRows', {value});
+            this.$store.dispatch('setNumberOfRecords', {value});
           }
         },
         sfCase: {
@@ -175,8 +190,41 @@
       addNewColumn: function () {
         this.$store.commit('ADD_NEW_COLUMN')
       },
+      pickFile: function( event ) {
+        var f = event[0];
+        if(f) {
+          console.log('file size is ' + f.size);
+          console.log('file name is ' + f.name);
+          console.log('file picked');
+
+          // process file
+
+          console.log('file processed');
+          this.file = f;
+        }
+      },
+      helpRouter: function() {
+        this.$router.push('help');
+      },
+      submitFile: function() {
+        console.log('file size is ' + this.file.size);
+        console.log('file name is ' + this.file.name);
+        var reader = new FileReader();
+        var body = {};
+        reader.onload = function(evt) {
+          body.file = evt.target.result;
+          Vue.http.post('/fileuploader', body).then((response) => {
+            console.log('post to /fileuploader successful');
+          }).catch((response) => {
+            this.error.message = (response.body.error) || 'error uploading file';
+            this.$refs.errorsnackbar.open();
+          });
+          console.log('file submitted');
+        }
+        reader.readAsText(this.file);
+      },
       getData: function () {
-        if(this.isValid) {  // ajax post columns, maxRows
+        if(this.isValid) {  // ajax post columns, numberOfRecords
           // add user, sfcase, datasource
           var body = {};
           body.user = this.user;
@@ -184,7 +232,7 @@
           body.dataSource = this.dataSource;
           body.sfCase = this.sfCase;
           body.columns = this.columns;
-          body.maxRows = this.maxRowCount;
+          body.numberOfRecords = this.numberOfRecords;
 
           this.$http.post('/quickdata', body).then(
             (response) => {
@@ -204,8 +252,8 @@
           /*
           var temp = [];
           console.log("len after clearing " + this.alerts.length);
-          if( this.maxRows < 1) { this.alerts.push("Max Rows must be greater than 0"); }
-          if(this.maxRows > 1000) { this.alerts.push("Max Rows must be less than 1000"); }
+          if( this.numberOfRecords < 1) { this.alerts.push("Number of records must be greater than 0"); }
+          if(this.numberOfRecords > 1000) { this.alerts.push("Number of records must be less than 1000"); }
           if(this.columns.length < 1) { this.alerts.push("Must add at least one column of data to the dataset"); }
           // not zero so user@tableau, charset)
           if(this.user.indexOf('@tableau.com') < 1) { this.alerts.push("User must be valid tableau employee"); }
@@ -228,7 +276,7 @@
   }
   #form {
     margin: 0 auto;
-    width: 60%;
+    width: 75%;
   }
   .form-row{
     margin: 1em 0;
@@ -238,7 +286,7 @@
   }
   @media screen and (max-width: 1400px) {
     #form {
-      width: 80%;
+      width: 90%;
     }
   }
 </style>

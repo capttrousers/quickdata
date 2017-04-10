@@ -4,7 +4,9 @@ var path = require('path');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var routes = require('./routes');
+var routes = require('./routes/index');
+var file = require('./routes/file');
+var logger   = require('./utils/logger').logger;
 
 var app = express();
 
@@ -18,6 +20,7 @@ if(! process.env.NODE_TESTING) {
   if(process.env.NODE_ENV == 'production') {
     app.use(morgan('combined'));
   } else {
+    logger.info('using morgan:dev')
     app.use(morgan('dev'));
   }
 }
@@ -26,12 +29,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // app.use( [URL path],  express.static( relative file path ) )
-app.use('/index.html', express.static('./index.html'));
-
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/dist', express.static(path.join(__dirname, 'dist')));
 
 app.use('/', routes);
+app.use('/fileuploader', file);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
