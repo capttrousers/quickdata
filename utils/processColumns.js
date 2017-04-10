@@ -11,7 +11,7 @@ var getRandomDataValue = require('./getRandomDataValue');
 
 var logger   = require('../utils/logger').logger;
 
-module.exports = (bodyColumns, maxRows) => {
+module.exports = (bodyColumns, numberOfRecords) => {
   var fields = bodyColumns;
   // # of columns for each datatype for column names:
   var textColumnCount = decColumnCount = intColumnCount = dateColumnCount = 1;
