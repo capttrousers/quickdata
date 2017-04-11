@@ -14,7 +14,7 @@ module.exports =
   dataType: 'text',       // ["integer", "date", "decimal", "text"],
 
   // these two, trend and increment could be collapsed into a single field, random will be null, then positive or negative trends can be inferred from the increment value
-  trend: 'positive',      // ["positive","negative","random"]
+  trend: 'random',      // ["positive","negative","random"]
   increment: "1",         // when trend is positive or negative, this is the increment, Number
     // increment: "none" or null means random value, no trend
     // positive increment of 1 is AUTO INCREMENT

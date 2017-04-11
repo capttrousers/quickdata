@@ -6,6 +6,13 @@ var logger   = require('./logger').logger;
 module.exports = (column) => {
   if(column.allowNulls && Math.random() > .9) {
     return null;
+  } else if(column.trend && column.trend != "random") {
+    // process the trend and return nextRandomValue incremented
+    // first check nextRandomValue's existence,
+    // if it doesnt exist, this is the first time running processColumns and setting next random values
+    // so set nextRandomValue to min value for all but text, for text : first value == "a" * length ?
+
+
   } else {
     switch(column.dataType) {
       case 'text' :

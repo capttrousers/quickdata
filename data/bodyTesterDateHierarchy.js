@@ -18,7 +18,7 @@ module.exports =
   columns: [
     {
       dataType: "date",             // data type ["integer", "date", "decimal", "text", "file"]
-      trend: 'positive',
+      trend: 'random',
       increment: "1",          // when trend is positive or negative, this is the increment, Number
       allowNulls: false,
       interval : "1",
@@ -29,7 +29,7 @@ module.exports =
       hierarchy: "parent",       // parent child relationship ['parent','child','none']
       child: {
         dataType: "date",             // data type ["integer", "date", "decimal", "text", "file"]
-        trend: 'positive',
+        trend: 'random',
         increment: "1",          // when trend is positive or negative, this is the increment, Number
         allowNulls: false,
         interval : "1",

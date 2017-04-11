@@ -45,9 +45,9 @@ describe("Random data generator", function() {
       var dateString = getRandomData({dataType: 'date', maxValue: new Date(), minValue: '2000-01-01'});
       expect(dateString).to.have.lengthOf(24);
       // date max value is actually min date
-      var date = getRandomData({dataType: 'date', minValue: "1988-03-18", maxValue: '2007-08-08'});
+      var date = getRandomData({dataType: 'date', minValue: "1988-03-18", maxValue: '2007-01-01'});
       expect(new Date(date)).to.be.at.least(new Date("1988-03-18"));
-      expect(new Date(date)).to.be.at.most(new Date('2007-08-08'));
+      expect(new Date(date)).to.be.at.most(new Date('2007-01-01'));
   });
 
   it("generates a random string value between min and max constraints", function() {
@@ -67,7 +67,7 @@ describe("Random data generator", function() {
         totalForAverage++;
       }
     }
-    expect(totalForAverage / TEST_NUMBER).to.be.above(.08).and.below(.12);
+    expect(totalForAverage / TEST_NUMBER).to.be.above(.07).and.below(.13);
   })
 
   it("returns null 10% of the time with column of type date with allowNulls=true", function(){
@@ -78,7 +78,7 @@ describe("Random data generator", function() {
         totalForAverage++;
       }
     }
-    expect(totalForAverage / TEST_NUMBER).to.be.above(.08).and.below(.12);
+    expect(totalForAverage / TEST_NUMBER).to.be.above(.07).and.below(.13);
   })
 
   it("returns null 10% of the time with column of type integer with allowNulls=true", function(){
@@ -89,7 +89,7 @@ describe("Random data generator", function() {
         totalForAverage++;
       }
     }
-    expect(totalForAverage / TEST_NUMBER).to.be.above(.08).and.below(.12);
+    expect(totalForAverage / TEST_NUMBER).to.be.above(.07).and.below(.13);
   })
 
   it("returns null 10% of the time with column of type decimal with allowNulls=true", function(){
@@ -100,6 +100,6 @@ describe("Random data generator", function() {
         totalForAverage++;
       }
     }
-    expect(totalForAverage / TEST_NUMBER).to.be.above(.08).and.below(.12);
+    expect(totalForAverage / TEST_NUMBER).to.be.above(.07).and.below(.13);
   })
 });

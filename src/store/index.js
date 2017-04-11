@@ -36,7 +36,7 @@ export default new Vuex.Store({
 			"minValue": "1",
 			"maxValue": "10",
 			"interval": "1",
-      "trend": "positive",  // ['positive', 'negative', 'random']
+      "trend": "random",  // ['positive', 'negative', 'random']
       "increment": "1",
 			// possible options: 'none', 'parent', 'child'
 			"hierarchy": "none",

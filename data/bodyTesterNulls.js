@@ -20,7 +20,7 @@ module.exports =
       dataType: "integer",             // data type ["integer", "date", "decimal", "text", "file"],
       hierarchy: "none",       // parent child relationship ['parent','child','none']
       child: {},
-      trend: 'positive',
+      trend: 'random',
       increment: "1",          // when trend is positive or negative, this is the increment, Number
       allowNulls: true,
       interval : "1",
@@ -33,7 +33,7 @@ module.exports =
       dataType: "date",             // data type ["integer", "date", "decimal", "text", "file"],
       hierarchy: "none",       // parent child relationship ['parent','child','none']
       child: {},
-      trend: 'positive',
+      trend: 'random',
       increment: "1",          // when trend is positive or negative, this is the increment, Number
       allowNulls: true,
       interval : "1",
@@ -46,7 +46,7 @@ module.exports =
       dataType: "decimal",             // data type ["integer", "date", "decimal", "text", "file"],
       hierarchy: "none",       // parent child relationship ['parent','child','none']
       child: {},
-      trend: 'positive',
+      trend: 'random',
       increment: "1",          // when trend is positive or negative, this is the increment, Number
       allowNulls: true,
       interval : "1",
@@ -59,7 +59,7 @@ module.exports =
       dataType: "text",             // data type ["integer", "date", "decimal", "text", "file"],
       hierarchy: "none",       // parent child relationship ['parent','child','none']
       child: {},
-      trend: 'positive',
+      trend: 'random',
       increment: "1",          // when trend is positive or negative, this is the increment, Number
       allowNulls: true,
       interval : "1",
