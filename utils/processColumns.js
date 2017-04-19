@@ -70,10 +70,10 @@ module.exports = (bodyColumns, numberOfRecords) => {
         dateColumnCount++;
         break;
       default :
-        column.maxValue = (0 < column.maxValue && column.maxValue <= 1000000
-                                    ? column.maxValue : 1000000 );
+        // for ints or decimals, max value set to 
+        column.maxValue = Math.min(column.maxValue, 1000000);
         // minValue of 0 for numbers, can change to be min int
-        column.minValue = Math.max(column.minValue, 0);
+        column.minValue = Math.max(column.minValue, -1000000);
         if(column.dataType ==  'integer') {
           column.name = "Integer column " + intColumnCount;
           intColumnCount++;
