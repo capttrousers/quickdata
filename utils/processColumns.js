@@ -29,17 +29,18 @@ module.exports = (bodyColumns, numberOfRecords) => {
           check where hierarchy is used to see if it can be inferred from the indices existence
       */
       child.parentIndex = columns.indexOf(column);
-      child.minValue = new Date(column.nextRandomData);
-      child.nextRandomData = getRandomDataValue(child);
-      columns.push(child);
       if(column.dataType == "date") {
         var maxValue = Math.max(column.maxValue, child.maxValue);
-        columns[columns.indexOf(child)].maxValue = maxValue;
-        columns[columns.indexOf(child)].allowNulls = false;
+        child.maxValue = maxValue;
+        child.allowNulls = false;
+        child.minValue = new Date(column.nextRandomData);
         // set parent column maxvalue
-        columns[columns.indexOf(column)].maxValue = maxValue;
-        columns[columns.indexOf(column)].allowNulls = false;
+        columns[child.parentIndex].maxValue = maxValue;
+        columns[child.parentIndex].allowNulls = false;
       }
+      
+      child.nextRandomData = getRandomDataValue(child);
+      columns.push(child);
       // then set parent's childIndex = to index of new column child
       columns[child.parentIndex].childIndex = columns.indexOf(child);
     }
@@ -64,8 +65,8 @@ module.exports = (bodyColumns, numberOfRecords) => {
         break;
       case 'date' :
         column.name = "Date column " + dateColumnCount;
-        // date max value is actually minValue date value
         column.maxValue = (column.maxValue) ? new Date(column.maxValue) :  new Date();
+        //  default min date of jan 1 2001
         column.minValue = new Date(column.minValue || "2000-01-01");
         dateColumnCount++;
         break;
