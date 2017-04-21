@@ -70,7 +70,8 @@ describe("HTTP requests", function() {
 
   // use morgan to test and log http requests
   describe("Process quickdata post", function() {
-    this.slow(500);
+    this.slow(1000);
+    this.timeout(10000);
 
     it("POST /quickdata with no parameters is rejected as Bad Request (400)", function() {
       return chai.request(app).post('/quickdata').catch(function(err) {

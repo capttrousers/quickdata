@@ -53,6 +53,14 @@ module.exports = (bodyColumns, numberOfRecords) => {
     column.numberOfRecords = numberOfRecords;
     column.interval = Math.max(1, column.interval);
     column.interval = Math.min(column.interval, column.numberOfRecords);
+    if(column.trend != "random") {
+      column.interval = 1;
+      if(column.trend == "positive") {
+        column.increment = Math.max(column.increment, 1);
+      } else {
+        column.increment = Math.min(column.increment, -1);
+      }      
+    }
     column.intervalCounter = column.interval;
     switch (column.dataType) {
       case 'text' :
@@ -83,6 +91,9 @@ module.exports = (bodyColumns, numberOfRecords) => {
           decColumnCount++;
         }
         break;
+    }
+    if(column.trend != "random") {
+      column.nextRandomData = column.minValue - column.increment;
     }
     return column;
   }

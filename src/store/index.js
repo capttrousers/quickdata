@@ -36,7 +36,7 @@ export default new Vuex.Store({
 			"minValue": "1",
 			"maxValue": "10",
 			"interval": "1",
-      "trend": "positive",  // ['positive', 'negative', 'random']
+      "trend": "random",  // ['positive', 'negative', 'random']
       "increment": "1",
 			// possible options: 'none', 'parent', 'child'
 			"hierarchy": "none",
@@ -118,12 +118,14 @@ export default new Vuex.Store({
 						case 'text':
 							state.columns[index].maxValue = "10";
 							state.columns[index].minValue = "1";
+							state.columns[index].trend = "random";
 							break;
 						case 'date':
 							var dateValue = new Date().setFullYear(new Date().getFullYear() - 1);
 							state.columns[index].minValue = new Date(dateValue).toJSON().substring(0,10);
 							state.columns[index].maxValue = new Date().toJSON().substring(0,10);
 							state.columns[index].interval = "1";
+							state.columns[index].trend = "random";
 							break;
 						case 'decimal':
 						case 'integer':

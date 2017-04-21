@@ -35,14 +35,14 @@
         md-input-container
           label  Interval:
           md-input(v-model="interval")
-      md-layout(md-flex="10", v-show="! (true || (dataType != 'file' && hierarchy == 'none'))")
+      md-layout(md-flex="10", v-show=" ! (false || ['file', 'text', 'date'].indexOf(dataType) > 0 || hierarchy != 'none' )")
         md-input-container
           label Trend
           md-select(v-model="trend")
             md-option(value="positive") Positive
             md-option(value="negative") Negative
             md-option(value="random") Random
-      md-layout(md-flex="10", v-show="! (true || (dataType != 'file' && hierarchy == 'none' && trend != 'random'))")
+      md-layout(md-flex="10", v-show=" ! (false || ['file', 'text', 'date'].indexOf(dataType) > 0 || hierarchy != 'none' || trend == 'random' )")
         md-input-container
           label  Trend {{ trend == 'positive' ? 'increment' : 'decrement' }}
           md-input(v-model="increment")
@@ -90,11 +90,13 @@
           return this.columnData.trend;
         },
         set(value) {
-          var propName = 'trend';
-          var index = this.columnIndex;
-          this.$store.dispatch('updateColumn', {index, propName, value});
-          if(value == "negative") this.increment = "-1";
-          if(value == "positive") this.increment = "1";
+          if(this.trend != value) {
+            var propName = 'trend';
+            var index = this.columnIndex;
+            this.$store.dispatch('updateColumn', {index, propName, value});
+            if(value == "negative") this.increment = "-1";
+            if(value == "positive") this.increment = "1";          
+          }
         }
       },
       increment: {
@@ -142,9 +144,11 @@
           return this.columnData.dataType;
         },
         set(value) {
-          var propName = 'dataType';
-          var index = this.columnIndex;
-          this.$store.dispatch('updateColumn', {index, propName, value});
+          if(this.dataType != value) {
+            var propName = 'dataType';
+            var index = this.columnIndex;
+            this.$store.dispatch('updateColumn', {index, propName, value});
+          }
         }
       },
       MaxValueLabel: {
@@ -186,9 +190,11 @@
           return this.columnData.behavior;
         },
         set(value) {
-          var propName = "behavior";
-          var index = this.columnIndex;
-          this.$store.dispatch('updateColumn', {index, propName, value});
+          if(this.behavior != value) {
+            var propName = "behavior";
+            var index = this.columnIndex;
+            this.$store.dispatch('updateColumn', {index, propName, value});
+          }
         }
       },
       file: {

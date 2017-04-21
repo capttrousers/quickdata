@@ -67,7 +67,7 @@ describe("Random data generator", function() {
         totalForAverage++;
       }
     }
-    expect(totalForAverage / TEST_NUMBER).to.be.above(.08).and.below(.12);
+    expect(totalForAverage / TEST_NUMBER).to.be.above(.06).and.below(.14);
   })
 
   it("returns null 10% of the time with column of type date with allowNulls=true", function(){
@@ -78,7 +78,7 @@ describe("Random data generator", function() {
         totalForAverage++;
       }
     }
-    expect(totalForAverage / TEST_NUMBER).to.be.above(.08).and.below(.12);
+    expect(totalForAverage / TEST_NUMBER).to.be.above(.06).and.below(.14);
   })
 
   it("returns null 10% of the time with column of type integer with allowNulls=true", function(){
@@ -89,7 +89,7 @@ describe("Random data generator", function() {
         totalForAverage++;
       }
     }
-    expect(totalForAverage / TEST_NUMBER).to.be.above(.08).and.below(.12);
+    expect(totalForAverage / TEST_NUMBER).to.be.above(.06).and.below(.14);
   })
 
   it("returns null 10% of the time with column of type decimal with allowNulls=true", function(){
@@ -100,6 +100,6 @@ describe("Random data generator", function() {
         totalForAverage++;
       }
     }
-    expect(totalForAverage / TEST_NUMBER).to.be.above(.08).and.below(.12);
+    expect(totalForAverage / TEST_NUMBER).to.be.above(.06).and.below(.14);
   })
 });

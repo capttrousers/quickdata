@@ -6,6 +6,12 @@ var logger   = require('./logger').logger;
 module.exports = (column) => {
   if(column.allowNulls && Math.random() > .9) {
     return null;
+  } else if (column.trend && column.trend != "random") {
+      if(column.trend == "positive") {
+        return Math.min(column.maxValue, column.nextRandomData + column.increment);
+      } else {
+        return Math.max(column.minValue, column.nextRandomData + column.increment);
+      }
   } else {
     switch(column.dataType) {
       case 'text' :
