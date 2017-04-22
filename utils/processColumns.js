@@ -29,17 +29,18 @@ module.exports = (bodyColumns, numberOfRecords) => {
           check where hierarchy is used to see if it can be inferred from the indices existence
       */
       child.parentIndex = columns.indexOf(column);
-      child.minValue = new Date(column.nextRandomData);
-      child.nextRandomData = getRandomDataValue(child);
-      columns.push(child);
       if(column.dataType == "date") {
         var maxValue = Math.max(column.maxValue, child.maxValue);
-        columns[columns.indexOf(child)].maxValue = maxValue;
-        columns[columns.indexOf(child)].allowNulls = false;
+        child.maxValue = maxValue;
+        child.allowNulls = false;
+        child.minValue = new Date(column.nextRandomData);
         // set parent column maxvalue
-        columns[columns.indexOf(column)].maxValue = maxValue;
-        columns[columns.indexOf(column)].allowNulls = false;
+        columns[child.parentIndex].maxValue = maxValue;
+        columns[child.parentIndex].allowNulls = false;
       }
+      
+      child.nextRandomData = getRandomDataValue(child);
+      columns.push(child);
       // then set parent's childIndex = to index of new column child
       columns[child.parentIndex].childIndex = columns.indexOf(child);
     }
@@ -52,6 +53,14 @@ module.exports = (bodyColumns, numberOfRecords) => {
     column.numberOfRecords = numberOfRecords;
     column.interval = Math.max(1, column.interval);
     column.interval = Math.min(column.interval, column.numberOfRecords);
+    if(column.trend != "random") {
+      column.interval = 1;
+      if(column.trend == "positive") {
+        column.increment = Math.max(column.increment, 1);
+      } else {
+        column.increment = Math.min(column.increment, -1);
+      }      
+    }
     column.intervalCounter = column.interval;
     switch (column.dataType) {
       case 'text' :
@@ -64,16 +73,16 @@ module.exports = (bodyColumns, numberOfRecords) => {
         break;
       case 'date' :
         column.name = "Date column " + dateColumnCount;
-        // date max value is actually minValue date value
         column.maxValue = (column.maxValue) ? new Date(column.maxValue) :  new Date();
+        //  default min date of jan 1 2001
         column.minValue = new Date(column.minValue || "2000-01-01");
         dateColumnCount++;
         break;
       default :
-        column.maxValue = (0 < column.maxValue && column.maxValue <= 1000000
-                                    ? column.maxValue : 1000000 );
+        // for ints or decimals, max value set to 
+        column.maxValue = Math.min(column.maxValue, 1000000);
         // minValue of 0 for numbers, can change to be min int
-        column.minValue = Math.max(column.minValue, 0);
+        column.minValue = Math.max(column.minValue, -1000000);
         if(column.dataType ==  'integer') {
           column.name = "Integer column " + intColumnCount;
           intColumnCount++;
@@ -82,6 +91,9 @@ module.exports = (bodyColumns, numberOfRecords) => {
           decColumnCount++;
         }
         break;
+    }
+    if(column.trend != "random") {
+      column.nextRandomData = column.minValue - column.increment;
     }
     return column;
   }

@@ -11,7 +11,11 @@ module.exports = (column) => {
     // first check nextRandomValue's existence,
     // if it doesnt exist, this is the first time running processColumns and setting next random values
     // so set nextRandomValue to min value for all but text, for text : first value == "a" * length ?
-
+      if(column.trend == "positive") {
+        return Math.min(column.maxValue, column.nextRandomData + column.increment);
+      } else {
+        return Math.max(column.minValue, column.nextRandomData + column.increment);
+      }
 
   } else {
     switch(column.dataType) {

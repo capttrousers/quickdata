@@ -84,18 +84,18 @@ describe('method : processColumns tests', function(){
     })
 
     it('processColumns clips the interval to the number of records', function() {
-      _.forEach(processColumns(body.columns, body.numberOfRecords), function(column) {
+      _.forEach(processColumns(body.columns, +body.numberOfRecords), function(column) {
           expect(column).to.have.property('intervalCounter').that.is.at.most(column.numberOfRecords);
           expect(column).to.have.property('interval').that.is.at.most(column.numberOfRecords);
       });
     });
 
     it('processColumns with parent/child Date returns array of length 2', function() {
-      expect(processColumns(body.columns, body.numberOfRecords)).to.have.lengthOf(2);
+      expect(processColumns(body.columns, +body.numberOfRecords)).to.have.lengthOf(2);
     });
 
     it('processColumns with parent/child Date has parent date < child date', function() {
-      var columns = processColumns(body.columns, body.numberOfRecords);
+      var columns = processColumns(body.columns, +body.numberOfRecords);
       expect(new Date(columns[0].nextRandomData)).to.be.below(new Date(columns[1].nextRandomData));
     });
 

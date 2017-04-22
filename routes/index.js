@@ -35,7 +35,9 @@ router.post("/quickdata", function(request, response, next) {
   // but for now will limit to 100000 records for in memory bulkInsert db operations
   // mssql currently has a limit of 1000 for bulk insert, fixed in sequelize@4.0
   var MAXIMUM_RECORDS = (request.body.dataSource != 'mssql' ? 100000 : 1000);
-  request.body.numberOfRecords = (numberOfRecords <= MAXIMUM_RECORDS && numberOfRecords > 0 ? numberOfRecords : 50);
+  numberOfRecords = Math.max(numberOfRecords, 0);
+  numberOfRecords = Math.min(numberOfRecords, MAXIMUM_RECORDS);
+  request.body.numberOfRecords = (numberOfRecords > 0 ? numberOfRecords : 50);
 
 	// first loop thru columns, find interval profile for each column
 	request.body.columns = processColumns(request.body.columns, request.body.numberOfRecords);
