@@ -35,18 +35,18 @@
         md-input-container
           label  Interval:
           md-input(v-model="interval")
-      md-layout(md-flex="10", v-show=" ! (false || ['file', 'text', 'date'].indexOf(dataType) > 0 || hierarchy != 'none' )")
+      md-layout(md-flex="10", v-show=" ! (false || ['file', 'text', 'date'].indexOf(dataType) >= 0 || hierarchy != 'none' )")
         md-input-container
           label Trend
           md-select(v-model="trend")
             md-option(value="positive") Positive
             md-option(value="negative") Negative
             md-option(value="random") Random
-      md-layout(md-flex="10", v-show=" ! (false || ['file', 'text', 'date'].indexOf(dataType) > 0 || hierarchy != 'none' || trend == 'random' )")
+      md-layout(md-flex="10", v-show=" ! (false || ['file', 'text', 'date'].indexOf(dataType) >= 0 || hierarchy != 'none' || trend == 'random' )")
         md-input-container
           label  Trend {{ trend == 'positive' ? 'increment' : 'decrement' }}
           md-input(v-model="increment")
-      md-layout(md-flex="10", v-show="! (dataType == 'date' && hierarchy != 'none') && dataType != 'file'")
+      md-layout(md-flex="10", v-show="dataType != 'file' && (hierarchy == 'none' || dataType != 'date')")
         md-checkbox(v-model="allowNulls") Allow nulls?
     br
     Row(v-if="hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
@@ -95,7 +95,7 @@
             var index = this.columnIndex;
             this.$store.dispatch('updateColumn', {index, propName, value});
             if(value == "negative") this.increment = "-1";
-            if(value == "positive") this.increment = "1";          
+            if(value == "positive") this.increment = "1";
           }
         }
       },
