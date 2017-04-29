@@ -6,7 +6,7 @@
         based on the parameters selected below.
       p.
         Possible data types to select are Date, Text, Integers, and Decimals.
-        You can also set the number of rows of random data to generate. Limit of 100,000
+        You can also set the number of rows of random data to generate. Current limit of 100,000 records, or 1,000 for MS SQL
       p.
         Data types of Text, Integers, and Decimals allow maximum lengths / values respectively.
         They also allow an #[i interval] property. An interval value of 1 means there
@@ -14,14 +14,12 @@
       p.
         Dates allow a minimum date property, to create a range of possible dates between the min date and today.
       p.
-        The Parent button allows text and number fields to contain a child column to act as a hierarchy where random values are only repeated until the parent's random value resets.
-      p.
-        Current limit of 10,000 records, or 1,000 for MS SQL
+        The Parent button allows text and date fields to contain a child column to act as a categorical hierarchy for text, or a start/end timestamp for date.
       p.
         Note, the mysql adhoc testing db is retired as of late, and is performing really slow. Stick with postgres and mssql unless mysql is necessary.
 
     router-view
-    
+
 </template>
 
 <script>

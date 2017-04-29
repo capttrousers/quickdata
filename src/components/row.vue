@@ -61,13 +61,14 @@
 		computed: {
 			dataTypes: {
 			  get() {
-  				// var dTypes = JSON.parse(JSON.stringify(this.$store.state.dataTypes));
-  				// if(this.hierarchy == 'parent') {
-  				// 	// date is at index 3 in default dataTypes array in store
-  				// 	dTypes.splice(4,1);
-  				// }
-  				// return dTypes;
-          return this.$store.state.dataTypesNoFile;
+  				var dTypes = JSON.parse(JSON.stringify(this.$store.state.dataTypes));
+  				if(this.hierarchy == 'parent') {
+  					// date is at index 3 in default dataTypes array in store
+            // file is at index 4
+  					dTypes.splice(4,1);
+  				}
+  				return dTypes;
+          // return this.$store.state.dataTypesNoFile;
 			  }
 			},
       hierarchy: {
@@ -226,7 +227,7 @@
 				this.$store.dispatch('updateColumn', {index, propName, value});
       },
 			removeColumn: function(index) {
-        this.$store.dispatch('removeColumn', {index});
+        this.$store.commit('REMOVE_COLUMN', {index});
 			},
       addFile: function(evt){
         this.file = evt[0];

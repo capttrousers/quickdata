@@ -48,11 +48,13 @@ export default new Vuex.Store({
 		}
 	},
 
-	// // getters allow custom computed functions on the state
-	// getters: {
-	// 	numberOfRecords : state => state.numberOfRecords
-	// 	// , other stuff
-	// },
+	// getters allow custom computed functions on the state
+	// get column by index
+	getters: {
+		getColumnByIndex: (state, getters) => (index) => {
+			return state.columns[index];
+		}
+	},
 
 	mutations: {
 		SET_TABLE_NAME(state, payload) {
@@ -151,29 +153,11 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-		setTableName({commit}, payload) {
-			commit('SET_TABLE_NAME', payload);
-		},
-		setDataSource({commit}, payload) {
-			commit('SET_DATA_SOURCE', payload);
-		},
 		setFile({commit}, payload) {
 			commit('SET_FILE', payload);
 		},
-		setUser({commit}, payload) {
-			commit('SET_USER', payload);
-		},
-		setSFCase({commit}, payload) {
-			commit('SET_SFCASE', payload);
-		},
-		setNumberOfRecords({commit}, payload) {
-			commit('SET_NUMBER_OF_RECORDS', payload);
-		},
 		updateColumn({commit}, payload) {
 			commit('UPDATE_COLUMN', payload);
-		},
-		removeColumn({commit}, payload) {
-			commit('REMOVE_COLUMN', payload);
 		}
 	},
 	strict: false

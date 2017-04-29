@@ -31,17 +31,17 @@
           md-layout(md-flex)
       .form-row
         md-layout(md-gutter="40")
-          md-layout
+          md-layout(md-flex)
             md-button.md-raised(@click.native="addNewColumn") Add Column
-          md-layout
+          md-layout(md-flex)
             md-button.md-raised.md-primary(@click.native="getData") {{ fileButtonLabel }}
-          md-layout
+          md-layout(md-flex)
             md-input-container(style="display: inline-block; width: auto;")
               label(for='data-source')  Data Source
               md-select(name='data-source', v-model="dataSource")
                 md-option(v-for="dataSourceOption in dataSources", :value="dataSourceOption.value")  {{ dataSourceOption.label }}
-          md-layout
-            md-input-container(style="display: inline-block; width: auto;")
+          md-layout(md-flex="20")
+            md-input-container(style="display: inline-block;")
               label(for="number-of-records")  Records of random data
               md-input(name='number-of-records', v-model="numberOfRecords")
       .form-row
@@ -134,7 +134,7 @@
           },
           set (value) {
             value = value.replace(' ', '_')
-            this.$store.dispatch('setTableName', {value});
+            this.$store.commit('SET_TABLE_NAME', {value});
           }
         },
         numberOfRecords: {
@@ -142,7 +142,7 @@
             return this.$store.state.numberOfRecords;
           },
           set (value) {
-            this.$store.dispatch('setNumberOfRecords', {value});
+            this.$store.commit('SET_NUMBER_OF_RECORDS', {value});
           }
         },
         sfCase: {
@@ -150,7 +150,7 @@
             return this.$store.state.sfCase;
           },
           set (value) {
-            this.$store.dispatch('setSFCase', {value});
+            this.$store.commit('SET_SFCASE', {value});
           }
         },
         user: {
@@ -158,7 +158,7 @@
             return this.$store.state.user;
           },
           set (value) {
-            this.$store.dispatch('setUser', {value});
+            this.$store.commit('SET_USER', {value});
           }
         },
         dataSources: {
@@ -171,7 +171,7 @@
             return this.$store.state.dataSource;
           },
           set (value) {
-            this.$store.dispatch('setDataSource', {value});
+            this.$store.commit('SET_DATA_SOURCE', {value});
           }
         },
         columns: {
