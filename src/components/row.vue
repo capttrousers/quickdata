@@ -7,12 +7,12 @@
     md-layout(md-gutter="16")
       md-layout(v-show="hierarchy != 'child'", md-flex="10", md-theme="'row'")
         md-button-toggle.md-primary
-          md-button(@click.native="toggleHierarchy", :disabled="dataType == 'file'") Parent
+          md-button(@click.native="toggleHierarchy", :disabled="['file', 'integer', 'decimal'].indexOf(dataType) >= 0") Parent
       md-layout(md-flex="15", v-if="true")
         md-input-container
           label(for='data-type') Data type
           md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
-            md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value")  {{ dataTypeOption.text }}
+            md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value", :disabled="hierarchy == 'parent' && ['date', 'text'].indexOf(dataTypeOption.value) < 0")  {{ dataTypeOption.text }}
       md-layout(md-flex="30", v-show="dataType == 'file'")
         md-input-container
           label Data list file
@@ -35,14 +35,14 @@
         md-input-container
           label  Interval:
           md-input(v-model="interval")
-      md-layout(md-flex="10", v-show=" ! (false || ['file', 'text', 'date'].indexOf(dataType) >= 0 || hierarchy != 'none' )")
+      md-layout(md-flex="10", v-show=" ! (false || ['file', 'text'].indexOf(dataType) >= 0 || hierarchy != 'none' )")
         md-input-container
           label Trend
           md-select(v-model="trend")
             md-option(value="positive") Positive
             md-option(value="negative") Negative
             md-option(value="random") Random
-      md-layout(md-flex="10", v-show=" ! (false || ['file', 'text', 'date'].indexOf(dataType) >= 0 || hierarchy != 'none' || trend == 'random' )")
+      md-layout(md-flex="10", v-show=" ! (false || ['file', 'text'].indexOf(dataType) >= 0 || hierarchy != 'none' || trend == 'random' )")
         md-input-container
           label  Trend {{ trend == 'positive' ? 'increment' : 'decrement' }}
           md-input(v-model="increment")
@@ -61,14 +61,11 @@
 		computed: {
 			dataTypes: {
 			  get() {
-  				var dTypes = JSON.parse(JSON.stringify(this.$store.state.dataTypes));
-  				if(this.hierarchy == 'parent') {
-  					// date is at index 3 in default dataTypes array in store
-            // file is at index 4
-  					dTypes.splice(4,1);
-  				}
-  				return dTypes;
-          // return this.$store.state.dataTypesNoFile;
+          if(this.hierarchy != "none" ) {
+            return this.$store.state.dataTypesParents;
+          } else {
+            return this.$store.state.dataTypes;
+          }
 			  }
 			},
       hierarchy: {
@@ -236,8 +233,15 @@
 	}
 </script>
 <style media="screen">
+  .row {
+    border-top: 3px inset #ccc;
+    padding: .5em 0 0 0;
+    /*height: 100px;*/
+  }
   .child {
-    padding-left: 1em;
+    padding: .5em 0 0 1em;
+    border-top: 3px solid #eee;
+    border-bottom: none;
   }
   .parentLabel {
     font-weight: bold;
