@@ -235,7 +235,7 @@
 <style media="screen">
   .row {
     border-top: 3px inset #ccc;
-    padding: .5em 0 0 0;
+    padding: 1em 0 0 0;
     /*height: 100px;*/
   }
   .child {

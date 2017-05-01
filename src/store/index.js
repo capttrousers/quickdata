@@ -117,11 +117,19 @@ export default new Vuex.Store({
 			state.columns[payload.index].child.interval = Math.min(state.columns[payload.index].interval, payload.value) + "";
 		},
 		UPDATE_COLUMN_INCREMENT(state, payload) {
-			var value = Math.min(payload.value, Math.floor((state.columns[payload.index].maxValue - state.columns[payload.index].minValue) / state.numberOfRecords));
-			state.columns[payload.index].increment = value;
+			state.columns[payload.index].increment = payload.value;
 			if(state.columns[payload.index].hierarchy == "parent") {
-				state.columns[payload.index].child.increment = value;
+				state.columns[payload.index].child.increment = payload.value;
 			}
+      // rather than limit increment, raise range btwn max and min
+			var minRange = Math.abs(state.numberOfRecords * payload.value) + 1;
+      if(state.columns[payload.index].maxValue - state.columns[payload.index].minValue < minRange) {
+        if(state.columns[payload.index].trend == "positive") {
+          state.columns[payload.index].maxValue = (+state.columns[payload.index].minValue + minRange) + "";
+        } else {          
+          state.columns[payload.index].minValue = (state.columns[payload.index].maxValue - minRange) + "";
+        }
+      }
     },
 		UPDATE_COLUMN_TREND(state, payload) {
 			state.columns[payload.index].trend = payload.value;
@@ -144,12 +152,14 @@ export default new Vuex.Store({
 				childColumn.trend = state.columns[payload.index].trend;
 				childColumn.increment = state.columns[payload.index].increment;
 				state.columns[payload.index].child = childColumn;
+        // if toggling hiearchy on a date column, reset nulls
+        if(state.columns[payload.index].dataType == "date" ) {
+          state.columns[payload.index].allowNulls = false; 
+        }
 			}
 			state.columns[payload.index].hierarchy = payload.value;
     }
-
 	},
-
 	actions: {
 		setFile({commit}, payload) {
 			commit('SET_FILE', payload);

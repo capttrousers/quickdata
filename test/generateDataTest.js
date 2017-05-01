@@ -114,8 +114,8 @@ describe.only('method : generateData tests', function(){
     
     // from bodyTesterPositiveTrend, integer has positive trend, decimal has postive trend with max value < numberOfRecords
     it.only("WHAT HAPPENS: generates data for decimal type with positive trend with greater number of records than max value", function() {
-      var data = generateData(processColumns(bodyTrend.columns, +bodyTrend.numberOfRecords), +bodyTrend.numberOfRecords);
-      for(var i = 0; i < +bodyTrend.numberOfRecords - 1; i++) {
+      var data = generateData(processColumns(bodyTrend.columns, bodyTrend.numberOfRecords), bodyTrend.numberOfRecords);
+      for(var i = 0; i < bodyTrend.numberOfRecords - 1; i++) {
         expect(data[i]["Decimal column 1"]).to.be.below(data[i + 1]["Decimal column 1"]).and.be.at.most(bodyTrend.columns[2].maxValue + 100).and.be.a('number');
       }
     });

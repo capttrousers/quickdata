@@ -20,8 +20,9 @@ var processColumns = require('../utils/processColumns');
 
 var body = require('../data/bodyTesterDateHierarchy');
 var bodyAllTypes = require('../data/bodyTesterNoFiles');
+var bodyTrend = require('../data/bodyTesterPositiveTrend');
 
-describe('method : processColumns tests', function(){
+describe.only('method : processColumns tests', function(){
     before(function() {
       this.columns = [
         {
@@ -146,4 +147,38 @@ describe('method : processColumns tests', function(){
     it('processColumns accepts columns[3] with a parent child hierarchy and returns columns[4]', function() {
       expect(processColumns(this.columns, this.numberOfRecords)).to.have.lengthOf(4);
     })
+    describe.only("processColumns and trending columns, dates/ints/decimals", function() {
+      
+      it('decimal column : positive trend, increment 5, maxValue 45 and # of records 10 limits increment', function() {
+        var columns = [
+        {
+          "dataType": "decimal",
+          "maxValue": "45",
+          "minValue": "1",
+          "interval": "100",
+          "trend": "positive",
+          "increment": "5",
+          "hierarchy": "none",
+          "child": {}
+        }]
+        columns = processColumns(columns, 10);
+        expect(columns).to.have.lengthOf(1);
+        expect(columns[0]).to.have.property("interval");
+        expect(columns[0].interval).to.be.a("number").and.to.equal(1);
+        expect(columns[0]).to.have.property("increment");
+        expect(columns[0].increment).to.be.a("number").and.to.equal(Math.floor(44 / 10));
+      });
+      
+      it('trending body test: positive trend, increment 1, maxValue 100 and # of records 500 resets increment to 1', function() {
+
+        var columns = processColumns(bodyTrend.columns, bodyTrend.numberOfRecords);
+        expect(columns).to.have.lengthOf(3);
+        expect(columns[2].increment).to.be.a("number").and.to.equal(1);
+      });
+      
+      
+    });
+    
+    
+    
 });

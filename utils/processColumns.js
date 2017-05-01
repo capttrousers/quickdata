@@ -51,17 +51,6 @@ module.exports = (bodyColumns, numberOfRecords) => {
   // take column, add a few attrs and push column.name to quick_data_fields
   function processColumn(column, numberOfRecords) {
     column.numberOfRecords = numberOfRecords;
-    column.interval = Math.max(1, column.interval);
-    column.interval = Math.min(column.interval, column.numberOfRecords);
-    if(column.trend != "random") {
-      column.interval = 1;
-      if(column.trend == "positive") {
-        column.increment = Math.max(column.increment, 1);
-      } else {
-        column.increment = Math.min(column.increment, -1);
-      }      
-    }
-    column.intervalCounter = column.interval;
     switch (column.dataType) {
       case 'text' :
         column.name = "Text column " + textColumnCount;
@@ -92,9 +81,19 @@ module.exports = (bodyColumns, numberOfRecords) => {
         }
         break;
     }
+    column.interval = Math.max(1, column.interval);
+    column.interval = Math.min(column.interval, column.numberOfRecords);
     if(column.trend != "random") {
-      column.nextRandomData = column.minValue - column.increment;
+      column.interval = 1;
+      // limit the increment to the min between the abs value of the increment and the max increment value allowed for the range btwn max and min / # of records
+      column.increment = Math.min(Math.abs(column.increment), Math.floor((column.maxValue - column.minValue) / column.numberOfRecords));
+      if(column.trend == "positive") {
+        column.increment = Math.max(column.increment, 1);
+      } else {
+        column.increment = Math.min(-1 * column.increment, -1);
+      }      
     }
+    column.intervalCounter = column.interval;
     return column;
   }
 }
