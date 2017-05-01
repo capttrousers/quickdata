@@ -7,7 +7,7 @@ var isValidBody = require('../utils/isValidBody');
 var dataColumnObject = require('../data/dataColumnObject');
 var bodyTemplate = require('../data/bodyTemplate');
 
-describe.only("method: isValidBody tests", function() {
+describe("method: isValidBody tests", function() {
 
   it("returns true with bodyTemplate.js file", function() {
     expect(isValidBody(bodyTemplate)).to.be.true;
@@ -46,13 +46,6 @@ describe.only("method: isValidBody tests", function() {
       expect(Number.parseFloat("100.0123", 10)).to.be.a("number").and.to.equal(100.0123);
     });
 
-    it("parses a string int", function() {
-      expect(Number.parseInt("1000", 10)).to.be.a("number").and.to.equal(1000);
-    });
-
-    it("parses a float", function() {
-      expect(Number.parseFloat("100.0123", 10)).to.be.a("number").and.to.equal(100.0123);
-    });
 
   })
 });
