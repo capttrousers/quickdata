@@ -49,6 +49,7 @@ module.exports = (body) => {
     ) {
       b = false;
     }
+    // if((+column.maxValue - column.minValue) / +body.numberOfRecords)
   })
   return b;
 }

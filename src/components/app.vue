@@ -2,8 +2,7 @@
   #app
     #info
       p.
-        This tool will quickly generate random data
-        based on the parameters selected below.
+        This tool will quickly generate random data based on the parameters selected below.
       p.
         Possible data types to select are Date, Text, Integers, and Decimals.
         You can also set the number of rows of random data to generate. Current limit of 100,000 records, or 1,000 for MS SQL

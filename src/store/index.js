@@ -24,9 +24,9 @@ export default new Vuex.Store({
 		],
 		dataTypes: [
         {text: "Text", value: "text"},
+        {text: "Date", value: "date"},
         {text: "Integer", value: "integer"},
         {text: "Decimal", value: "decimal"},
-        {text: "Date", value: "date"},
         {text: "File", value: "file"}
 		],
 		templateColumn: {
@@ -88,9 +88,10 @@ export default new Vuex.Store({
 			}
 		},
 		UPDATE_COLUMN_MINVALUE(state, payload) {
-			state.columns[payload.index].minValue = payload.value;
+			var value = state.columns[payload.index].dataType == "text" ? Math.max(payload.value, 1) + "" : payload.value;
+			state.columns[payload.index].minValue = value
 			if(state.columns[payload.index].hierarchy == "parent") {
-				state.columns[payload.index].child.minValue = payload.value;
+				state.columns[payload.index].child.minValue = value;
 			}
     },
 		UPDATE_COLUMN_MAXVALUE(state, payload) {
@@ -108,6 +109,7 @@ export default new Vuex.Store({
 		UPDATE_COLUMN_INTERVAL(state, payload) {
 			state.columns[payload.index].interval = payload.value;
 			if(state.columns[payload.index].hierarchy == "parent") {
+				// clip child interval to parent interval
 				state.columns[payload.index].child.interval = Math.min(state.columns[payload.index].child.interval, payload.value) + "";
 			}
     },
@@ -115,9 +117,10 @@ export default new Vuex.Store({
 			state.columns[payload.index].child.interval = Math.min(state.columns[payload.index].interval, payload.value) + "";
 		},
 		UPDATE_COLUMN_INCREMENT(state, payload) {
-			state.columns[payload.index].increment = payload.value;
+			var value = Math.min(payload.value, Math.floor((state.columns[payload.index].maxValue - state.columns[payload.index].minValue) / state.numberOfRecords));
+			state.columns[payload.index].increment = value;
 			if(state.columns[payload.index].hierarchy == "parent") {
-				state.columns[payload.index].child.increment = payload.value;
+				state.columns[payload.index].child.increment = value;
 			}
     },
 		UPDATE_COLUMN_TREND(state, payload) {
@@ -145,95 +148,6 @@ export default new Vuex.Store({
 			state.columns[payload.index].hierarchy = payload.value;
     }
 
-
-
-
-
-
-
-
-
-		, UPDATE_COLUMN(state, payload) {
-			// get update info, and update column at index
-			var index, propName, newValue;
-			index = payload.index;
-			propName = payload.propName;
-			newValue = payload.value;
-			switch(propName) {
-				case 'child-interval' :
-		        newValue = parseInt(newValue, 10) <= parseInt(state.columns[index].interval, 10) ? newValue : state.columns[index].interval;
-		        state.columns[index].child.interval = newValue + "";
-						break;
-				case "child-nulls" :
-		        state.columns[index].child.allowNulls = newValue;
-						break;
-				case "hierarchy" :
-						if(newValue == 'parent') {
-							// stringify then parse to get deep copy, probably a better way
-							var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
-							newColumn.hierarchy = 'child';
-							newColumn.maxValue = state.columns[index].maxValue;
-							newColumn.minValue = state.columns[index].minValue;
-							newColumn.dataType = state.columns[index].dataType;
-							state.columns[index].child = newColumn;
-							state.columns[index].hierarchy = newValue;
-						} else {
-							state.columns[index].hierarchy = newValue;
-							state.columns[index].child = {};
-						}
-						break;
-				case "dataType" :
-					state.columns[index].dataType = newValue;
-					// dispatch update column for max/min value based on value
-					switch (newValue) {
-						case 'text':
-							state.columns[index].maxValue = "10";
-							state.columns[index].minValue = "1";
-							state.columns[index].trend = "random";
-							break;
-						case 'date':
-							var dateValue = new Date().setFullYear(new Date().getFullYear() - 1);
-							state.columns[index].minValue = new Date(dateValue).toJSON().substring(0,10);
-							state.columns[index].maxValue = new Date().toJSON().substring(0,10);
-							state.columns[index].interval = "1";
-							state.columns[index].trend = "random";
-							break;
-						case 'decimal':
-						case 'integer':
-							state.columns[index].maxValue = "1000";
-							state.columns[index].minValue = "0";
-							break;
-					}
-					if(state.columns[index].hierarchy == 'parent') {
-						state.columns[index].child.dataType = state.columns[index].dataType;
-					}
-					break;
-				default:
-	        state.columns[index][propName] = newValue;
-					if(state.columns[index].hierarchy == 'parent') {
-						if( propName == 'maxValue' || propName == 'minValue' || propName == 'dataType') {
-							state.columns[index].child[propName] = newValue;
-						} else if (propName == 'interval') {
-							 state.columns[index].child[propName] = Math.min(state.columns[index].child[propName] , newValue);
-						}
-					}
-	      	break;
-			}
-		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	},
 
 	actions: {
@@ -241,11 +155,6 @@ export default new Vuex.Store({
 			commit('SET_FILE', payload);
 		},
 		updateColumn({commit}, payload) {
-			/*
-				handle and process any update column call to invoke appropriate commits
-
-				*/
-
 				var index, propName, newValue;
 				index = payload.index;
 				propName = payload.propName;
@@ -289,9 +198,6 @@ export default new Vuex.Store({
 							commit("UPDATE_COLUMN_BEHAVIOR", {index, value: "expand"});
 							commit("UPDATE_COLUMN_INTERVAL", {index, value: "1"});
 						}
-
-						// if parent, cascade min, max, datatype, trend, increment in the mutations
-
 						break;
 					case "minValue":
 						commit("UPDATE_COLUMN_MINVALUE", {index, value: newValue});
@@ -324,8 +230,6 @@ export default new Vuex.Store({
 					default :
 						break;
 				}
-
-			// commit('UPDATE_COLUMN', payload);
 		}
 	},
 	strict: false
