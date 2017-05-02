@@ -107,8 +107,8 @@ describe('method : generateData tests', function(){
 
     it("generates data for integer type with positive trend", function() {
       var data = generateData(processColumns(bodyTrend.columns, bodyTrend.numberOfRecords), bodyTrend.numberOfRecords);
-      for(var i = 0; i < bodyTrend.numberOfRecords - 1; i++) {
-        expect(data[i]["Integer column 1"]).to.be.below(data[i + 1]["Integer column 1"]).and.be.a('number');
+      for(var i = 1; i < bodyTrend.numberOfRecords; i++) {
+        expect(data[i - 1]["Integer column 1"]).to.be.below(data[i]["Integer column 1"]).and.be.a('number');
       }
     });
 

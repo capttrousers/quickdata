@@ -19,9 +19,7 @@ module.exports = (bodyColumns, numberOfRecords) => {
 
   fields.forEach(function(bodyColumn) {
     var column = processColumn(bodyColumn, numberOfRecords);
-    if(column.trend == "random") {
-      column.nextRandomData = getRandomDataValue(column);
-    }
+    column.nextRandomData = getRandomDataValue(column);
     columns.push(column);
     // handle child column
     if(column.hierarchy == 'parent') {
@@ -94,10 +92,8 @@ module.exports = (bodyColumns, numberOfRecords) => {
       column.increment = Math.min(Math.abs(column.increment), Math.floor(range / column.numberOfRecords));
       if(column.trend == "positive") {
         column.increment = Math.max(column.increment, 1);
-        column.nextRandomData = column.dataType == "date" ? new Date(column.minValue).toISOString() : column.minValue;
       } else {
         column.increment = Math.min(-1 * column.increment, -1);
-        column.nextRandomData = column.dataType == "date" ? new Date(column.maxValue).toISOString() : column.maxValue;
       }
     }
     column.intervalCounter = column.interval;

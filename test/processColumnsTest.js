@@ -191,6 +191,29 @@ describe('method : processColumns tests', function(){
         expect(columns[0].increment).to.be.a("number").and.to.equal(Math.floor(44 / 10));
       });
 
+
+      it('integer column : positive trend, increment 1, maxValue 1000 and # of records 100 sets nextRandomData', function() {
+        var columns = [
+        {
+          "dataType": "integer",
+          "maxValue": "1000",
+          "minValue": "0",
+          "interval": "1",
+          "trend": "positive",
+          "increment": "1",
+          "hierarchy": "none",
+          "child": {}
+        }]
+        columns = processColumns(columns, "100");
+        expect(columns).to.have.lengthOf(1);
+        expect(columns[0]).to.have.property("interval");
+        expect(columns[0].interval).to.be.a("number").and.to.equal(1);
+        expect(columns[0]).to.have.property("increment");
+        expect(columns[0].increment).to.be.a("number").and.to.equal(1);
+        expect(columns[0]).to.have.property("nextRandomData");
+        expect(columns[0].nextRandomData).to.be.a("number").and.to.equal(0);
+      });
+
       it('trending body test: positive trend, increment 1, maxValue 100 and # of records 500 resets increment to 1', function() {
 
         var columns = processColumns(bodyTrend.columns, bodyTrend.numberOfRecords);

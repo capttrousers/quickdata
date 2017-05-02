@@ -5,20 +5,26 @@ var logger   = require('../utils/logger').logger;
 var getRandomData = require('../utils/getRandomDataValue');
 var addDays = require('date-fns/add_days');
 var startOfDay = require('date-fns/start_of_day');
+var isSameDay = require('date-fns/is_same_day');
+var moment = require("moment");
 
-describe.only("Random data generator", function() {
+describe("Random data generator", function() {
   before(function() {
     logger.info("Begin random data generator tests");
   })
-
-  it('adds a negative number of days', function() {
-    expect(addDays(new Date("2017-03-18"), -10)).to.be.a('date').and.to.equal(new Date("2017-03-08"));
+  
+  it.only("makes two startOfDay dates and compares with isSameDay date-fns", function() {
+    var dateOne = startOfDay("2017-03-18");
+    var dateTwo = startOfDay("2017-03-28");
+    expect(isSameDay(addDays(dateOne, 10), dateTwo)).to.be.true;
   })
-
-  it.only('adds a positive number of days', function() {
-    expect(startOfDay(addDays(new Date("2017-03-18"), 10))).to.be.a('date');
-    expect(startOfDay(addDays(new Date("2017-03-18"), 10))).to.equal(startOfDay('2017-03-28'));
-    // .and.to.equal(startOfDay(new Date("2017-03-28")));
+  
+  it.only('adds a positive number of days with moment.js', function() {
+    expect(moment("2017-03-18").add(10, "days").isSame(moment("2017-03-28"), "day")).to.be.true;
+  })
+  
+  it.only('adds a negative number of days with moment.js', function() {
+    expect(moment("2017-03-18").add(-10, "days").isSame(moment("2017-03-08"), "day")).to.be.true;
   })
 
   it("returns value of type string", function() {
