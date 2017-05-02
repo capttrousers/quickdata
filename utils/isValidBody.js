@@ -49,7 +49,9 @@ module.exports = (body) => {
     ) {
       b = false;
     }
-    // if((+column.maxValue - column.minValue) / +body.numberOfRecords)
+    if(column.trend != "random" && ((column.maxValue - column.minValue) / column.increment) < body.numberOfRecords) {
+      b = false;
+    }
   })
   return b;
 }

@@ -46,7 +46,7 @@
         md-input-container
           label  Trend {{ trend == 'positive' ? 'increment' : 'decrement' }}
           md-input(v-model="increment")
-      md-layout(md-flex="10", v-show="dataType != 'file' && (hierarchy == 'none' || dataType != 'date')")
+      md-layout(md-flex="10", v-show="dataType != 'file'")
         md-checkbox(v-model="allowNulls") Allow nulls?
     br
     Row(v-if="hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")

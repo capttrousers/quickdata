@@ -19,7 +19,9 @@ module.exports = (bodyColumns, numberOfRecords) => {
 
   fields.forEach(function(bodyColumn) {
     var column = processColumn(bodyColumn, numberOfRecords);
-    column.nextRandomData = getRandomDataValue(column);
+    if(column.trend == "random") {
+      column.nextRandomData = getRandomDataValue(column);
+    }
     columns.push(column);
     // handle child column
     if(column.hierarchy == 'parent') {
@@ -32,13 +34,11 @@ module.exports = (bodyColumns, numberOfRecords) => {
       if(column.dataType == "date") {
         var maxValue = Math.max(column.maxValue, child.maxValue);
         child.maxValue = maxValue;
-        child.allowNulls = false;
         child.minValue = new Date(column.nextRandomData);
         // set parent column maxvalue
         columns[child.parentIndex].maxValue = maxValue;
-        columns[child.parentIndex].allowNulls = false;
       }
-      
+
       child.nextRandomData = getRandomDataValue(child);
       columns.push(child);
       // then set parent's childIndex = to index of new column child
@@ -64,11 +64,11 @@ module.exports = (bodyColumns, numberOfRecords) => {
         column.name = "Date column " + dateColumnCount;
         column.maxValue = (column.maxValue) ? new Date(column.maxValue) :  new Date();
         //  default min date of jan 1 2001
-        column.minValue = new Date(column.minValue || "2000-01-01");
+        column.minValue = (column.minValue) ? new Date(column.minValue) : new Date("2000-01-01");
         dateColumnCount++;
         break;
       default :
-        // for ints or decimals, max value set to 
+        // for ints or decimals, max value set to
         column.maxValue = Math.min(column.maxValue, 1000000);
         // minValue of 0 for numbers, can change to be min int
         column.minValue = Math.max(column.minValue, -1000000);
@@ -83,15 +83,22 @@ module.exports = (bodyColumns, numberOfRecords) => {
     }
     column.interval = Math.max(1, column.interval);
     column.interval = Math.min(column.interval, column.numberOfRecords);
+    if(column.hierarchy != "none") {
+      column.trend = "random";
+    }
     if(column.trend != "random") {
       column.interval = 1;
       // limit the increment to the min between the abs value of the increment and the max increment value allowed for the range btwn max and min / # of records
-      column.increment = Math.min(Math.abs(column.increment), Math.floor((column.maxValue - column.minValue) / column.numberOfRecords));
+      var rangeInDays = ((column.maxValue - column.minValue) / 365 / 24 / 60 / 60 / 1000 );
+      var range = (column.dataType == "date") ? rangeInDays : column.maxValue - column.minValue;
+      column.increment = Math.min(Math.abs(column.increment), Math.floor(range / column.numberOfRecords));
       if(column.trend == "positive") {
         column.increment = Math.max(column.increment, 1);
+        column.nextRandomData = column.dataType == "date" ? new Date(column.minValue).toISOString() : column.minValue;
       } else {
         column.increment = Math.min(-1 * column.increment, -1);
-      }      
+        column.nextRandomData = column.dataType == "date" ? new Date(column.maxValue).toISOString() : column.maxValue;
+      }
     }
     column.intervalCounter = column.interval;
     return column;

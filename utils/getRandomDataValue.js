@@ -2,7 +2,7 @@
 // take a column model and generate a random value based on data type, maxValue
 
 var logger   = require('./logger').logger;
-
+var addDays = require('date-fns/add_days');
 module.exports = (column) => {
   if(column.allowNulls && Math.random() > .9) {
     return null;
@@ -12,9 +12,17 @@ module.exports = (column) => {
     // if it doesnt exist, this is the first time running processColumns and setting next random values
     // so set nextRandomValue to min value for all but text, for text : first value == "a" * length ?
     if(column.trend == "positive") {
-      return Math.min(column.maxValue, column.nextRandomData + column.increment);
+      if(column.dataType != "date") {
+        return Math.min(column.maxValue, column.nextRandomData + column.increment);
+      } else {
+        return addDays(column.nextRandomData, column.increment)
+      }
     } else {
-      return Math.max(column.minValue, column.nextRandomData + column.increment);
+      if(column.dataType != "date") {
+        return Math.max(column.minValue, column.nextRandomData + column.increment);
+      } else {
+        return addDays(column.nextRandomData, column.increment)
+      }
     }
 
   } else {

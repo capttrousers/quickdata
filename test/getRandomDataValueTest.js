@@ -3,10 +3,22 @@ var expect = require('chai').expect;
 var logger   = require('../utils/logger').logger;
 
 var getRandomData = require('../utils/getRandomDataValue');
+var addDays = require('date-fns/add_days');
+var startOfDay = require('date-fns/start_of_day');
 
-describe("Random data generator", function() {
+describe.only("Random data generator", function() {
   before(function() {
     logger.info("Begin random data generator tests");
+  })
+
+  it('adds a negative number of days', function() {
+    expect(addDays(new Date("2017-03-18"), -10)).to.be.a('date').and.to.equal(new Date("2017-03-08"));
+  })
+
+  it.only('adds a positive number of days', function() {
+    expect(startOfDay(addDays(new Date("2017-03-18"), 10))).to.be.a('date');
+    expect(startOfDay(addDays(new Date("2017-03-18"), 10))).to.equal(startOfDay('2017-03-28'));
+    // .and.to.equal(startOfDay(new Date("2017-03-28")));
   })
 
   it("returns value of type string", function() {
