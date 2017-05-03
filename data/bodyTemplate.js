@@ -76,8 +76,8 @@ module.exports =
       increment: "1",          // when trend is positive or negative, this is the increment, Number
       allowNulls: false,
       interval : "1",
-      maxValue: "0",
-      minValue: "1000",
+      maxValue: "1000",
+      minValue: "0",
       file : null,
       behavior: "expand"      // datatype file, randomly select or for each record ['random', 'expand']
     }
