@@ -12,20 +12,40 @@ describe("Random data generator", function() {
   before(function() {
     logger.info("Begin random data generator tests");
   })
-  
-  it.only("makes two startOfDay dates and compares with isSameDay date-fns", function() {
+
+  it("makes two startOfDay dates and compares with isSameDay date-fns", function() {
     var dateOne = startOfDay("2017-03-18");
     var dateTwo = startOfDay("2017-03-28");
     expect(isSameDay(addDays(dateOne, 10), dateTwo)).to.be.true;
   })
-  
-  it.only('adds a positive number of days with moment.js', function() {
+
+  it('adds a positive number of days with moment.js', function() {
     expect(moment("2017-03-18").add(10, "days").isSame(moment("2017-03-28"), "day")).to.be.true;
   })
-  
-  it.only('adds a negative number of days with moment.js', function() {
+
+  it('adds a negative number of days with moment.js', function() {
     expect(moment("2017-03-18").add(-10, "days").isSame(moment("2017-03-08"), "day")).to.be.true;
   })
+
+  it("trending Date returns value incremented by 5 days", function() {
+    var date = getRandomData({dataType: 'date', trend: "positive", increment: "5", nextRandomData: "2017-03-18"});
+    expect(date).to.be.a('string').and.to.equal(moment("2017-03-23").toISOString());
+  });
+
+  it("trending Date returns value decremented by 5 days", function() {
+    var date = getRandomData({dataType: 'date', trend: "negative", increment: "-5", nextRandomData: "2017-03-18"});
+    expect(date).to.be.a('string').and.to.equal(moment("2017-03-13").toISOString());
+  });
+
+  it("trending integer returns value decremented by 5", function() {
+    var date = getRandomData({dataType: 'integer', trend: "negative", increment: "-5", minValue: 0, maxValue: 1000});
+    expect(date).to.be.a('number').and.to.equal(1000);
+  });
+
+  it("trending integer returns value incremented by 5", function() {
+    var date = getRandomData({dataType: 'integer', trend: "positive", increment: "5", minValue: 0, maxValue: 1000});
+    expect(date).to.be.a('number').and.to.equal(0);
+  });
 
   it("returns value of type string", function() {
     var string = getRandomData({dataType: 'text', maxValue: 10});

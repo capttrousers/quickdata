@@ -91,9 +91,9 @@ module.exports = (bodyColumns, numberOfRecords) => {
       var range = (column.dataType == "date") ? rangeInDays : column.maxValue - column.minValue;
       column.increment = Math.min(Math.abs(column.increment), Math.floor(range / column.numberOfRecords));
       if(column.trend == "positive") {
-        column.increment = Math.max(column.increment, 1);
+        column.increment = Math.max(Math.abs(column.increment), 1);
       } else {
-        column.increment = Math.min(-1 * column.increment, -1);
+        column.increment = Math.min(-1 * Math.abs(column.increment), -1);
       }
     }
     column.intervalCounter = column.interval;

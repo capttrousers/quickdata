@@ -242,7 +242,23 @@ describe('method : processColumns tests', function(){
         expect(columns[0].maxValue + columns[0].minValue).to.be.a("string");
         expect(Math.floor((columns[0].maxValue - columns[0].minValue) / 365 / 24 / 60 / 60 / 1000)).to.equal(29);
         expect(columns[0].increment).to.be.a("number");
-        expect(columns[0].nextRandomData).to.be.a("string");
+        expect(columns[0].nextRandomData).to.be.a("string").and.to.equal(columns[0].minValue.toISOString());
+      });
+
+      it("positive trending Date, increment of -1, will reset increment", function() {
+        var columns = [
+        {
+          "dataType": "date",
+          "maxValue": "2017-03-18",
+          "minValue": "1988-03-18",
+          "interval": "1",
+          "trend": "positive",
+          "increment": "-1",
+          "hierarchy": "none",
+          "child": {}
+        }]
+        columns = processColumns(columns, "10");
+        expect(columns[0].increment).to.be.a("number").and.to.be.above(0);
       });
 
       it("negative trending Date, decrement 1, with nextRandomData of maxValue", function() {});

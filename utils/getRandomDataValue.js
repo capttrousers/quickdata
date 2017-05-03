@@ -17,7 +17,7 @@ module.exports = (column) => {
         if(column.dataType != "date") {
           return Math.min(column.maxValue, column.nextRandomData + column.increment);
         } else {
-          return moment(column.nextRandomData).add(column.increment, "days")
+          return moment(column.nextRandomData).add(column.increment, "days").toISOString();
         }
       } else {
         return column.dataType == "date" ? new Date(column.minValue).toISOString() : column.minValue;
@@ -27,8 +27,8 @@ module.exports = (column) => {
         if(column.dataType != "date") {
           return Math.max(column.minValue, column.nextRandomData + column.increment);
         } else {
-          return addDays(column.nextRandomData, column.increment)
-        }        
+          return moment(column.nextRandomData).add(column.increment, "days").toISOString();
+        }
       } else {
         return column.dataType == "date" ? new Date(column.maxValue).toISOString() : column.maxValue;
       }
