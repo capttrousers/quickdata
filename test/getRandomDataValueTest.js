@@ -31,8 +31,8 @@ describe("Random data generator", function() {
     });
 
     it("data type of Date returns value of type string", function() {
-      var date = getRandomData({dataType: 'date', maxValue: 10, minValue: 0});
-      expect(date).to.be.a('string');
+      var dateValue = getRandomData({dataType: 'date', maxValue: 10, minValue: 0});
+      expect(dateValue).to.be.a('string');
     });
 
   });
@@ -101,9 +101,9 @@ describe("Random data generator", function() {
         var dateString = getRandomData({dataType: 'date', maxValue: new Date(), minValue: '2000-01-01'});
         expect(dateString).to.have.lengthOf(24);
         // date max value is actually min date
-        var date = getRandomData({dataType: 'date', minValue: "1988-03-18", maxValue: '2007-01-01'});
-        expect(new Date(date)).to.be.at.least(new Date("1988-03-18"));
-        expect(new Date(date)).to.be.at.most(new Date('2007-01-01'));
+        var dateValue = getRandomData({dataType: 'date', minValue: "1988-03-18", maxValue: '2007-01-01'});
+        expect(new Date(dateValue)).to.be.at.least(new Date("1988-03-18"));
+        expect(new Date(dateValue)).to.be.at.most(new Date('2007-01-01'));
     });
 
     it("generates a random string value between min and max constraints", function() {
@@ -133,27 +133,46 @@ describe("Random data generator", function() {
     })
 
     it("trending Date returns value incremented by 5 days", function() {
-      var date = getRandomData({dataType: 'date', trend: "positive", increment: "5", nextRandomData: "2017-03-18"});
-      expect(date).to.be.a('string').and.to.equal(moment("2017-03-23").toISOString());
+      var dateValue = getRandomData({dataType: 'date', trend: "positive", increment: 5, nextRandomData: "2017-03-18"});
+      expect(dateValue).to.be.a('string').and.to.equal(moment("2017-03-23").toISOString());
     });
 
     it("trending Date returns value decremented by 5 days", function() {
-      var date = getRandomData({dataType: 'date', trend: "negative", increment: "-5", nextRandomData: "2017-03-18"});
-      expect(date).to.be.a('string').and.to.equal(moment("2017-03-13").toISOString());
+      var dateValue = getRandomData({dataType: 'date', trend: "negative", increment: -5, nextRandomData: "2017-03-18"});
+      expect(dateValue).to.be.a('string').and.to.equal(moment("2017-03-13").toISOString());
     });
 
     it("trending integer returns value decremented by 5", function() {
-      var date = getRandomData({dataType: 'integer', trend: "negative", increment: "-5", minValue: 0, maxValue: 1000});
-      expect(date).to.be.a('number').and.to.equal(1000);
+      var integerValue = getRandomData({dataType: 'integer', trend: "negative", increment: -5, minValue: 0, maxValue: 1000});
+      expect(integerValue).to.be.a('number').and.to.equal(1000);
     });
 
     it("trending integer returns value incremented by 5", function() {
-      var date = getRandomData({dataType: 'integer', trend: "positive", increment: "5", minValue: 0, maxValue: 1000});
-      expect(date).to.be.a('number').and.to.equal(0);
+      var integerValue = getRandomData({dataType: 'integer', trend: "positive", increment: 5, minValue: 0, maxValue: 1000});
+      expect(integerValue).to.be.a('number').and.to.equal(0);
     });
+
+    it("positive trending integer limits at maxValue", function() {
+      var integerValue = getRandomData({dataType: 'integer', trend: "positive", increment: 5, minValue: 0, maxValue: 1000, nextRandomData: 996});
+      expect(integerValue).to.be.a('number').and.to.equal(1000);
+    });
+
+    it("negative trending integer limits at minValue", function() {
+      var integerValue = getRandomData({dataType: 'integer', trend: "negative", increment: -5, minValue: 0, maxValue: 1000, nextRandomData: 2});
+      expect(integerValue).to.be.a('number').and.to.equal(0);
+    });
+
+    it("positive trending decimal limits at maxValue", function() {
+      var integerValue = getRandomData({dataType: 'decimal', trend: "positive", increment: .5, minValue: 0, maxValue: 1, nextRandomData: .6});
+      expect(integerValue).to.be.a('number').and.to.equal(1);
+    });
+
+    it("negative trending decimal limits at minValue", function() {
+      var integerValue = getRandomData({dataType: 'decimal', trend: "negative", increment: -.5, minValue: 0, maxValue: 1, nextRandomData: .2});
+      expect(integerValue).to.be.a('number').and.to.equal(0);
+    });
+    
   });
   
-  
-
 
 });

@@ -23,7 +23,7 @@ var bodyDateHierarchyNulls = require('../data/bodyTesterDateHierarchyNulls');
 var bodyAllTypes = require('../data/bodyTesterNoFiles');
 var bodyTrend = require('../data/bodyTesterPositiveTrend');
 
-describe('method : processColumns tests', function(){
+describe.only('method : processColumns tests', function(){
     before(function() {
       this.columns = [
         {

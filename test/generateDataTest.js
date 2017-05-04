@@ -21,7 +21,7 @@ var bodyDateNulls = require('../data/bodyTesterDateNulls');
 var bodyDateHierarchyNulls = require('../data/bodyTesterDateHierarchyNulls');
 var bodyTrend = require('../data/bodyTesterPositiveTrend');
 
-describe('method : generateData tests', function(){
+describe.only('method : generateData tests', function(){
 
     it('generateDate for each row has parent date < child date', function() {
       var columns = processColumns(bodyDateHierarchy.columns, bodyDateHierarchy.numberOfRecords);
@@ -143,7 +143,7 @@ describe('method : generateData tests', function(){
         var data = generateData(processColumns(bodyTrend.columns, bodyTrend.numberOfRecords), bodyTrend.numberOfRecords);
         for(var i = 1; i < bodyTrend.numberOfRecords; i++) {
           expect(data[i - 1]["Decimal column 1"]).to.be.at.most(data[i]["Decimal column 1"]);
-          // .and.be.at.most(bodyTrend.columns[2].maxValue + 100).and.be.a('number');
+          expect(data[i]["Decimal column 1"]).to.be.at.most(bodyTrend.columns[2].maxValue).and.be.a('number');
         }
       });
 
@@ -153,7 +153,10 @@ describe('method : generateData tests', function(){
       });
 
 
-      it("positive trending Date, increment 1", function() {});
+      it("positive trending Date, increment 1", function() {
+        
+        
+      });
 
       it("positive trending Date, increment 6", function() {});
 
