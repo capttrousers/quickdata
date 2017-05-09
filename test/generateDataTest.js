@@ -21,7 +21,7 @@ var bodyDateNulls = require('../data/bodyTesterDateNulls');
 var bodyDateHierarchyNulls = require('../data/bodyTesterDateHierarchyNulls');
 var bodyTrend = require('../data/bodyTesterPositiveTrend');
 
-describe.only('method : generateData tests', function(){
+describe('method : generateData tests', function(){
 
     it('generateDate for each row has parent date < child date', function() {
       var columns = processColumns(bodyDateHierarchy.columns, bodyDateHierarchy.numberOfRecords);
