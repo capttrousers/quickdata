@@ -21,7 +21,7 @@ var bodyDateNulls = require('../data/bodyTesterDateNulls');
 var bodyDateHierarchyNulls = require('../data/bodyTesterDateHierarchyNulls');
 var bodyTrend = require('../data/bodyTesterPositiveTrend');
 
-describe('method : generateData tests', function(){
+describe.only('method : generateData tests', function(){
 
     it('generateDate for each row has parent date < child date', function() {
       var columns = processColumns(bodyDateHierarchy.columns, bodyDateHierarchy.numberOfRecords);
@@ -33,7 +33,7 @@ describe('method : generateData tests', function(){
     })
 
     describe("Checks allowNulls at 10%", function() {
-      it("generates data for date type with nulls @ ~10% for both parent and child in hierarchy", function() {
+      it("Type: date, generates nulls @ ~10% for parent and child in hierarchy", function() {
         var totalParent = totalChild = 0;
         var data = generateData(processColumns(bodyDateHierarchyNulls.columns, bodyDateHierarchyNulls.numberOfRecords), bodyDateHierarchyNulls.numberOfRecords);
         data.forEach( function (row) {
@@ -53,7 +53,7 @@ describe('method : generateData tests', function(){
       });
 
 
-      it('generates 1000 random values and returns % that were >= .8 (should be 20%)', function() {
+      it('generates 1000 random values, returns % >= .8 (should be 20%)', function() {
         var TEST_NUMBER = 1000;
         var totalForAverage = 0;
         for(var j = 1; j <= TEST_NUMBER ; j++) {
@@ -143,7 +143,7 @@ describe('method : generateData tests', function(){
         var data = generateData(processColumns(bodyTrend.columns, bodyTrend.numberOfRecords), bodyTrend.numberOfRecords);
         for(var i = 1; i < bodyTrend.numberOfRecords; i++) {
           expect(data[i - 1]["Decimal column 1"]).to.be.at.most(data[i]["Decimal column 1"]);
-          // .and.be.at.most(bodyTrend.columns[2].maxValue + 100).and.be.a('number');
+          expect(data[i]["Decimal column 1"]).to.be.at.most(bodyTrend.columns[2].maxValue).and.be.a('number');
         }
       });
 
@@ -153,7 +153,10 @@ describe('method : generateData tests', function(){
       });
 
 
-      it("positive trending Date, increment 1", function() {});
+      it("positive trending Date, increment 1", function() {
+        
+        
+      });
 
       it("positive trending Date, increment 6", function() {});
 

@@ -23,7 +23,7 @@ var bodyDateHierarchyNulls = require('../data/bodyTesterDateHierarchyNulls');
 var bodyAllTypes = require('../data/bodyTesterNoFiles');
 var bodyTrend = require('../data/bodyTesterPositiveTrend');
 
-describe('method : processColumns tests', function(){
+describe.only('method : processColumns tests', function(){
     before(function() {
       this.columns = [
         {
@@ -106,17 +106,17 @@ describe('method : processColumns tests', function(){
 
     })
 
-    describe("parent child tests", function() {
-      it('processColumns with parent/child Date returns array of length 2', function() {
+    describe("Processing parent/child columns", function() {
+      it('Type: date, parent/child returns array of length 2', function() {
         expect(processColumns(bodyDateHierarchy.columns, bodyDateHierarchy.numberOfRecords)).to.have.lengthOf(2);
       });
 
-      it('processColumns with parent/child Date has parent date < child date', function() {
+      it('Type: date, parent/child returns parent date < child date', function() {
         var columns = processColumns(bodyDateHierarchy.columns, bodyDateHierarchy.numberOfRecords);
         expect(new Date(columns[0].nextRandomData)).to.be.below(new Date(columns[1].nextRandomData));
       });
 
-      it('processColumns with parent/child Date clips child date to be <= parent date', function() {
+      it('Type: date, parent/child clips child date to be <= parent date', function() {
         var clone = _.clone(bodyDateHierarchy);
         clone.columns[0].child.maxValue = "2020-01-01";
         var columns = processColumns(clone.columns, clone.numberOfRecords);
@@ -125,7 +125,8 @@ describe('method : processColumns tests', function(){
 
     })
 
-    describe("tests on this.columns", function () {
+    describe("Processing on this.columns", function () {
+      
       it('processColumns clips the interval to the number of records', function() {
         _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
             expect(column).to.have.property('intervalCounter').that.is.at.most(column.numberOfRecords);
@@ -133,37 +134,37 @@ describe('method : processColumns tests', function(){
         });
       })
 
-      it('processColumns returns columns array where each has a name attribute', function() {
+      it('Returns columns array where each has a name prop', function() {
         _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
             expect(column).to.have.property('name');
         });
       })
 
-      it('processColumns returns columns array where each has a hierarchy attribute', function() {
+      it('Returns columns array where each has a hierarchy prop', function() {
         _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
             expect(column).to.have.property('hierarchy');
         });
       })
 
-      it('processColumns returns columns array where each has a increment attribute', function() {
+      it('Returns columns array where each has a increment prop', function() {
         _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
             expect(column).to.have.property('increment');
         });
       })
 
-      it('processColumns returns columns array where each has a max value attribute', function() {
+      it('Returns columns array where each has a max value prop', function() {
         _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
             expect(column).to.have.property('maxValue');
         });
       })
 
-      it('processColumns returns columns array where each has a min value attribute', function() {
+      it('Returns columns array where each has a min value prop', function() {
         _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
             expect(column).to.have.property('minValue');
         });
       })
 
-      it('processColumns accepts columns[3] with a parent child hierarchy and returns columns[4]', function() {
+      it('Takes columns[3] & parent child hierarchy, returns columns[4]', function() {
         expect(processColumns(this.columns, this.numberOfRecords)).to.have.lengthOf(4);
       })
 
@@ -171,7 +172,7 @@ describe('method : processColumns tests', function(){
 
     describe("processColumns and trending columns, dates/ints/decimals", function() {
 
-      it('decimal column : positive trend, increment 5, maxValue 45 and # of records 10 limits increment', function() {
+      it('decimal:positive:increment=5:max=45:#Records=10 will limit increment', function() {
         var columns = [
         {
           "dataType": "decimal",
@@ -192,7 +193,7 @@ describe('method : processColumns tests', function(){
       });
 
 
-      it('integer column : positive trend, increment 1, maxValue 1000 and # of records 100 sets nextRandomData', function() {
+      it('integer:positive:increment=1:max=1000:#Records=100 sets nextRandomData', function() {
         var columns = [
         {
           "dataType": "integer",
@@ -214,7 +215,7 @@ describe('method : processColumns tests', function(){
         expect(columns[0].nextRandomData).to.be.a("number").and.to.equal(0);
       });
 
-      it('trending body test: positive trend, increment 1, maxValue 100 and # of records 500 resets increment to 1', function() {
+      it('bodyTrend test: resets increment to 1', function() {
 
         var columns = processColumns(bodyTrend.columns, bodyTrend.numberOfRecords);
         expect(columns).to.have.lengthOf(3);

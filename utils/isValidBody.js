@@ -12,8 +12,7 @@ var _ = require('lodash');
 module.exports = (body) => {
   if( ( ! body )
     || body == null
-    || body.numberOfRecords == null
-    || body.numberOfRecords.length == 0
+    || isNaN(parseInt(body.numberOfRecords, 10))
     || body.columns == null
     || body.columns.length == 0
     || body.dataSource == null
@@ -27,17 +26,15 @@ module.exports = (body) => {
   ) {
     return false;
   }
-  var b = true;
+  var isValid = true;
   _.forEach(body.columns, function(column) {
     if(  column.allowNulls == null
       || column.minValue == null
       || column.minValue.length == 0
       || column.maxValue == null
       || column.maxValue.length == 0
-      || column.interval == null
-      || column.interval.length == 0
-      || column.increment == null
-      || column.increment.length == 0
+      || isNaN(parseInt(column.interval, 10))
+      || isNaN(parseInt(column.increment, 10))
       || column.dataType == null
       || column.dataType.length == 0
       || column.hierarchy == null
@@ -47,11 +44,33 @@ module.exports = (body) => {
       || column.behavior == null
       || column.behavior.length == 0
     ) {
-      b = false;
+      isValid = false;
+      return false;
     }
     if(column.trend != "random" && ((column.maxValue - column.minValue) / column.increment) < body.numberOfRecords) {
-      b = false;
+      isValid = false;
+      return false;
+    }
+    if(column.dataType == "date") {
+      if(  isNaN(Date.parse(column.minValue)) 
+        || isNaN(Date.parse(column.maxValue))
+        || column.minValue.length != 10
+        || column.minValue.length != 10 
+        || column.minValue.match(/-/g) == null
+        || column.minValue.match(/-/g).length != 2
+        || column.maxValue.match(/-/g) == null
+        || column.maxValue.match(/-/g).length != 2) {
+        // with dataType date, min/max must be dates in ISO: yyyy-mm-dd
+        isValid = false;
+        return false;
+      }
+    } else if( isNaN(parseFloat(column.minValue, 10))
+      || isNaN(parseFloat(column.maxValue, 10))
+      || parseFloat(column.minValue, 10) > parseFloat(column.maxValue, 10) 
+      || (column.dataType == "text" && parseFloat(column.minValue, 10) < 1) ) {
+      isValid = false;
+      return false;
     }
   })
-  return b;
+  return isValid ;
 }

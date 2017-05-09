@@ -13,7 +13,7 @@ module.exports = (column) => {
     // if it doesnt exist, this is the first time running processColumns and setting next random values
     // so set nextRandomValue to min value for all but text, for text : first value == "a" * length ?
     if(column.trend == "positive") {
-      if(column.nextRandomData != null) {
+      if(column.nextRandomData != null && column.nextRandomData != undefined) {
         if(column.dataType != "date") {
           return Math.min(column.maxValue, column.nextRandomData + column.increment);
         } else {
@@ -23,7 +23,7 @@ module.exports = (column) => {
         return column.dataType == "date" ? new Date(column.minValue).toISOString() : column.minValue;
       }
     } else {
-      if(column.nextRandomData != null) {
+      if(column.nextRandomData != null && column.nextRandomData != undefined) {
         if(column.dataType != "date") {
           return Math.max(column.minValue, column.nextRandomData + column.increment);
         } else {
