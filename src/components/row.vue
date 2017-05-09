@@ -16,7 +16,7 @@
       md-layout(md-flex="30", v-show="dataType == 'file'")
         md-input-container
           label Data list file
-          md-file(v-model="fileName", accept="text/*", :multiple="false", @selected="addFile($event)")
+          md-file(v-model="fileName", accept="*", :multiple="false", @selected="addFile($event)")
       md-layout(md-flex="15", v-show="dataType == 'file'")
         md-input-container
           label Behavior
@@ -227,7 +227,7 @@
         this.$store.commit('REMOVE_COLUMN', {index});
 			},
       addFile: function(evt){
-        this.file = evt[0];
+        this.file = ( evt[0] ) || null;
       }
 		}
 	}

@@ -1,0 +1,73 @@
+{
+ "dataSource": "csv",
+ "user": "somebody@tableau.com",
+ "sfCase": "01234",
+ "tableName": "TableName",
+ "columns": [
+  {
+   "dataType": "integer",
+   "hierarchy": "none",
+   "child": {},
+   "trend": "random",
+   "increment": "1",
+   "allowNulls": false,
+   "interval": "1",
+   "maxValue": "1000",
+   "minValue": "0",
+   "file": null,
+   "behavior": "expand"
+  },
+  {
+   "dataType": "date",
+   "hierarchy": "none",
+   "child": {},
+   "trend": "random",
+   "increment": "1",
+   "allowNulls": false,
+   "interval": "1",
+   "maxValue": "2017-03-18",
+   "minValue": "2010-01-01",
+   "file": null,
+   "behavior": "expand"
+  },
+  {
+   "dataType": "decimal",
+   "hierarchy": "none",
+   "child": {},
+   "trend": "random",
+   "increment": "1",
+   "allowNulls": false,
+   "interval": "1",
+   "maxValue": "1000",
+   "minValue": "0",
+   "file": null,
+   "behavior": "expand"
+  },
+  {
+   "dataType": "text",
+   "hierarchy": "none",
+   "child": {},
+   "trend": "random",
+   "increment": "1",
+   "allowNulls": false,
+   "interval": "1",
+   "maxValue": "10",
+   "minValue": "1",
+   "file": null,
+   "behavior": "expand"
+  },
+  {
+   "dataType": "file",
+   "hierarchy": "none",
+   "child": {},
+   "trend": "random",
+   "increment": "1",
+   "allowNulls": false,
+   "interval": "1",
+   "maxValue": "0",
+   "minValue": "1000",
+   "file": null,
+   "behavior": "expand"
+  }
+ ]
+}

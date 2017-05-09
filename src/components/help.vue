@@ -10,7 +10,7 @@
       md-layout(md-flex)
         md-input-container
           label Schema file
-          md-file(v-model="fileName", accept="text/*", :multiple="false", @selected="pickFile($event)")
+          md-file(v-model="fileName", accept="*", :multiple="false", @selected="pickFile($event)")
       md-layout
         md-button.md-raised(:disabled="file == null", @click.native="submitFile") Submit
     md-tabs#demo(md-fixed)
@@ -94,10 +94,16 @@ export default {
     submitFile: function() {
       var reader = new FileReader();
       reader.onload = function(evt) {
-        var text = evt.target.result;
-        console.log(text);
-        text = _.replace(text, /\|/g, ' ');
-        console.log(text);
+        var text = reader.result;
+        Papa.parse(text, {
+          header: true,
+          complete: function (results) {
+            var data = {}
+            data.fields = results.meta.fields;
+            data.values = results.data;
+            console.log(JSON.stringify(data, null, 1));
+          }
+        });
       }
       reader.readAsText(this.file);
     },

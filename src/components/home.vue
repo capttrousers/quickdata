@@ -12,18 +12,18 @@
         md-button(@click.native="closeDialog('alert')") OK
 
     #form
-      .form-row(v-show="false")
+      .form-row(v-show="true")
         md-layout(md-gutter="8")
           md-layout(md-flex="75")
             md-input-container
               label Schema file
-              md-file(v-model="fileName", accept="text/*", :multiple="false", @selected="pickFile($event)")
+              md-file(v-model="fileName", accept="*", :multiple="true", @selected="pickFile($event)")
           md-layout(md-flex="15")
             md-button.md-raised(:disabled="file == null", @click.native="submitFile") Submit
           md-layout(md-flex="10")
             md-button.md-raised.md-icon-button.md-dense( @click.native="helpRouter")
               md-icon help_outline
-      .form-row(v-show="false")
+      .form-row(v-show="true")
         md-layout(md-gutter="24")
           md-layout(md-flex)
           md-layout(md-flex)
@@ -63,7 +63,7 @@
 
     .bottom(style="text-align:center; padding: 1em 0;")
       span bottom trademark area
-    md-snackbar(ref="errorsnackbar")
+    md-snackbar(ref="errorsnackbar", :md-duration="7000")
       span {{ error.message }}
       md-button.md-accent(@click.native="$refs.errorsnackbar.close()") Close
 
@@ -193,6 +193,8 @@
         this.$store.commit('ADD_NEW_COLUMN')
       },
       pickFile: function( event ) {
+        console.log("event object is typeof " + typeof event);
+          console.log("event object length " + event.length);
         var f = event[0];
         if(f) {
           console.log('file size is ' + f.size);
@@ -213,15 +215,20 @@
         console.log('file name is ' + this.file.name);
         var reader = new FileReader();
         var body = {};
+        var that = this;
         reader.onload = function(evt) {
-          body.file = evt.target.result;
-          Vue.http.post('/fileuploader', body).then((response) => {
-            console.log('post to /fileuploader successful');
-          }).catch((response) => {
-            this.error.message = (response.body.error) || 'error uploading file';
-            this.$refs.errorsnackbar.open();
-          });
-          console.log('file submitted');
+
+          body = JSON.parse(reader.result);
+
+          Vue.http.post('/fileuploader', body).then(
+            (response) => {
+              console.log('post to /fileuploader successful');
+            }, (response) => {
+              console.log('post to /fileuploader has failed');
+              that.error.message = (response.body.error) || 'error uploading file';
+              that.$refs.errorsnackbar.open();
+            }
+          );
         }
         reader.readAsText(this.file);
       },
@@ -236,7 +243,7 @@
           body.columns = this.columns;
           body.numberOfRecords = this.numberOfRecords;
 
-          this.$http.post('/quickdata', body).then(
+          Vue.http.post('/quickdata', body).then(
             (response) => {
               var data = response.body;
               var binaryData = [];
@@ -252,18 +259,18 @@
           // open alert and say why not valid
           // alert message
           /*
-          var temp = [];
-          console.log("len after clearing " + this.alerts.length);
-          if( this.numberOfRecords < 1) { this.alerts.push("Number of records must be greater than 0"); }
-          if(this.numberOfRecords > 1000) { this.alerts.push("Number of records must be less than 1000"); }
-          if(this.columns.length < 1) { this.alerts.push("Must add at least one column of data to the dataset"); }
-          // not zero so user@tableau, charset)
-          if(this.user.indexOf('@tableau.com') < 1) { this.alerts.push("User must be valid tableau employee"); }
-          if(this.tableName.length > 0) { this.alerts.push("Table name cannot be empty"); }
-          if(parseInt(this.sfCase, 10) != NaN) { this.alerts.push("Salesforce case must be a number"); }
-          console.log("len after pushing this.alerts " + this.alerts.length);
-          this.alerts = temp;
-	  */
+            var temp = [];
+            console.log("len after clearing " + this.alerts.length);
+            if( this.numberOfRecords < 1) { this.alerts.push("Number of records must be greater than 0"); }
+            if(this.numberOfRecords > 1000) { this.alerts.push("Number of records must be less than 1000"); }
+            if(this.columns.length < 1) { this.alerts.push("Must add at least one column of data to the dataset"); }
+            // not zero so user@tableau, charset)
+            if(this.user.indexOf('@tableau.com') < 1) { this.alerts.push("User must be valid tableau employee"); }
+            if(this.tableName.length > 0) { this.alerts.push("Table name cannot be empty"); }
+            if(parseInt(this.sfCase, 10) != NaN) { this.alerts.push("Salesforce case must be a number"); }
+            console.log("len after pushing this.alerts " + this.alerts.length);
+            this.alerts = temp;
+      	  */
           this.openDialog('alert');
         }
 

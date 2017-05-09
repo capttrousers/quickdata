@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import Papa from 'papaparse';
 
 Vue.use(Vuex);
 
@@ -38,7 +39,7 @@ export default new Vuex.Store({
       "increment": "1",
 			"hierarchy": "none",// ['none', 'parent', 'child']
 			"file": null,
-			"fileName": "", // file name is needed for v model on file input
+			"fileName": "", // file name is needed for v model on md-file input
 			"behavior": "expand", // ["expand", "random"]
 			"allowNulls": false,
 			"child": {}
@@ -155,10 +156,18 @@ export default new Vuex.Store({
 				state.columns[payload.index].child = childColumn;
 			}
 			state.columns[payload.index].hierarchy = payload.value;
+    },
+		UPDATE_COLUMN_FILE(state, payload) {
+			state.columns[payload.index].file = payload.value;
     }
 	},
 	actions: {
 		setFile({commit}, payload) {
+			/*
+				do async csv parse
+
+			*/
+
 			commit('SET_FILE', payload);
 		},
 		updateColumn({commit}, payload) {
@@ -219,6 +228,27 @@ export default new Vuex.Store({
 						break;
 					case "increment":
 						commit("UPDATE_COLUMN_INCREMENT", {index, value: newValue});
+						break;
+					case "file":
+						var reader = new FileReader();
+						reader.onload = function(evt) {
+							var text = reader.result;
+							Papa.parse(text, {
+								header: true,
+								complete: function (results) {
+									var data = {}
+									data.fields = results.meta.fields;
+									data.values = results.data;
+									console.log(JSON.stringify(data, null, 1));
+									commit("UPDATE_COLUMN_FILE", {index, value: data});
+								}
+							});
+						}
+						if(newValue != null ) {
+							reader.readAsText(newValue);
+						} else {
+							commit("UPDATE_COLUMN_FILE", {index, value: null});
+						}
 						break;
 					case "behavior":
 						commit("UPDATE_COLUMN_BEHAVIOR", {index, value: newValue});
