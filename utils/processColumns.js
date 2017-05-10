@@ -66,7 +66,8 @@ module.exports = (bodyColumns, numberOfRecords) => {
         column.minValue = (column.minValue) ? new Date(column.minValue) : new Date("2000-01-01");
         dateColumnCount++;
         break;
-      default :
+      case "decimal" :
+      case "integer" :
         // for ints or decimals, max value set to
         column.maxValue = Math.min(column.maxValue, 1000000);
         // minValue of 0 for numbers, can change to be min int
@@ -79,15 +80,17 @@ module.exports = (bodyColumns, numberOfRecords) => {
           decColumnCount++;
         }
         break;
+      case "file" :
+
     }
     // this check could be done in isValidBody and filtered
     if(column.hierarchy != "none") {
       column.behavior = "random";
     }
-    if(column.behavior == "random") {
+    if(column.behavior == "random" || column.behavior == "expand") {
       column.count = Math.max(1, column.count);
       column.count = Math.min(column.count, column.numberOfRecords);
-    } else if(column.behavior != "random") {
+    } else if(column.behavior == "negative" || column.behavior == "positive") {
       // limit the count to the min between the abs value of the count and the max value allowed for the range btwn max and min / # of records
       var rangeInDays = ((column.maxValue - column.minValue) / 365 / 24 / 60 / 60 / 1000 );
       var range = (column.dataType == "date") ? rangeInDays : column.maxValue - column.minValue;

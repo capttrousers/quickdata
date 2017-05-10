@@ -59,6 +59,8 @@ module.exports = (column) => {
         return Math.floor( ( Math.random() * ( column.maxValue + 1 - column.minValue ) ) + column.minValue);
       case 'decimal' :
         return ( Math.random() * ( column.maxValue + 1 - column.minValue ) ) + column.minValue;
+      case "file" :
+        // return column.file.values[Math.floor(Math.random() * column.file.values.length)][column.name]
     }
   }
 }
