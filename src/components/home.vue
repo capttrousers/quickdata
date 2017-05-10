@@ -32,7 +32,7 @@
       .form-row
         md-layout(md-gutter="40")
           md-layout(md-flex)
-            md-button.md-raised(@click.native="addNewColumn") Add Column
+            md-button.md-raised(:disabled="columns.length >= 12", @click.native="addNewColumn") Add Column
           md-layout(md-flex)
             md-button.md-raised.md-primary(@click.native="getData") {{ fileButtonLabel }}
           md-layout(md-flex)
@@ -165,7 +165,12 @@
         },
         dataSources: {
           get () {
-            return this.$store.state.dataSources;
+            return [
+              {label: "CSV", value: "csv"},
+              {label: "MySQL", value: "mysql"},
+              {label: "MS SQL Server", value: "mssql"},
+              {label: "PostgreSQL", value: "postgres"}
+            ];
           }
         },
         dataSource: {

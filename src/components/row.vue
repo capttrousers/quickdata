@@ -12,18 +12,12 @@
         md-input-container
           label(for='data-type') Data type
           md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
-            md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value", :disabled="hierarchy == 'parent' && ['date', 'text'].indexOf(dataTypeOption.value) < 0")  {{ dataTypeOption.text }}
+            md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value", :disabled="hierarchy == 'parent' && ['date', 'text'].indexOf(dataTypeOption.value) < 0")  {{ dataTypeOption.label }}
       md-layout(md-flex="30", v-show="dataType == 'file'")
         md-input-container
           label Data list file
           md-file(v-model="fileName", accept="*", :multiple="false", @selected="addFile($event)")
-      md-layout(md-flex="15", v-show="dataType == 'file'")
-        md-input-container
-          label Behavior
-          md-select(v-model="behavior")
-            md-option(value="expand") Expand list
-            md-option(value="random") Random
-      md-layout(:md-flex="dataType == 'date' ? 15 : 10", v-show="dataType != 'file'")
+      md-layout(:md-flex="dataType == 'date' ? 15 : 10", v-show="dataType != 'file' && dataType != 'text'")
         md-input-container
           label {{ MinValueLabel }}
           md-input(v-model="minValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
@@ -31,22 +25,16 @@
         md-input-container
           label {{ MaxValueLabel }}
           md-input(v-model="maxValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
-      md-layout(md-flex="10", v-show="(dataType != 'date' && dataType != 'file') || (dataType == 'file' && behavior == 'expand')")
+      md-layout(md-flex="15", v-show="dataType != 'text' && hierarchy == 'none'")
         md-input-container
-          label  Interval:
-          md-input(v-model="interval")
-      md-layout(md-flex="10", v-show=" ! (false || ['file', 'text'].indexOf(dataType) >= 0 || hierarchy != 'none' )")
+          label Behavior
+          md-select(v-model="behavior")
+            md-option(v-for="behaviorOption in behaviors", :value="behaviorOption.value") {{ behaviorOption.label}}
+      md-layout(md-flex="10", v-show="(dataType != 'date' && dataType != 'file') || behavior != 'random'")
         md-input-container
-          label Trend
-          md-select(v-model="trend")
-            md-option(value="positive") Positive
-            md-option(value="negative") Negative
-            md-option(value="random") Random
-      md-layout(md-flex="10", v-show=" ! (false || ['file', 'text'].indexOf(dataType) >= 0 || hierarchy != 'none' || trend == 'random' )")
-        md-input-container
-          label  Trend {{ trend == 'positive' ? 'increment' : 'decrement' }}
-          md-input(v-model="increment")
-      md-layout(md-flex="10", v-show="dataType != 'file'")
+          label {{ CountLabel }}
+          md-input(v-model="count")
+      md-layout(md-flex="10")
         md-checkbox(v-model="allowNulls") Allow nulls?
     br
     Row(v-if="hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
@@ -62,9 +50,34 @@
 			dataTypes: {
 			  get() {
           if(this.hierarchy != "none" ) {
-            return this.$store.state.dataTypesParents;
+            return [
+              {label: "Text", value: "text"},
+              {label: "Date", value: "date"}
+        		];
           } else {
-            return this.$store.state.dataTypes;
+            return [
+              {label: "Text", value: "text"},
+              {label: "Date", value: "date"},
+              {label: "Integer", value: "integer"},
+              {label: "Decimal", value: "decimal"},
+              {label: "File", value: "file"}
+        		];
+          }
+			  }
+			},
+			behaviors: {
+			  get() {
+          if(this.dataType != "file" ) {
+            return [
+              {label: "Random", value: "random"},
+        			{label: "Positive Trend", value: "positive"},
+        			{label: "Negative Trend", value: "negative"}
+        		];
+          } else {
+            return [
+              {label: "Random", value: "random"},
+              {label: "Expand", value: "expand"}
+        		];
           }
 			  }
 			},
@@ -73,38 +86,16 @@
           return this.columnData.hierarchy;
         }
       },
-      allowNulls: {
+      dataType: {
         get() {
-          return this.columnData.allowNulls;
+          return this.columnData.dataType;
         },
         set(value) {
-          var propName = this.hierarchy == 'child' ? 'child-nulls' : 'allowNulls';
-          var index = this.columnIndex;
-          this.$store.dispatch('updateColumn', {index, propName, value});
-        }
-      },
-      trend: {
-        get() {
-          return this.columnData.trend;
-        },
-        set(value) {
-          if(this.trend != value) {
-            var propName = 'trend';
+          if(this.dataType != value) {
+            var propName = 'dataType';
             var index = this.columnIndex;
             this.$store.dispatch('updateColumn', {index, propName, value});
-            if(value == "negative") this.increment = "-1";
-            if(value == "positive") this.increment = "1";
           }
-        }
-      },
-      increment: {
-        get() {
-          return this.columnData.increment;
-        },
-        set(value) {
-          var propName = 'increment';
-          var index = this.columnIndex;
-          this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
       maxValue: {
@@ -127,62 +118,6 @@
           this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
-      interval: {
-        get() {
-          return this.columnData.interval;
-        },
-        set(value) {
-          var propName = this.hierarchy == 'child' ? 'child-interval' : 'interval';
-          var index = this.columnIndex;
-          this.$store.dispatch('updateColumn', {index, propName, value});
-        }
-      },
-      dataType: {
-        get() {
-          return this.columnData.dataType;
-        },
-        set(value) {
-          if(this.dataType != value) {
-            var propName = 'dataType';
-            var index = this.columnIndex;
-            this.$store.dispatch('updateColumn', {index, propName, value});
-          }
-        }
-      },
-      MaxValueLabel: {
-        get() {
-          var label = "";
-          switch (this.dataType) {
-            case 'date':
-              label = "Maximum date";
-              break;
-            case 'text':
-              label = "Max length";
-              break;
-            default:
-              label = "Max value";
-              break;
-          }
-          return label;
-        }
-      },
-      MinValueLabel: {
-        get() {
-          var label = "";
-          switch (this.dataType) {
-            case 'date':
-              label = "Minimum date";
-              break;
-            case 'text':
-              label = "Min length";
-              break;
-            default:
-              label = "Min value";
-              break;
-          }
-          return label;
-        }
-      },
       behavior: {
         get() {
           return this.columnData.behavior;
@@ -193,6 +128,26 @@
             var index = this.columnIndex;
             this.$store.dispatch('updateColumn', {index, propName, value});
           }
+        }
+      },
+      count: {
+        get() {
+          return this.columnData.count;
+        },
+        set(value) {
+          var propName = this.hierarchy == 'child' ? 'child-count' : 'count';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
+      allowNulls: {
+        get() {
+          return this.columnData.allowNulls;
+        },
+        set(value) {
+          var propName = this.hierarchy == 'child' ? 'child-nulls' : 'allowNulls';
+          var index = this.columnIndex;
+          this.$store.dispatch('updateColumn', {index, propName, value});
         }
       },
       file: {
@@ -213,6 +168,48 @@
           var propName = "fileName";
           var index = this.columnIndex;
           this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
+      CountLabel: {
+        get() {
+          if(this.behavior == "positive") {
+            return "Increment"
+          }
+          if(this.behavior == "negative") {
+            return "Decrement"
+          }
+          return "Interval";
+        }
+      },
+      MaxValueLabel: {
+        get() {
+          var label = "";
+          switch (this.dataType) {
+            case 'date':
+              label = "Maximum date";
+              break;
+            case 'text':
+              label = "Length";
+              break;
+            default:
+              label = "Max value";
+              break;
+          }
+          return label;
+        }
+      },
+      MinValueLabel: {
+        get() {
+          var label = "";
+          switch (this.dataType) {
+            case 'date':
+              label = "Minimum date";
+              break;
+            default:
+              label = "Min value";
+              break;
+          }
+          return label;
         }
       }
 		},

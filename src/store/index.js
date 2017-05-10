@@ -7,43 +7,24 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
     file: null,
-		columns: [],
 		numberOfRecords: "500",
     dataSource: "csv",
     user: "somebody@tableau.com",
     sfCase: "01234",
     tableName: "TableName",
-    dataSources: [
-      {label: "CSV", value: "csv"},
-      {label: "MySQL", value: "mysql"},
-      {label: "MS SQL Server", value: "mssql"},
-      {label: "PostgreSQL", value: "postgres"}
-    ],
-		dataTypesParents: [
-        {text: "Text", value: "text"},
-        {text: "Date", value: "date"}
-		],
-		dataTypes: [
-        {text: "Text", value: "text"},
-        {text: "Date", value: "date"},
-        {text: "Integer", value: "integer"},
-        {text: "Decimal", value: "decimal"},
-        {text: "File", value: "file"}
-		],
 		templateColumn: {
+			"hierarchy": "none",// ['none', 'parent', 'child']
 			"dataType": "text",
 			"minValue": "1",
 			"maxValue": "10",
-			"interval": "1",
-      "trend": "random",  // ['positive', 'negative', 'random']
-      "increment": "1",
-			"hierarchy": "none",// ['none', 'parent', 'child']
+      "behavior": "random",  // ['positive', 'negative', 'random'] for date/int/float, ["expand", "random"] for file
+			"count": "1",
+			"allowNulls": true,
 			"file": null,
 			"fileName": "", // file name is needed for v model on md-file input
-			"behavior": "expand", // ["expand", "random"]
-			"allowNulls": false,
 			"child": {}
-		}
+		},
+		columns: []
 	},
 
 	// getters allow custom computed functions on the state
@@ -74,7 +55,8 @@ export default new Vuex.Store({
 			state.numberOfRecords = payload.value;
 		},
 		ADD_NEW_COLUMN(state) {
-			if(state.columns.length <= 5) {
+			// max of 12 columns for now, plus children
+			if(state.columns.length < 12) {
 				var newColumn = JSON.parse(JSON.stringify(state.templateColumn));
 				state.columns.push(newColumn);
 			}
@@ -89,10 +71,9 @@ export default new Vuex.Store({
 			}
 		},
 		UPDATE_COLUMN_MINVALUE(state, payload) {
-			var value = state.columns[payload.index].dataType == "text" ? Math.max(payload.value, 1) + "" : payload.value;
-			state.columns[payload.index].minValue = value
+			state.columns[payload.index].minValue = payload.value;
 			if(state.columns[payload.index].hierarchy == "parent") {
-				state.columns[payload.index].child.minValue = value;
+				state.columns[payload.index].child.minValue = payload.value;
 			}
     },
 		UPDATE_COLUMN_MAXVALUE(state, payload) {
@@ -107,58 +88,40 @@ export default new Vuex.Store({
 		UPDATE_COLUMN_CHILD_ALLOWNULLS(state, payload) {
 			state.columns[payload.index].child.allowNulls = payload.value;
     },
-		UPDATE_COLUMN_INTERVAL(state, payload) {
-			state.columns[payload.index].interval = payload.value;
-			if(state.columns[payload.index].hierarchy == "parent") {
-				// clip child interval to parent interval
-				state.columns[payload.index].child.interval = Math.min(state.columns[payload.index].child.interval, payload.value) + "";
-			}
+		UPDATE_COLUMN_COUNT(state, payload) {
+			state.columns[payload.index].count = payload.value;
     },
-		UPDATE_COLUMN_CHILD_INTERVAL(state, payload) {
-			state.columns[payload.index].child.interval = Math.min(state.columns[payload.index].interval, payload.value) + "";
+		UPDATE_COLUMN_CHILD_COUNT(state, payload) {
+			state.columns[payload.index].child.count = payload.value;
 		},
-		UPDATE_COLUMN_INCREMENT(state, payload) {
-			state.columns[payload.index].increment = payload.value;
-			if(state.columns[payload.index].hierarchy == "parent") {
-				state.columns[payload.index].child.increment = payload.value;
-			}
-			// just allow increment and # of records to blow past min/max if trending
-      // // rather than limit increment, raise range btwn max and min
-			// var minRange = Math.abs(state.numberOfRecords * payload.value) + 1;
-      // if(state.columns[payload.index].maxValue - state.columns[payload.index].minValue < minRange) {
-      //   if(state.columns[payload.index].trend == "positive") {
-      //     state.columns[payload.index].maxValue = (+state.columns[payload.index].minValue + minRange) + "";
-      //   } else {
-      //     state.columns[payload.index].minValue = (state.columns[payload.index].maxValue - minRange) + "";
-      //   }
-      // }
-    },
-		UPDATE_COLUMN_TREND(state, payload) {
-			state.columns[payload.index].trend = payload.value;
-			if(state.columns[payload.index].hierarchy == "parent") {
-				state.columns[payload.index].child.trend = payload.value;
-			}
-    },
 		UPDATE_COLUMN_BEHAVIOR(state, payload) {
 			state.columns[payload.index].behavior = payload.value;
+			if(state.columns[payload.index].hierarchy == "parent") {
+				state.columns[payload.index].child.behavior = payload.value;
+			}
     },
 		UPDATE_COLUMN_HIERARCHY(state, payload) {
 			if(payload.value == "none") {
 				state.columns[payload.index].child = {};
 			} else { // == "parent"
+				if(state.columns[payload.index].dataType == "date") {
+					state.columns[payload.index].behavior = "random";
+					state.columns[payload.index].count = "1";
+				}
 				var childColumn = JSON.parse(JSON.stringify(state.templateColumn));
 				childColumn.hierarchy = "child";
 				childColumn.dataType = state.columns[payload.index].dataType;
 				childColumn.maxValue = state.columns[payload.index].maxValue;
 				childColumn.minValue = state.columns[payload.index].minValue;
-				childColumn.trend = state.columns[payload.index].trend;
-				childColumn.increment = state.columns[payload.index].increment;
 				state.columns[payload.index].child = childColumn;
 			}
 			state.columns[payload.index].hierarchy = payload.value;
     },
 		UPDATE_COLUMN_FILE(state, payload) {
 			state.columns[payload.index].file = payload.value;
+    },
+		UPDATE_COLUMN_FILENAME(state, payload) {
+			state.columns[payload.index].fileName = payload.value;
     }
 	},
 	actions: {
@@ -180,8 +143,6 @@ export default new Vuex.Store({
 				switch(propName) {
 					case "hierarchy":
 						commit("UPDATE_COLUMN_HIERARCHY", { index, value: newValue});
-						commit("UPDATE_COLUMN_TREND", {index, value: "random"});
-						commit("UPDATE_COLUMN_INCREMENT", {index, value: "1"});
 						break;
 					case "dataType":
 					 	// commit data type
@@ -206,16 +167,9 @@ export default new Vuex.Store({
 						commit("UPDATE_COLUMN_MINVALUE", {index, value: minValue});
 						commit("UPDATE_COLUMN_MAXVALUE", {index, value: maxValue});
 
-						// if date, decimal, or integer reset set trend and incremen
-						if(["date","decimal","integer"].indexOf(newValue) >= 0 ){
-							commit("UPDATE_COLUMN_TREND", {index, value: "random"});
-							commit("UPDATE_COLUMN_INCREMENT", {index, value: "1"});
-						}
-						// if file reset behavior
-						if(newValue == "file") {
-							commit("UPDATE_COLUMN_BEHAVIOR", {index, value: "expand"});
-							commit("UPDATE_COLUMN_INTERVAL", {index, value: "1"});
-						}
+						// reset the behavior and count for any new dataType
+						commit("UPDATE_COLUMN_BEHAVIOR", {index, value: "random"});
+						commit("UPDATE_COLUMN_COUNT", {index, value: "1"});
 						break;
 					case "minValue":
 						commit("UPDATE_COLUMN_MINVALUE", {index, value: newValue});
@@ -223,11 +177,24 @@ export default new Vuex.Store({
 					case "maxValue":
 						commit("UPDATE_COLUMN_MAXVALUE", {index, value: newValue});
 						break;
-					case "trend":
-						commit("UPDATE_COLUMN_TREND", {index, value: newValue});
+					case "behavior":
+						commit("UPDATE_COLUMN_BEHAVIOR", {index, value: newValue});
+						commit("UPDATE_COLUMN_COUNT", {index, value: "1"});
 						break;
-					case "increment":
-						commit("UPDATE_COLUMN_INCREMENT", {index, value: newValue});
+					case "allowNulls":
+						commit("UPDATE_COLUMN_ALLOWNULLS", {index, value: newValue});
+						break;
+					case "child-count":
+						commit("UPDATE_COLUMN_CHILD_COUNT", {index, value: newValue});
+						break;
+					case "child-nulls":
+						commit("UPDATE_COLUMN_CHILD_ALLOWNULLS", {index, value: newValue});
+						break;
+					case "count":
+						commit("UPDATE_COLUMN_COUNT", {index, value: newValue});
+						break;
+					case "fileName":
+						commit("UPDATE_COLUMN_FILENAME", {index, value: newValue});
 						break;
 					case "file":
 						var reader = new FileReader();
@@ -249,24 +216,6 @@ export default new Vuex.Store({
 						} else {
 							commit("UPDATE_COLUMN_FILE", {index, value: null});
 						}
-						break;
-					case "behavior":
-						commit("UPDATE_COLUMN_BEHAVIOR", {index, value: newValue});
-						commit("UPDATE_COLUMN_INTERVAL", {index, value: "1"});
-						break;
-					case "interval":
-						commit("UPDATE_COLUMN_INTERVAL", {index, value: newValue});
-						break;
-					case "allowNulls":
-						commit("UPDATE_COLUMN_ALLOWNULLS", {index, value: newValue});
-						break;
-					case "child-interval":
-						commit("UPDATE_COLUMN_CHILD_INTERVAL", {index, value: newValue});
-						break;
-					case "child-nulls":
-						commit("UPDATE_COLUMN_CHILD_ALLOWNULLS", {index, value: newValue});
-						break;
-					default :
 						break;
 				}
 		}

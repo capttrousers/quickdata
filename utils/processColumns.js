@@ -31,9 +31,10 @@ module.exports = (bodyColumns, numberOfRecords) => {
       child.parentIndex = columns.indexOf(column);
       if(column.dataType == "date") {
         var maxValue = Math.max(column.maxValue, child.maxValue);
-        child.maxValue = maxValue;
+        child.maxValue = new Date(maxValue);
         child.minValue = new Date(column.nextRandomData);
-        // set parent column maxvalue
+        // set parent column maxvalue,
+        // this might not be needed if filtering invalid min/max on children
         columns[child.parentIndex].maxValue = maxValue;
       }
 
@@ -79,24 +80,25 @@ module.exports = (bodyColumns, numberOfRecords) => {
         }
         break;
     }
-    column.interval = Math.max(1, column.interval);
-    column.interval = Math.min(column.interval, column.numberOfRecords);
+    // this check could be done in isValidBody and filtered
     if(column.hierarchy != "none") {
-      column.trend = "random";
+      column.behavior = "random";
     }
-    if(column.trend != "random") {
-      column.interval = 1;
-      // limit the increment to the min between the abs value of the increment and the max increment value allowed for the range btwn max and min / # of records
+    if(column.behavior == "random") {
+      column.count = Math.max(1, column.count);
+      column.count = Math.min(column.count, column.numberOfRecords);
+    } else if(column.behavior != "random") {
+      // limit the count to the min between the abs value of the count and the max value allowed for the range btwn max and min / # of records
       var rangeInDays = ((column.maxValue - column.minValue) / 365 / 24 / 60 / 60 / 1000 );
       var range = (column.dataType == "date") ? rangeInDays : column.maxValue - column.minValue;
-      column.increment = Math.min(Math.abs(column.increment), Math.floor(range / column.numberOfRecords));
-      if(column.trend == "positive") {
-        column.increment = Math.max(Math.abs(column.increment), 1);
+      column.count = Math.min(Math.abs(column.count), Math.floor(range / column.numberOfRecords));
+      if(column.behavior == "positive") {
+        column.count = Math.max(Math.abs(column.count), 1);
       } else {
-        column.increment = Math.min(-1 * Math.abs(column.increment), -1);
+        column.count = Math.min(-1 * Math.abs(column.count), -1);
       }
     }
-    column.intervalCounter = column.interval;
+    column.intervalCounter = column.count;
     return column;
   }
 }

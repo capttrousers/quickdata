@@ -9,8 +9,8 @@ module.exports = (columns, numberOfRecords) => {
       row[column.name] = column.nextRandomData;
       column.intervalCounter--;
       if( column.intervalCounter < 1 ||
-         (column.hierarchy == 'child' && columns[column.parentIndex].intervalCounter == columns[column.parentIndex].interval)) {
-          column.intervalCounter = column.interval;
+         (column.hierarchy == 'child' && columns[column.parentIndex].intervalCounter == columns[column.parentIndex].count)) {
+          column.intervalCounter = column.count;
           column.nextRandomData = getRandomDataValue(column);
           if(column.hierarchy == 'parent' && column.dataType == "date") {
             columns[column.childIndex].minValue = new Date(column.nextRandomData);
