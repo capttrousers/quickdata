@@ -8,7 +8,7 @@ var startOfDay = require('date-fns/start_of_day');
 var isSameDay = require('date-fns/is_same_day');
 var moment = require("moment");
 
-describe("Random data generator", function() {
+describe.only("Random data generator", function() {
   before(function() {
     logger.info("Begin random data generator tests");
   })
@@ -174,5 +174,28 @@ describe("Random data generator", function() {
     
   });
   
-
+  describe.only("Checks file dataType", function() {
+      it("returns a value from column.file.values[...]['fieldName']", function () {
+        var column = {};
+        column.name = "Parent";
+        column.allowNulls = false;
+        column.dataType = "file";
+        column.file = {};
+        column.file.fields = ["Parent"];
+        column.file.values = [
+          {"Parent" : "abc" },
+          {"Parent" : "123" },
+          {"Parent" : "xyz" },
+          {"Parent" : "789" },
+          {"Parent" : "testing" }
+        ];
+        var possibilities = [];
+        for(row in column.file.values) {
+          possibilities.push(row[column.name]);
+        } 
+        var randomValueFromList = getRandomData(column);
+        expect(randomValueFromList).to.be.a("string");
+        expect(randomValueFromList).to.be.oneOf(possibilities);
+      })
+  })
 });
