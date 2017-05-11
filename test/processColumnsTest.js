@@ -3,9 +3,9 @@
 
     this function will take an array of column objects and turn it into an array of data generator objects to use in generate data function
 
-    process columns will also validate all the attrs like interval, increment, datatype, allowNulls, behavior, min/max
-    using increment will be used to set min and max and get next random data initially
-    then in the generate data function, using the interval and increment to set the new min and/or max
+    process columns will also validate all the attrs like count, datatype, allowNulls, behavior, min/max
+    using count will be used to set min and max and get next random data initially
+    then in the generate data function, using the count  to set the new min and/or max
 
     this can also test the generate random data function which will receive a data generator object with max / min and data type values
 */
@@ -30,15 +30,15 @@ describe('method : processColumns tests', function(){
           "dataType": "text",
           "maxValue": "5",
           "minValue": "0",
-          "interval": "100",
-          "increment": "1",
+          "count": "1",
+          "behavior" : "random",
           "hierarchy": "parent",
           "child": {
             "dataType": "text",
             "maxValue": "5",
             "minValue": "0",
-            "interval": "10",
-            "increment": "1",
+            "count": "10",
+            "behavior" : "random",
             "hierarchy": "child",
             "child": {}
           }
@@ -46,21 +46,21 @@ describe('method : processColumns tests', function(){
           "dataType": "integer",
           "maxValue": "100",
           "minValue": "-100",
-          "interval": "500",
-          "increment": "1",
+          "count": "500",
+          "behavior" : "random",
           "hierarchy": "none",
           "child": {}
         },{
           "dataType": "date",
           "maxValue": "2018-03-05",
           "minValue": "2010-03-05",
-          "interval": "10000",
-          "increment": "1",
+          "count": "10000",
+          "behavior" : "random",
           "hierarchy": "none",
           "child": {}
         }
       ];
-      this.numberOfRecords = "50";
+      this.numberOfRecords = 50;
     })
 
     describe("test on raw column object", function() {
@@ -71,18 +71,17 @@ describe('method : processColumns tests', function(){
               "dataType": "date",
               "maxValue": "2018-03-05",
               "minValue": "2010-03-05",
-              "interval": "10000",
-              "increment": "1",
+              "count": "10000",
+              "behavior" : "random",
               "hierarchy": "none",
               "child": {}
             }
           ]
           var column = processColumns(columnObjects, 50)[0];
           expect(column).to.have.property('intervalCounter');
-          expect(column).to.have.property('interval');
-          expect(column).to.have.property('name');
+          expect(column).to.have.property('fieldName');
           expect(column).to.have.property('hierarchy');
-          expect(column).to.have.property('increment');
+          expect(column).to.have.property('count');
           expect(column).to.have.property('minValue');
           expect(column).to.have.property('maxValue');
       })
@@ -91,10 +90,10 @@ describe('method : processColumns tests', function(){
 
     describe("tests on body objects from data files", function () {
 
-      it('processColumns clips the interval to the number of records', function() {
+      it('processColumns clips the count to the number of records', function() {
         _.forEach(processColumns(bodyDateHierarchy.columns, bodyDateHierarchy.numberOfRecords), function(column) {
             expect(column).to.have.property('intervalCounter').that.is.at.most(column.numberOfRecords);
-            expect(column).to.have.property('interval').that.is.at.most(column.numberOfRecords);
+            expect(column).to.have.property('count').that.is.at.most(column.numberOfRecords);
         });
       });
 
@@ -126,17 +125,17 @@ describe('method : processColumns tests', function(){
     })
 
     describe("Processing on this.columns", function () {
-      
-      it('processColumns clips the interval to the number of records', function() {
+
+      it('processColumns clips the count to the number of records', function() {
         _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
             expect(column).to.have.property('intervalCounter').that.is.at.most(column.numberOfRecords);
-            expect(column).to.have.property('interval').that.is.at.most(column.numberOfRecords);
+            expect(column).to.have.property('count').that.is.at.most(column.numberOfRecords);
         });
       })
 
       it('Returns columns array where each has a name prop', function() {
         _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
-            expect(column).to.have.property('name');
+            expect(column).to.have.property('fieldName');
         });
       })
 
@@ -146,9 +145,9 @@ describe('method : processColumns tests', function(){
         });
       })
 
-      it('Returns columns array where each has a increment prop', function() {
+      it('Returns columns array where each has a count prop', function() {
         _.forEach(processColumns(this.columns, this.numberOfRecords), function(column) {
-            expect(column).to.have.property('increment');
+            expect(column).to.have.property('count');
         });
       })
 
@@ -172,65 +171,58 @@ describe('method : processColumns tests', function(){
 
     describe("processColumns and trending columns, dates/ints/decimals", function() {
 
-      it('decimal:positive:increment=5:max=45:#Records=10 will limit increment', function() {
+      it('decimal:positive:count=5:max=45:#Records=10 will limit count', function() {
         var columns = [
         {
           "dataType": "decimal",
           "maxValue": "45",
           "minValue": "1",
-          "interval": "100",
-          "trend": "positive",
-          "increment": "5",
+          "count": "10",
+          "behavior" : "positive",
           "hierarchy": "none",
           "child": {}
         }]
         columns = processColumns(columns, "10");
         expect(columns).to.have.lengthOf(1);
-        expect(columns[0]).to.have.property("interval");
-        expect(columns[0].interval).to.be.a("number").and.to.equal(1);
-        expect(columns[0]).to.have.property("increment");
-        expect(columns[0].increment).to.be.a("number").and.to.equal(Math.floor(44 / 10));
+        expect(columns[0]).to.have.property("count");
+        expect(columns[0].count).to.be.a("number").and.to.equal(Math.floor(44 / 10));
       });
 
 
-      it('integer:positive:increment=1:max=1000:#Records=100 sets nextRandomData', function() {
+      it('integer:positive:count=1:max=1000:#Records=100 sets nextRandomData', function() {
         var columns = [
         {
           "dataType": "integer",
           "maxValue": "1000",
           "minValue": "0",
-          "interval": "1",
-          "trend": "positive",
-          "increment": "1",
+          "count": "1",
+          "behavior" : "positive",
           "hierarchy": "none",
           "child": {}
         }]
         columns = processColumns(columns, "100");
         expect(columns).to.have.lengthOf(1);
-        expect(columns[0]).to.have.property("interval");
-        expect(columns[0].interval).to.be.a("number").and.to.equal(1);
-        expect(columns[0]).to.have.property("increment");
-        expect(columns[0].increment).to.be.a("number").and.to.equal(1);
+        expect(columns[0]).to.have.property("count");
+        expect(columns[0].count).to.be.a("number").and.to.equal(1);
         expect(columns[0]).to.have.property("nextRandomData");
         expect(columns[0].nextRandomData).to.be.a("number").and.to.equal(0);
       });
 
-      it('bodyTrend test: resets increment to 1', function() {
+      it('bodyTrend test: resets count to 1', function() {
 
         var columns = processColumns(bodyTrend.columns, bodyTrend.numberOfRecords);
         expect(columns).to.have.lengthOf(3);
-        expect(columns[2].increment).to.be.a("number").and.to.equal(1);
+        expect(columns[2].count).to.be.a("number").and.to.equal(1);
       });
 
-      it("positive trending Date, increment 1, with nextRandomData of minValue", function() {
+      it("positive trending Date, count 1, with nextRandomData of minValue", function() {
         var columns = [
         {
           "dataType": "date",
           "maxValue": "2017-03-18",
           "minValue": "1988-03-18",
-          "interval": "1",
-          "trend": "positive",
-          "increment": "1",
+          "count": "1",
+          "behavior" : "positive",
           "hierarchy": "none",
           "child": {}
         }]
@@ -242,24 +234,23 @@ describe('method : processColumns tests', function(){
         expect(columns[0].maxValue - columns[0].minValue).to.be.a("number");
         expect(columns[0].maxValue + columns[0].minValue).to.be.a("string");
         expect(Math.floor((columns[0].maxValue - columns[0].minValue) / 365 / 24 / 60 / 60 / 1000)).to.equal(29);
-        expect(columns[0].increment).to.be.a("number");
+        expect(columns[0].count).to.be.a("number");
         expect(columns[0].nextRandomData).to.be.a("string").and.to.equal(columns[0].minValue.toISOString());
       });
 
-      it("positive trending Date, increment of -1, will reset increment", function() {
+      it("positive trending Date, count of -1, will reset count", function() {
         var columns = [
         {
           "dataType": "date",
           "maxValue": "2017-03-18",
           "minValue": "1988-03-18",
-          "interval": "1",
-          "trend": "positive",
-          "increment": "-1",
+          "count": "-1",
+          "behavior" : "positive",
           "hierarchy": "none",
           "child": {}
         }]
         columns = processColumns(columns, "10");
-        expect(columns[0].increment).to.be.a("number").and.to.be.above(0);
+        expect(columns[0].count).to.be.a("number").and.to.be.above(0);
       });
 
       it("negative trending Date, decrement 1, with nextRandomData of maxValue", function() {});

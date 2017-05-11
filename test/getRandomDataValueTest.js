@@ -8,13 +8,61 @@ var startOfDay = require('date-fns/start_of_day');
 var isSameDay = require('date-fns/is_same_day');
 var moment = require("moment");
 
-describe.only("Random data generator", function() {
+describe("Random data generator", function() {
   before(function() {
     logger.info("Begin random data generator tests");
   })
 
+  describe.only("Checks file dataType", function() {
+      it("returns a value from column.file.values[...]['fieldName']", function () {
+        var column = {};
+        column.fieldName = "Parent";
+        column.allowNulls = false;
+        column.dataType = "file";
+        column.file = {};
+        column.file.fields = ["Parent"];
+        column.file.values = [
+          {"Parent" : "abc" },
+          {"Parent" : "123" },
+          {"Parent" : "xyz" },
+          {"Parent" : "789" },
+          {"Parent" : "testing" }
+        ];
+        var possibilities = [];
+        column.file.values.forEach( (obj) => {
+          possibilities.push(obj[column.fieldName]);
+        });
+        var randomValueFromList = getRandomData(column);
+        expect(randomValueFromList).to.be.a("string");
+        expect(randomValueFromList).to.be.oneOf(possibilities);
+      });
+
+      it("sets nextIndex to be index in column.file.values[...] of value", function () {
+        var column = {};
+        column.fieldName = "Parent";
+        column.allowNulls = false;
+        column.dataType = "file";
+        column.file = {};
+        column.file.fields = ["Parent"];
+        column.file.values = [
+          {"Parent" : "abc" },
+          {"Parent" : "123" },
+          {"Parent" : "xyz" },
+          {"Parent" : "789" },
+          {"Parent" : "testing" }
+        ];
+        var possibilities = [];
+        column.file.values.forEach( (obj) => {
+          possibilities.push(obj[column.fieldName]);
+        });
+        var randomValueFromList = getRandomData(column);
+        expect(randomValueFromList).to.be.oneOf(possibilities);
+        expect(randomValueFromList).to.equal(column.file.values[column.nextIndex]);
+      });
+  });
+
   describe("Checks data types returned", function(){
-    
+
     it("returns value of type string", function() {
       var string = getRandomData({dataType: 'text', maxValue: 10});
       expect(string).to.be.a('string');
@@ -36,7 +84,7 @@ describe.only("Random data generator", function() {
     });
 
   });
-  
+
   describe("Checks nulls returned", function(){
     it("returns null 10% of the time , type: string, allowNulls: true", function(){
       var TEST_NUMBER = 1000;
@@ -82,9 +130,9 @@ describe.only("Random data generator", function() {
       expect(totalForAverage / TEST_NUMBER).to.be.above(.06).and.below(.14);
     })
   });
-  
+
   describe("Checks values are between min and max values", function(){
-    
+
     it("generates a random integer value between min and max constraints", function() {
         // min is one so just check that values are between 1 and maxValue
         var integer = getRandomData({dataType: 'integer', maxValue: 10000, minValue: 0});
@@ -116,7 +164,7 @@ describe.only("Random data generator", function() {
     });
 
   });
-  
+
   describe("Checks trending data values", function(){
     it("makes two startOfDay dates and compares with isSameDay date-fns", function() {
       var dateOne = startOfDay("2017-03-18");
@@ -133,69 +181,45 @@ describe.only("Random data generator", function() {
     })
 
     it("trending Date returns value incremented by 5 days", function() {
-      var dateValue = getRandomData({dataType: 'date', trend: "positive", increment: 5, nextRandomData: "2017-03-18"});
+      var dateValue = getRandomData({dataType: 'date', behavior: "positive", count: 5, nextRandomData: "2017-03-18"});
       expect(dateValue).to.be.a('string').and.to.equal(moment("2017-03-23").toISOString());
     });
 
     it("trending Date returns value decremented by 5 days", function() {
-      var dateValue = getRandomData({dataType: 'date', trend: "negative", increment: -5, nextRandomData: "2017-03-18"});
+      var dateValue = getRandomData({dataType: 'date', behavior: "negative", count: -5, nextRandomData: "2017-03-18"});
       expect(dateValue).to.be.a('string').and.to.equal(moment("2017-03-13").toISOString());
     });
 
     it("trending integer returns value decremented by 5", function() {
-      var integerValue = getRandomData({dataType: 'integer', trend: "negative", increment: -5, minValue: 0, maxValue: 1000});
+      var integerValue = getRandomData({dataType: 'integer', behavior: "negative", count: -5, minValue: 0, maxValue: 1000});
       expect(integerValue).to.be.a('number').and.to.equal(1000);
     });
 
     it("trending integer returns value incremented by 5", function() {
-      var integerValue = getRandomData({dataType: 'integer', trend: "positive", increment: 5, minValue: 0, maxValue: 1000});
+      var integerValue = getRandomData({dataType: 'integer', behavior: "positive", count: 5, minValue: 0, maxValue: 1000});
       expect(integerValue).to.be.a('number').and.to.equal(0);
     });
 
     it("positive trending integer limits at maxValue", function() {
-      var integerValue = getRandomData({dataType: 'integer', trend: "positive", increment: 5, minValue: 0, maxValue: 1000, nextRandomData: 996});
+      var integerValue = getRandomData({dataType: 'integer', behavior: "positive", count: 5, minValue: 0, maxValue: 1000, nextRandomData: 996});
       expect(integerValue).to.be.a('number').and.to.equal(1000);
     });
 
     it("negative trending integer limits at minValue", function() {
-      var integerValue = getRandomData({dataType: 'integer', trend: "negative", increment: -5, minValue: 0, maxValue: 1000, nextRandomData: 2});
+      var integerValue = getRandomData({dataType: 'integer', behavior: "negative", count: -5, minValue: 0, maxValue: 1000, nextRandomData: 2});
       expect(integerValue).to.be.a('number').and.to.equal(0);
     });
 
     it("positive trending decimal limits at maxValue", function() {
-      var integerValue = getRandomData({dataType: 'decimal', trend: "positive", increment: .5, minValue: 0, maxValue: 1, nextRandomData: .6});
+      var integerValue = getRandomData({dataType: 'decimal', behavior: "positive", count: .5, minValue: 0, maxValue: 1, nextRandomData: .6});
       expect(integerValue).to.be.a('number').and.to.equal(1);
     });
 
     it("negative trending decimal limits at minValue", function() {
-      var integerValue = getRandomData({dataType: 'decimal', trend: "negative", increment: -.5, minValue: 0, maxValue: 1, nextRandomData: .2});
+      var integerValue = getRandomData({dataType: 'decimal', behavior: "negative", count: -.5, minValue: 0, maxValue: 1, nextRandomData: .2});
       expect(integerValue).to.be.a('number').and.to.equal(0);
     });
-    
+
   });
-  
-  describe.only("Checks file dataType", function() {
-      it("returns a value from column.file.values[...]['fieldName']", function () {
-        var column = {};
-        column.name = "Parent";
-        column.allowNulls = false;
-        column.dataType = "file";
-        column.file = {};
-        column.file.fields = ["Parent"];
-        column.file.values = [
-          {"Parent" : "abc" },
-          {"Parent" : "123" },
-          {"Parent" : "xyz" },
-          {"Parent" : "789" },
-          {"Parent" : "testing" }
-        ];
-        var possibilities = [];
-        for(row in column.file.values) {
-          possibilities.push(row[column.name]);
-        } 
-        var randomValueFromList = getRandomData(column);
-        expect(randomValueFromList).to.be.a("string");
-        expect(randomValueFromList).to.be.oneOf(possibilities);
-      })
-  })
+
 });

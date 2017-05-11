@@ -1,7 +1,7 @@
 // process columns function
 // takes the columns got from the json obj in the http request body
 // processes each to add a few attrs, returns new columns array
-// adds column name, max value, and first random value
+// adds column.fieldName, max value, and first random value
 
 var getRandomDataValue = require('./getRandomDataValue');
 
@@ -13,7 +13,7 @@ var logger   = require('../utils/logger').logger;
 
 module.exports = (bodyColumns, numberOfRecords) => {
   var fields = bodyColumns;
-  // # of columns for each datatype for column names:
+  // # of columns for each datatype for column.fieldNames:
   var textColumnCount = decColumnCount = intColumnCount = dateColumnCount = 1;
   var columns = [];
 
@@ -47,12 +47,12 @@ module.exports = (bodyColumns, numberOfRecords) => {
 
   return columns;
 
-  // take column, add a few attrs and push column.name to quick_data_fields
+  // take column, add a few attrs and push column.fieldName to quick_data_fields
   function processColumn(column, numberOfRecords) {
     column.numberOfRecords = numberOfRecords;
     switch (column.dataType) {
       case 'text' :
-        column.name = "Text column " + textColumnCount;
+        column.fieldName = "Text column " + textColumnCount;
         // max of 1000 chars for strings, for now
         column.maxValue = Math.min(column.maxValue, 1000);
         // minValue of 1 char
@@ -60,7 +60,7 @@ module.exports = (bodyColumns, numberOfRecords) => {
         textColumnCount++;
         break;
       case 'date' :
-        column.name = "Date column " + dateColumnCount;
+        column.fieldName = "Date column " + dateColumnCount;
         column.maxValue = (column.maxValue) ? new Date(column.maxValue) :  new Date();
         //  default min date of jan 1 2001
         column.minValue = (column.minValue) ? new Date(column.minValue) : new Date("2000-01-01");
@@ -73,15 +73,22 @@ module.exports = (bodyColumns, numberOfRecords) => {
         // minValue of 0 for numbers, can change to be min int
         column.minValue = Math.max(column.minValue, -1000000);
         if(column.dataType ==  'integer') {
-          column.name = "Integer column " + intColumnCount;
+          column.fieldName = "Integer column " + intColumnCount;
           intColumnCount++;
         } else if(column.dataType == 'decimal') {
-          column.name = "Decimal column " + decColumnCount;
+          column.fieldName = "Decimal column " + decColumnCount;
           decColumnCount++;
         }
         break;
       case "file" :
+        // process file values to find parent and child fieldNames
 
+        // when getting new random value, set nextIndex to be index of values row
+        // set nextIndex of parent/child 0 for first value
+        column.nextIndex = Math.floor(Math.random() * column.file.values.length);
+        column.child = JSON.parse(JSON.stringify(column));
+
+        break;
     }
     // this check could be done in isValidBody and filtered
     if(column.hierarchy != "none") {
@@ -104,4 +111,5 @@ module.exports = (bodyColumns, numberOfRecords) => {
     column.intervalCounter = column.count;
     return column;
   }
+
 }

@@ -17,14 +17,14 @@ describe("method: isValidBody tests", function() {
     it("returns true with bodyTemplate.js file", function() {
       expect(isValidBody(bodyTemplate)).to.be.true;
     });
-    
+
     it("Invalid w/ dataColumnObject.js file at min and max with empty strings", function() {
       var body = bodyTemplate;
       body.columns.push(dataColumnObject);
       expect(isValidBody(body)).to.be.false;
 
     });
-    
+
     it("returns false with int and max as nulls", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -35,7 +35,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("returns false with int and min as nulls", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -46,7 +46,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("returns false with int and max as undefined", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -57,7 +57,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("returns false with int and min as undefined", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -68,7 +68,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("returns false with int and max as NaN", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -79,7 +79,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("returns false with int and min as NaN", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -90,7 +90,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("returns false with int and max as invalid string", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -101,7 +101,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("returns false with int and min as invalid string", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -112,7 +112,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("Invalid with Date and max as null", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -123,7 +123,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("Invalid with Date and min as null", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -134,7 +134,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("Invalid with Date and max as undefined", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -145,7 +145,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("Invalid with Date and min as undefined", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -156,7 +156,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("Invalid with Date and max as NaN", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -167,7 +167,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("Invalid with Date and min as NaN", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -178,7 +178,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("Invalid with Date and max as invalid date string", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -189,7 +189,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("Invalid with Date and min as invalid date string", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -200,7 +200,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("Invalid with Date and max with text in the date string", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -211,7 +211,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("Invalid with Date and min with text in the date string", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -222,7 +222,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("Invalid with Date and max as empty string", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -233,7 +233,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-    
+
     it("Invalid with Date and min empty string", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
@@ -244,7 +244,7 @@ describe("method: isValidBody tests", function() {
       body.columns.push(intColumn);
       expect(isValidBody(body)).to.be.false;
     });
-        
+
     it("returns false with trend column with invalid min/max range/increment", function() {
       bodyTrend.numberOfRecords = 500;
       expect(isValidBody(bodyTrend)).to.be.false;

@@ -61,7 +61,7 @@ router.post("/quickdata", function(request, response, next) {
         dataType = models.Sequelize.DOUBLE;
         break;
     }
-    request.body.attributes[column.name] = dataType;
+    request.body.attributes[column.fieldName] = dataType;
   });
 
   // check existing tables for same schema
@@ -95,10 +95,10 @@ router.post("/quickdata", function(request, response, next) {
   logger.info("Generate data successful");
 
 
-  // quick_data_fields is array of column names: column.name
+  // quick_data_fields is array of column names: column.fieldName
 	var quick_data_fields = [];
   request.body.columns.forEach((column) => {
-      quick_data_fields.push(column.name);
+      quick_data_fields.push(column.fieldName);
       logger.debug("column interval = %s", column.interval);
       logger.debug('column.interval is typeof ' + typeof column.interval);
   });

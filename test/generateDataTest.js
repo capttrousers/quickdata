@@ -73,7 +73,7 @@ describe('method : generateData tests', function(){
         var data = generateData(processColumns(bodyNulls.columns, bodyNulls.numberOfRecords), bodyNulls.numberOfRecords);
         bodyNulls.columns.forEach(function(column) {
             data.forEach( function (row) {
-              if(row[column.name] == null) {
+              if(row[column.fieldName] == null) {
                 total++;
               }
             });
@@ -154,8 +154,8 @@ describe('method : generateData tests', function(){
 
 
       it("positive trending Date, increment 1", function() {
-        
-        
+
+
       });
 
       it("positive trending Date, increment 6", function() {});
