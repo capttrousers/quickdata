@@ -9,7 +9,7 @@ module.exports = (columns, numberOfRecords) => {
       row[column.fieldName] = column.nextRandomData;
       column.intervalCounter--;
       if( column.intervalCounter < 1 ||
-         (column.hierarchy == 'child' && columns[column.parentIndex].intervalCounter == columns[column.parentIndex].count)) {
+         (column.hierarchy == 'child' && column.dataType != "file" && columns[column.parentIndex].intervalCounter == columns[column.parentIndex].count)) {
           column.intervalCounter = column.count;
           if(column.dataType == "file" && column.hierarchy == "parent") {
             column.nextIndex = columns[column.childIndex].nextIndex = Math.floor(Math.random() * column.file.values.length);

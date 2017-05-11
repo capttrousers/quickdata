@@ -23,7 +23,8 @@ module.exports = (bodyColumns, numberOfRecords) => {
     columns.push(column);
     // handle child column
     if(column.hierarchy == 'parent') {
-      var child = processColumn(column.child, numberOfRecords);
+      // if file dataType, no need to process child column
+      var child = (column.dataType == "file") ? column.child : processColumn(column.child, numberOfRecords);
       /*
           parentIndex and childIndex can be collapsed to hierarchy maybe
           check where hierarchy is used to see if it can be inferred from the indices existence
@@ -80,19 +81,9 @@ module.exports = (bodyColumns, numberOfRecords) => {
           decColumnCount++;
         }
         break;
-      case "file" :
-        // process file values to find parent and child fieldNames
-
-        // when getting new random value, set nextIndex to be index of values row
-        // set nextIndex of parent/child 0 for first value
-        column.nextIndex = Math.floor(Math.random() * column.file.values.length);
-        column.child = JSON.parse(JSON.stringify(column));
-
+      case "file" :        
+        column = processFileValues(column);
         break;
-    }
-    // this check could be done in isValidBody and filtered
-    if(column.hierarchy != "none") {
-      column.behavior = "random";
     }
     if(column.behavior == "random" || column.behavior == "expand") {
       column.count = Math.max(1, column.count);
@@ -112,4 +103,45 @@ module.exports = (bodyColumns, numberOfRecords) => {
     return column;
   }
 
+  
+  function processFileValues(column) {
+    // when getting new random value, set nextIndex to be index of values row
+    // set nextIndex of parent/child 0 for first value
+    column.nextIndex = Math.floor(Math.random() * column.file.values.length);
+    // need to figure if file value list has one or two columns
+    if(column.file.fields.length == 2) {
+      column.child = JSON.parse(JSON.stringify(column));
+      column.hierarchy = "parent";
+      column.child.hierarchy = "child";
+      // process file values to find parent and child fieldNames
+      var columnOneFieldName = column.file.fields[0];
+      var columnTwoFieldName = column.file.fields[1];
+      var columnOneCountD = columnTwoCountD = 0;
+      var columnOneValues = columnTwoValues = [];
+      column.file.values.forEach((row) => {
+        if(! columnOneValues.includes(row[columnOneFieldName])) {
+          columnOneCountD++;
+          columnOneValues.push(row[columnOneFieldName]);
+        }
+        if(! columnTwoValues.includes(row[columnTwoFieldName])) {
+          columnTwoCountD++;
+          columnTwoValues.push(row[columnTwoFieldName]);
+        }
+      });
+      // now we know which column has more varied data values
+      // we will put the one with more variation as parent
+      if(columnOneCountD > columnTwoCountD) {
+        column.child.fieldName = column.file.fields[1];
+        column.fieldName = column.file.fields[0]; 
+      } else {
+        column.child.fieldName = column.file.fields[0];
+        column.fieldName = column.file.fields[1]; 
+      }
+    } else {  // for now assume file.fields is only one or two columns wide
+      column.fieldName = column.file.fields[0];
+    }
+    
+    return column;
+  }
+  
 }

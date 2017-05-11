@@ -46,6 +46,22 @@ module.exports = (body) => {
       isValid = false;
       return false;
     }
+    if(column.hierarchy != "none" && column.behavior != "random") {
+      isValid = false;
+      return false;
+    }
+    if(column.dataType == "file" && 
+        (column.file == null 
+        || column.file.values == null 
+        || column.file.fields == null 
+        || column.file.fields.length > 2 
+        || column.file.fields.length < 1 
+        || column.file.values.length > 50 
+        || column.file.values.length < 1) 
+    ) {
+      isValid = false;
+      return false;
+    }
     if(column.dataType == "date") {
       if(  isNaN(Date.parse(column.minValue))
         || isNaN(Date.parse(column.maxValue))

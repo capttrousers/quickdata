@@ -13,7 +13,7 @@ describe("Random data generator", function() {
     logger.info("Begin random data generator tests");
   })
 
-  describe.only("Checks file dataType", function() {
+  describe("Checks file dataType", function() {
       it("returns a value from column.file.values[...]['fieldName']", function () {
         var column = {};
         column.fieldName = "Parent";
@@ -32,6 +32,7 @@ describe("Random data generator", function() {
         column.file.values.forEach( (obj) => {
           possibilities.push(obj[column.fieldName]);
         });
+        column.nextIndex = Math.floor(Math.random() * column.file.values.length);
         var randomValueFromList = getRandomData(column);
         expect(randomValueFromList).to.be.a("string");
         expect(randomValueFromList).to.be.oneOf(possibilities);
@@ -55,9 +56,10 @@ describe("Random data generator", function() {
         column.file.values.forEach( (obj) => {
           possibilities.push(obj[column.fieldName]);
         });
+        column.nextIndex = Math.floor(Math.random() * column.file.values.length);
         var randomValueFromList = getRandomData(column);
         expect(randomValueFromList).to.be.oneOf(possibilities);
-        expect(randomValueFromList).to.equal(column.file.values[column.nextIndex]);
+        expect(randomValueFromList).to.equal(column.file.values[column.nextIndex][column.fieldName]);
       });
   });
 
