@@ -202,24 +202,24 @@ describe("Random data generator", function() {
       expect(integerValue).to.be.a('number').and.to.equal(0);
     });
 
-    it("positive trending integer limits at maxValue", function() {
+    it("positive trending integer doesnt limit at maxValue", function() {
       var integerValue = getRandomData({dataType: 'integer', behavior: "positive", count: 5, minValue: 0, maxValue: 1000, nextRandomData: 996});
-      expect(integerValue).to.be.a('number').and.to.equal(1000);
+      expect(integerValue).to.be.a('number').and.to.be.above(1000);
     });
 
-    it("negative trending integer limits at minValue", function() {
+    it("negative trending integer doesnt limit at minValue", function() {
       var integerValue = getRandomData({dataType: 'integer', behavior: "negative", count: -5, minValue: 0, maxValue: 1000, nextRandomData: 2});
-      expect(integerValue).to.be.a('number').and.to.equal(0);
+      expect(integerValue).to.be.a('number').and.to.be.below(0);
     });
 
-    it("positive trending decimal limits at maxValue", function() {
+    it("positive trending decimal doesnt limit at maxValue", function() {
       var integerValue = getRandomData({dataType: 'decimal', behavior: "positive", count: .5, minValue: 0, maxValue: 1, nextRandomData: .6});
-      expect(integerValue).to.be.a('number').and.to.equal(1);
+      expect(integerValue).to.be.a('number').and.to.be.above(1);
     });
 
-    it("negative trending decimal limits at minValue", function() {
+    it("negative trending decimal doesnt limit at minValue", function() {
       var integerValue = getRandomData({dataType: 'decimal', behavior: "negative", count: -.5, minValue: 0, maxValue: 1, nextRandomData: .2});
-      expect(integerValue).to.be.a('number').and.to.equal(0);
+      expect(integerValue).to.be.a('number').and.to.be.below(0);
     });
 
   });
