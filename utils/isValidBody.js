@@ -42,10 +42,13 @@ module.exports = (body) => {
       isValid = false;
       return false;
     }
+    /*
+    // for now comment this out, the current behavior will be blow past max/min value if trend increment and #ofRecords forces it
     if(column.behavior != "random" && ((column.maxValue - column.minValue) / column.count) < body.numberOfRecords) {
       isValid = false;
       return false;
     }
+    */
     if(column.hierarchy != "none" && column.behavior != "random") {
       isValid = false;
       return false;

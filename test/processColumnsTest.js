@@ -236,7 +236,7 @@ describe('method : processColumns tests', function(){
 
     describe("processColumns and trending columns, dates/ints/decimals", function() {
 
-      it('decimal:positive:count=5:max=45:#Records=10 will limit count', function() {
+      it('decimal:positive:count=5:max=45:#Records=10 will not limit count', function() {
         var columns = [
         {
           "dataType": "decimal",
@@ -250,7 +250,7 @@ describe('method : processColumns tests', function(){
         columns = processColumns(columns, "10");
         expect(columns).to.have.lengthOf(1);
         expect(columns[0]).to.have.property("count");
-        expect(columns[0].count).to.be.a("number").and.to.equal(Math.floor(44 / 10));
+        expect(columns[0].count).to.be.a("number").and.to.equal(10);
       });
 
 

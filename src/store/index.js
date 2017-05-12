@@ -203,6 +203,7 @@ export default new Vuex.Store({
 							var text = reader.result;
 							Papa.parse(text, {
 								header: true,
+                skipEmptyLines: true,
 								complete: function (results) {
 									var data = {}
 									data.fields = results.meta.fields;

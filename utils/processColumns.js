@@ -90,18 +90,23 @@ module.exports = (bodyColumns, numberOfRecords) => {
     if(column.behavior == "random" || column.behavior == "expand") {
       column.count = Math.max(1, column.count);
       column.count = Math.min(column.count, column.numberOfRecords);
+      column.intervalCounter = column.count;
     } else if(column.behavior == "negative" || column.behavior == "positive") {
-      // limit the count to the min between the abs value of the count and the max value allowed for the range btwn max and min / # of records
-      var rangeInDays = ((column.maxValue - column.minValue) / 365 / 24 / 60 / 60 / 1000 );
-      var range = (column.dataType == "date") ? rangeInDays : column.maxValue - column.minValue;
-      column.count = Math.min(Math.abs(column.count), Math.floor(range / column.numberOfRecords));
+      /* 
+        // FOR NOW DO NOT LIMIT COUNT, just let trending increments blow past min/max values
+        
+        // limit the count to the min between the abs value of the count and the max value allowed for the range btwn max and min / # of records
+        var rangeInDays = ((column.maxValue - column.minValue) / 365 / 24 / 60 / 60 / 1000 );
+        var range = (column.dataType == "date") ? rangeInDays : column.maxValue - column.minValue;
+        column.count = Math.min(Math.abs(column.count), Math.floor(range / column.numberOfRecords));
+      */
       if(column.behavior == "positive") {
         column.count = Math.max(Math.abs(column.count), 1);
       } else {
         column.count = Math.min(-1 * Math.abs(column.count), -1);
       }
+      column.intervalCounter = 1;
     }
-    column.intervalCounter = column.count;
     return column;
   }
 

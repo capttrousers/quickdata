@@ -12,7 +12,7 @@
         md-button(@click.native="closeDialog('alert')") OK
 
     #form
-      .form-row(v-show="true")
+      .form-row(v-show="false")
         md-layout(md-gutter="8")
           md-layout(md-flex="75")
             md-input-container
@@ -23,7 +23,7 @@
           md-layout(md-flex="10")
             md-button.md-raised.md-icon-button.md-dense( @click.native="helpRouter")
               md-icon help_outline
-      .form-row(v-show="true")
+      .form-row(v-show="false")
         md-layout(md-gutter="24")
           md-layout(md-flex)
           md-layout(md-flex)

@@ -15,7 +15,9 @@ module.exports = (column) => {
     if(column.behavior == "positive") {
       if(column.nextRandomData != null && column.nextRandomData != undefined) {
         if(column.dataType != "date") {
-          return Math.min(column.maxValue, column.nextRandomData + column.count);
+          // return Math.min(column.maxValue, column.nextRandomData + column.count);
+          // for now do not limit the next incremented value to the maxValue
+          return column.nextRandomData + column.count;
         } else {
           return moment(column.nextRandomData).add(column.count, "days").toISOString();
         }
@@ -25,7 +27,9 @@ module.exports = (column) => {
     } else {
       if(column.nextRandomData != null && column.nextRandomData != undefined) {
         if(column.dataType != "date") {
-          return Math.max(column.minValue, column.nextRandomData + column.count);
+          // return Math.max(column.minValue, column.nextRandomData + column.count);
+          // for now do not limit the next incremented value to the minValue
+          return column.nextRandomData + column.count;
         } else {
           return moment(column.nextRandomData).add(column.count, "days").toISOString();
         }
