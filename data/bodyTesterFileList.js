@@ -1,7 +1,7 @@
 
 module.exports =
 {
-  numberOfRecords: "500",
+  numberOfRecords: "5",
   dataSource: "csv",
   user: "somebody@tableau.com",
   sfCase: "01234",
@@ -63,5 +63,3 @@ module.exports =
     }
   ]
 }
-
-

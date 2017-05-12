@@ -26,13 +26,13 @@ var bodyFileListSingleColumn = require('../data/bodyTesterFileListSingleColumn')
 describe('method : generateData tests', function(){
 
 
-  describe.only("Tests file list data generation", function() {
-    
+  describe("Tests file list data generation", function() {
+
     it("generates data values from file list with single column", function() {
-      
+
       var columns = processColumns(bodyFileListSingleColumn.columns, bodyFileListSingleColumn.numberOfRecords);
       var data = generateData(columns, bodyFileListSingleColumn.numberOfRecords);
-      
+
       var possibilities = [];
       columns[0].file.values.forEach( (obj) => {
         possibilities.push(obj[columns[0].fieldName]);
@@ -41,35 +41,33 @@ describe('method : generateData tests', function(){
         expect(row[columns[0].fieldName]).to.be.oneOf(possibilities);
       })
     })
-    
-    it.only("finds index of a specific value in the file.values list", function() {
+
+    it("finds index of a specific value in the file.values list", function() {
       var parentFieldName = "Subcategory";
       var childFieldName = "Category";
       var row = {
          "Category": "Category 1",
          "Subcategory": "Sub-category 3"
         }
-      var index = _.indexOf( bodyFileList.columns[0].file.values, (valueRow) => { return valueRow[parentFieldName] == row[parentFieldName] } );
-      expect(index).to.equal(3);
+      var index = _.findIndex( bodyFileList.columns[0].file.values, (valueRow) => { return valueRow[parentFieldName] == row[parentFieldName]; } );
+      expect(index).to.equal(2);
     })
-    
+
     it("generates data values from file list with two columns", function() {
       var columns = processColumns(bodyFileList.columns, bodyFileList.numberOfRecords);
       var data = generateData(columns, bodyFileList.numberOfRecords);
-      var parentFieldName = "Subcategory";
-      var childFieldName = "Category";
       data.forEach(function(row) {
-        var index = _.indexOf( columns[0].file.values, function(valueRow) { return valueRow[parentFieldName] == row[parentFieldName] } );
+        var index = _.findIndex( columns[0].file.values, (valueRow) => { return valueRow["Subcategory"] == row["Subcategory"] } );
         expect(index).to.be.a("number");
         expect(index).to.be.below(columns[0].file.values.length).and.at.least(0);
-        expect(row[childFieldName]).to.equal(columns[0].file.values[index][childFieldName]);
-      })
+        expect(row["Category"]).to.equal(columns[0].file.values[index]["Category"]);
+      });
     })
-    
+
   })
-    
+
   describe("Tests parent/child hierarchy for text and date datatypes", function() {
-     
+
     it('generateDate for each row has parent date < child date', function() {
       var columns = processColumns(bodyDateHierarchy.columns, bodyDateHierarchy.numberOfRecords);
       var data = generateData(columns, bodyDateHierarchy.numberOfRecords);
@@ -78,9 +76,9 @@ describe('method : generateData tests', function(){
       });
       expect(data).to.have.lengthOf(500);
     })
-    
+
   })
-  
+
   describe("Checks allowNulls at 10%", function() {
     it("Type: date, generates nulls @ ~10% for parent and child in hierarchy", function() {
       var totalParent = totalChild = 0;

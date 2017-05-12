@@ -24,7 +24,7 @@ module.exports = (bodyColumns, numberOfRecords) => {
     // handle child column
     if(column.hierarchy == 'parent') {
       // if file dataType, no need to process child column
-      var child = (column.dataType == "file") ? column.child : processColumn(column.child, numberOfRecords);
+      var child = processColumn(column.child, numberOfRecords);
       /*
           parentIndex and childIndex can be collapsed to hierarchy maybe
           check where hierarchy is used to see if it can be inferred from the indices existence
@@ -81,8 +81,10 @@ module.exports = (bodyColumns, numberOfRecords) => {
           decColumnCount++;
         }
         break;
-      case "file" :        
-        column = processFileValues(column);
+      case "file" :
+        if(column.hierarchy == "none") { // if processing child, just set intervalCounter
+          column = processFileValues(column);
+        }
         break;
     }
     if(column.behavior == "random" || column.behavior == "expand") {
@@ -103,7 +105,7 @@ module.exports = (bodyColumns, numberOfRecords) => {
     return column;
   }
 
-  
+
   function processFileValues(column) {
     // when getting new random value, set nextIndex to be index of values row
     // set nextIndex of parent/child 0 for first value
@@ -132,16 +134,16 @@ module.exports = (bodyColumns, numberOfRecords) => {
       // we will put the one with more variation as parent
       if(columnOneCountD > columnTwoCountD) {
         column.child.fieldName = column.file.fields[1];
-        column.fieldName = column.file.fields[0]; 
+        column.fieldName = column.file.fields[0];
       } else {
         column.child.fieldName = column.file.fields[0];
-        column.fieldName = column.file.fields[1]; 
+        column.fieldName = column.file.fields[1];
       }
     } else {  // for now assume file.fields is only one or two columns wide
       column.fieldName = column.file.fields[0];
     }
-    
+
     return column;
   }
-  
+
 }

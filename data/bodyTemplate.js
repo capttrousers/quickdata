@@ -68,7 +68,38 @@ module.exports =
       count : "1",
       maxValue: "1000",
       minValue: "0",
-      file : null,
+      file : {
+       "fields": [
+          "Category",
+          "Subcategory"
+       ],
+       "values": [
+        {
+         "Category": "Category 1",
+         "Subcategory": "Sub-category 1"
+        },
+        {
+         "Category": "Category 1",
+         "Subcategory": "Sub-category 2"
+        },
+        {
+         "Category": "Category 2",
+         "Subcategory": "Sub-category 3"
+        },
+        {
+         "Category": "Category 2",
+         "Subcategory": "Sub-category 4"
+        },
+        {
+         "Category": "Category 3",
+         "Subcategory": "Sub-category 5"
+        },
+        {
+         "Category": "Category 3",
+         "Subcategory": "Sub-category 6"
+        }
+       ]
+      },
       behavior: "random"      // datatype file, randomly select or for each record ['random', 'expand']
     }
   ]
