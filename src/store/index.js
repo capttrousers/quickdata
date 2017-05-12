@@ -19,7 +19,7 @@ export default new Vuex.Store({
 			"maxValue": "10",
       "behavior": "random",  // ['positive', 'negative', 'random'] for date/int/float, ["expand", "random"] for file
 			"count": "1",
-			"allowNulls": true,
+			"allowNulls": false,
 			"file": null,
 			"fileName": "", // file name is needed for v model on md-file input
 			"child": {}
@@ -160,6 +160,7 @@ export default new Vuex.Store({
 								maxValue = "1000";
 								break;
 							case "text":
+              case "file" :
 								minValue = "1";
 								maxValue = "10";
 								break;

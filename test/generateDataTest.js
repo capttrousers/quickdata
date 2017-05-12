@@ -26,7 +26,7 @@ var bodyFileListSingleColumn = require('../data/bodyTesterFileListSingleColumn')
 describe('method : generateData tests', function(){
 
 
-  describe.only("Tests file list data generation", function() {
+  describe("Tests file list data generation", function() {
     
     it("generates data values from file list with single column", function() {
       
@@ -42,7 +42,7 @@ describe('method : generateData tests', function(){
       })
     })
     
-    it.only("finds index of a specific value in the file.values list", function() {
+    it("finds index of a specific value in the file.values list", function() {
       var parentFieldName = "Subcategory";
       var childFieldName = "Category";
       var row = {
@@ -53,7 +53,7 @@ describe('method : generateData tests', function(){
       expect(index).to.equal(2);
     })
     
-    it.only("generates data values from file list with two columns", function() {
+    it("generates data values from file list with two columns", function() {
       var columns = processColumns(bodyFileList.columns, bodyFileList.numberOfRecords);
       var data = generateData(columns, bodyFileList.numberOfRecords);
       var parentFieldName = "Subcategory";
