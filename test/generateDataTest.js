@@ -49,17 +49,17 @@ describe('method : generateData tests', function(){
          "Category": "Category 1",
          "Subcategory": "Sub-category 3"
         }
-      var index = _.indexOf( bodyFileList.columns[0].file.values, (valueRow) => { return valueRow[parentFieldName] == row[parentFieldName] } );
-      expect(index).to.equal(3);
+      var index = _.findIndex( bodyFileList.columns[0].file.values, (valueRow) => { return valueRow[parentFieldName] == row[parentFieldName] } );
+      expect(index).to.equal(2);
     })
     
-    it("generates data values from file list with two columns", function() {
+    it.only("generates data values from file list with two columns", function() {
       var columns = processColumns(bodyFileList.columns, bodyFileList.numberOfRecords);
       var data = generateData(columns, bodyFileList.numberOfRecords);
       var parentFieldName = "Subcategory";
       var childFieldName = "Category";
       data.forEach(function(row) {
-        var index = _.indexOf( columns[0].file.values, function(valueRow) { return valueRow[parentFieldName] == row[parentFieldName] } );
+        var index = _.findIndex( columns[0].file.values, function(valueRow) { return valueRow[parentFieldName] == row[parentFieldName] } );
         expect(index).to.be.a("number");
         expect(index).to.be.below(columns[0].file.values.length).and.at.least(0);
         expect(row[childFieldName]).to.equal(columns[0].file.values[index][childFieldName]);

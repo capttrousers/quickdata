@@ -24,7 +24,7 @@ module.exports = (bodyColumns, numberOfRecords) => {
     // handle child column
     if(column.hierarchy == 'parent') {
       // if file dataType, no need to process child column
-      var child = (column.dataType == "file") ? column.child : processColumn(column.child, numberOfRecords);
+      var child = processColumn(column.child, numberOfRecords);
       /*
           parentIndex and childIndex can be collapsed to hierarchy maybe
           check where hierarchy is used to see if it can be inferred from the indices existence
@@ -81,8 +81,10 @@ module.exports = (bodyColumns, numberOfRecords) => {
           decColumnCount++;
         }
         break;
-      case "file" :        
-        column = processFileValues(column);
+      case "file" :  
+        if(column.hierarchy == "none") {
+          column = processFileValues(column); 
+        }
         break;
     }
     if(column.behavior == "random" || column.behavior == "expand") {
