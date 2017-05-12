@@ -66,38 +66,38 @@ describe('method : processColumns tests', function(){
     })
 
     describe("Tests data type file with data list", function() {
-      
+
       it("Processes body w/ file list of 2 columns and returns array of length 2", function() {
         expect(processColumns(bodyFileList.columns, bodyFileList.numberOfRecords)).to.have.lengthOf(2);
       })
-      
+
       it("Processes body w/ file list of 1 column and returns array of length 1", function() {
         expect(processColumns(bodyFileListSingleColumn.columns, bodyFileListSingleColumn.numberOfRecords)).to.have.lengthOf(1);
       })
-      
+
       it("Processes body w/ file list of 1 column which has prop nextIndex", function() {
         expect(processColumns(bodyFileListSingleColumn.columns, bodyFileListSingleColumn.numberOfRecords)[0]).to.have.property("nextIndex");
       })
-      
+
       it("Processes body w/ file list of 1 column which has prop fieldName", function() {
         var column = processColumns(bodyFileListSingleColumn.columns, bodyFileListSingleColumn.numberOfRecords)[0];
         expect(column).to.have.property("fieldName").that.equals(bodyFileListSingleColumn.columns[0].file.fields[0]);
       })
-      
+
       it("Processes body w/ file list of 2 columns and returns array of columns w/ fieldName props", function() {
         var columns = processColumns(bodyFileList.columns, bodyFileList.numberOfRecords);
         columns.forEach((column) => {
           expect(column).to.have.property("fieldName");
         })
       })
-      
+
       it("Processes body w/ file list of 2 columns and returns array of columns w/ nextIndex props", function() {
         var columns = processColumns(bodyFileList.columns, bodyFileList.numberOfRecords);
         columns.forEach((column) => {
           expect(column).to.have.property("nextIndex");
         })
       })
-      
+
       it("Processes body w/ file list of 2 columns has parent with fieldName Subcategory", function() {
         var columns = processColumns(bodyFileList.columns, bodyFileList.numberOfRecords);
         columns.forEach((column) => {
@@ -106,28 +106,28 @@ describe('method : processColumns tests', function(){
           }
         })
       })
-      
+
       it("Processes body w/ file list of 2 columns has count of 1", function() {
         var columns = processColumns(bodyFileList.columns, bodyFileList.numberOfRecords);
         columns.forEach((column) => {
           expect(column.count).to.equal(1);
         })
       })
-      
+
       it("Processes body w/ file list of 2 columns parent w/ prop childIndex, child w/ prop parentIndex", function() {
         var columns = processColumns(bodyFileList.columns, bodyFileList.numberOfRecords);
         columns.forEach((column) => {
           if(column.hierarchy == "parent") {
             expect(column).to.have.property("childIndex");
-          }          
+          }
           if(column.hierarchy == "child") {
             expect(column).to.have.property("parentIndex");
           }
         })
       })
-      
+
     });
-    
+
     describe("test on raw column object", function() {
 
       it('processColumns creates a column object with all the props', function() {

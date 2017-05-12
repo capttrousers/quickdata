@@ -81,9 +81,9 @@ module.exports = (bodyColumns, numberOfRecords) => {
           decColumnCount++;
         }
         break;
-      case "file" :  
-        if(column.hierarchy == "none") {
-          column = processFileValues(column); 
+      case "file" :
+        if(column.hierarchy == "none") { // if processing child, just set intervalCounter
+          column = processFileValues(column);
         }
         break;
     }
