@@ -5,16 +5,17 @@ module.exports =
 
   dataType: 'text',       // ["integer", "date", "decimal", "text"],
 
-  // these two, trend and increment could be collapsed into a single field, random will be null, then positive or negative trends can be inferred from the increment value
-  trend: 'random',      // ["positive","negative","random"]
-  increment: "1",         // when trend is positive or negative, this is the increment, Number
-    // increment: "none" or null means random value, no trend
-    // positive increment of 1 is AUTO INCREMENT
+  // randomly select from the list from the file or expand
+  // expand will take each value from the file list, and create X number of random records per value
+  // X could be the max interval from any other non-file columnObjects, or a separate input
+  // default could be expand, to be X = numberOfRecords / count of list values
+  // this could be collapsed into the interval attr
+  // really 3 behaviors, randomly select from list (could be < or > list.length), each item in list, expand
+  behavior: "random",      // ['random', 'expand']
+
+  count: "1",
 
   allowNulls: false,
-
-  // interval before new random value, this will be used in generateData() for the 'counter' values for each dataColumnObject to know when a new random value is needed
-  interval : "1",
 
   // these are constraints on the random value ranges
   /*
@@ -37,14 +38,6 @@ module.exports =
   // possibly process the csv on the client, and create the "List" of possible values.
   // Each value could be a parent child: ['child1:parent1','child2:parent1','child1:parent2','child2:parent2']  as the hierarchy flows upwards
   file : null,
-
-  // randomly select from the list from the file or expand
-  // expand will take each value from the file list, and create X number of random records per value
-  // X could be the max interval from any other non-file columnObjects, or a separate input
-  // default could be expand, to be X = numberOfRecords / count of list values
-  // this could be collapsed into the interval attr
-  // really 3 behaviors, randomly select from list (could be < or > list.length), each item in list, expand
-  behavior: "expand",      // ['random', 'expand']
 
   // parent/child
   hierarchy: 'none',      // ['parent','child','none']

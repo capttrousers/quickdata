@@ -31,7 +31,6 @@ module.exports = (body) => {
       || column.minValue.length == 0
       || column.maxValue == null
       || column.maxValue.length == 0
-      || isNaN(parseInt(column.count, 10))
       || column.dataType == null
       || column.dataType.length == 0
       || column.hierarchy == null
@@ -53,14 +52,27 @@ module.exports = (body) => {
       isValid = false;
       return false;
     }
-    if(column.dataType == "file" && 
-        (column.file == null 
-        || column.file.values == null 
-        || column.file.fields == null 
-        || column.file.fields.length > 2 
-        || column.file.fields.length < 1 
-        || column.file.values.length > 50 
-        || column.file.values.length < 1) 
+
+    if(["positive","negative"].indexOf(column.behavior) >= 0) {
+      if(column.dataType == "decimal") {
+        if( isNaN(parseFloat(column.count, 10)) ) {
+          isValid = false;
+          return false;
+        }
+      } else if(isNaN(parseInt(column.count, 10)) ) {
+        isValid = false;
+        return false;
+      }
+    }
+
+    if(column.dataType == "file" &&
+        (column.file == null
+        || column.file.values == null
+        || column.file.fields == null
+        || column.file.fields.length > 2
+        || column.file.fields.length < 1
+        || column.file.values.length > 50
+        || column.file.values.length < 1)
     ) {
       isValid = false;
       return false;

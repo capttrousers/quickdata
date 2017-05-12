@@ -25,6 +25,19 @@ describe("method: isValidBody tests", function() {
 
     });
 
+    it("returns false with decimal and increment below 1", function () {
+      var body = _.clone(bodyTemplate);
+      body.columns = [];
+      var decimalColumn = _.clone(dataColumnObject);
+      decimalColumn.dataType = "decimal";
+      decimalColumn.count = ".3";
+      decimalColumn.minValue = "0";
+      decimalColumn.maxValue = "3000";
+      decimalColumn.behavior = "positive";
+      body.columns.push(decimalColumn);
+      expect(isValidBody(body)).to.be.true;
+    });
+
     it("returns false with int and max as nulls", function () {
       var body = _.clone(bodyTemplate);
       body.columns = [];
