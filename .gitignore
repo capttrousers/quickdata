@@ -1,6 +1,5 @@
 node_modules
 public/bundle.js
-dist/
 *.log*
 *.db
 *.db-journal
