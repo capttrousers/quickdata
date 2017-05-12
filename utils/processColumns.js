@@ -92,25 +92,25 @@ module.exports = (bodyColumns, numberOfRecords) => {
       column.count = Math.min(column.count, column.numberOfRecords);
       column.intervalCounter = column.count;
     } else if(column.behavior == "negative" || column.behavior == "positive") {
-      /* 
+      /*
         // FOR NOW DO NOT LIMIT COUNT, just let trending increments blow past min/max values
-        
+
         // limit the count to the min between the abs value of the count and the max value allowed for the range btwn max and min / # of records
         var rangeInDays = ((column.maxValue - column.minValue) / 365 / 24 / 60 / 60 / 1000 );
         var range = (column.dataType == "date") ? rangeInDays : column.maxValue - column.minValue;
         column.count = Math.min(Math.abs(column.count), Math.floor(range / column.numberOfRecords));
       */
       if(column.behavior == "positive") {
-        column.count = Math.max(Math.abs(column.count), 1);
+        column.count = Math.max(Math.abs(column.count), (column.dataType == "integer" ? 1 : .01));
       } else {
-        column.count = Math.min(-1 * Math.abs(column.count), -1);
+        column.count = Math.min(-1 * Math.abs(column.count), (column.dataType == "integer" ? -1 : -.01));
       }
       column.intervalCounter = 1;
     }
     return column;
   }
 
-  
+
   function processFileValues(column) {
     // when getting new random value, set nextIndex to be index of values row
     // set nextIndex of parent/child 0 for first value
@@ -139,16 +139,16 @@ module.exports = (bodyColumns, numberOfRecords) => {
       // we will put the one with more variation as parent
       if(columnOneCountD > columnTwoCountD) {
         column.child.fieldName = column.file.fields[1];
-        column.fieldName = column.file.fields[0]; 
+        column.fieldName = column.file.fields[0];
       } else {
         column.child.fieldName = column.file.fields[0];
-        column.fieldName = column.file.fields[1]; 
+        column.fieldName = column.file.fields[1];
       }
     } else {  // for now assume file.fields is only one or two columns wide
       column.fieldName = column.file.fields[0];
     }
-    
+
     return column;
   }
-  
+
 }

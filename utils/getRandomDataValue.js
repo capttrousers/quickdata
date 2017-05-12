@@ -7,7 +7,7 @@ var moment = require("moment");
 module.exports = (column) => {
   if(column.allowNulls && Math.random() > .9) {
     return null;
-  } else if(column.behavior && column.behavior != "random") {
+  } else if(column.behavior && ["random", "expand"].indexOf(column.behavior) < 0) {
     // process the behavior and return nextRandomValue incremented
     // first check nextRandomValue's existence,
     // if it doesnt exist, this is the first time running processColumns and setting next random values
