@@ -12,6 +12,7 @@ var _ = require('lodash');
 var validator = require('validator');
 
 module.exports = (body) => {
+  var isValid = "";
   if( ( ! body )
     || body == null
     || isNaN(parseInt(body.numberOfRecords, 10))
@@ -24,9 +25,8 @@ module.exports = (body) => {
     || body.tableName == null
     || body.tableName.length == 0
   ) {
-    return false;
+    isValid = "invalid body metadata";
   }
-  var isValid = true;
   _.forEach(body.columns, function(column) {
     if(  column.allowNulls == null
       || column.minValue == null
@@ -40,7 +40,7 @@ module.exports = (body) => {
       || column.behavior == null
       || column.behavior.length == 0
     ) {
-      isValid = false;
+      isValid = "invalid column properties";
       return false;
     }
     /*
@@ -51,18 +51,18 @@ module.exports = (body) => {
     }
     */
     if(column.hierarchy != "none" && column.behavior != "random") {
-      isValid = false;
+      isValid = "cannot have hiearchy and non random behavior";
       return false;
     }
 
     if(["positive","negative"].indexOf(column.behavior) >= 0) {
       if(column.dataType == "decimal") {
         if( isNaN(parseFloat(column.count, 10)) ) {
-          isValid = false;
+          isValid = "increment must be a float";
           return false;
         }
       } else if(isNaN(parseInt(column.count, 10)) ) {
-        isValid = false;
+        isValid = "increment must be an integer";
         return false;
       }
     }
@@ -76,7 +76,7 @@ module.exports = (body) => {
         || column.file.values.length > 50
         || column.file.values.length < 1)
     ) {
-      isValid = false;
+      isValid = "invalid file uploaded";
       return false;
     }
     if(column.dataType == "date") {
@@ -90,14 +90,14 @@ module.exports = (body) => {
         || column.maxValue.match(/-/g).length != 2
         || new Date(column.minValue).valueOf() > new Date(column.maxValue).valueOf()) {
         // with dataType date, min/max must be dates in ISO: yyyy-mm-dd
-        isValid = false;
+        isValid = "invalid date min or max values";
         return false;
       }
     } else if( isNaN(parseFloat(column.minValue, 10))
       || isNaN(parseFloat(column.maxValue, 10))
       || parseFloat(column.minValue, 10) > parseFloat(column.maxValue, 10)
       || (column.dataType == "text" && parseFloat(column.minValue, 10) < 1) ) {
-      isValid = false;
+      isValid = "invalid min or max values";
       return false;
     }
   })

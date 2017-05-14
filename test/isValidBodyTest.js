@@ -15,13 +15,13 @@ describe("method: isValidBody tests", function() {
   describe("tests body column objects in ./data", function(){
 
     it("returns true with bodyTemplate.js file", function() {
-      expect(isValidBody(bodyTemplate)).to.be.true;
+      expect(isValidBody(bodyTemplate)).to.be.a("string").and.to.equal("");;
     });
 
     it("Invalid w/ dataColumnObject.js file at min and max with empty strings", function() {
       var body = bodyTemplate;
       body.columns.push(dataColumnObject);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid column properties");
 
     });
 
@@ -35,7 +35,7 @@ describe("method: isValidBody tests", function() {
       decimalColumn.maxValue = "3000";
       decimalColumn.behavior = "positive";
       body.columns.push(decimalColumn);
-      expect(isValidBody(body)).to.be.true;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("");;
     });
 
     it("returns false with int and max as nulls", function () {
@@ -46,7 +46,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "0";
       intColumn.maxValue = null;
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid column properties");
     });
 
     it("returns false with int and min as nulls", function () {
@@ -57,7 +57,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = null;
       intColumn.maxValue = "100";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid column properties");
     });
 
     it("returns false with int and max as undefined", function () {
@@ -68,7 +68,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "0";
       intColumn.maxValue = undefined;
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid column properties");
     });
 
     it("returns false with int and min as undefined", function () {
@@ -79,7 +79,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = undefined;
       intColumn.maxValue = "155";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid column properties");
     });
 
     it("returns false with int and max as NaN", function () {
@@ -90,7 +90,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "0";
       intColumn.maxValue = NaN;
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid min or max values");
     });
 
     it("returns false with int and min as NaN", function () {
@@ -101,7 +101,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = NaN;
       intColumn.maxValue = "100";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid min or max values");
     });
 
     it("returns false with int and max as invalid string", function () {
@@ -112,7 +112,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "0";
       intColumn.maxValue = "asdasd";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid min or max values");
     });
 
     it("returns false with int and min as invalid string", function () {
@@ -123,7 +123,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "asdsadf";
       intColumn.maxValue = "100";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid min or max values");
     });
 
     it("Invalid with Date and max as null", function () {
@@ -134,7 +134,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "2017-01-01";
       intColumn.maxValue = null;
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid column properties");
     });
 
     it("Invalid with Date and min as null", function () {
@@ -145,7 +145,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = null;
       intColumn.maxValue = "2017-01-01";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid column properties");
     });
 
     it("Invalid with Date and max as undefined", function () {
@@ -156,7 +156,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "2017-01-01";
       intColumn.maxValue = undefined;
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid column properties");
     });
 
     it("Invalid with Date and min as undefined", function () {
@@ -167,7 +167,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = undefined;
       intColumn.maxValue = "2017-01-01";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid column properties");
     });
 
     it("Invalid with Date and max as NaN", function () {
@@ -178,7 +178,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "2017-01-01";
       intColumn.maxValue = NaN;
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid date min or max values");
     });
 
     it("Invalid with Date and min as NaN", function () {
@@ -189,7 +189,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = NaN;
       intColumn.maxValue = "2017-01-01";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid date min or max values");
     });
 
     it("Invalid with Date and max as invalid date string", function () {
@@ -200,7 +200,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "2017-01-01";
       intColumn.maxValue = "2001/09/09";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid date min or max values");
     });
 
     it("Invalid with Date and min as invalid date string", function () {
@@ -211,7 +211,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "2001/09/09";
       intColumn.maxValue = "2017-01-01";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid date min or max values");
     });
 
     it("Invalid with Date and max with text in the date string", function () {
@@ -222,7 +222,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "2017-01-01";
       intColumn.maxValue = "asdasd";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid date min or max values");
     });
 
     it("Invalid with Date and min with text in the date string", function () {
@@ -233,7 +233,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "sadaed";
       intColumn.maxValue = "2017-01-01";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid date min or max values");
     });
 
     it("Invalid with Date and max as empty string", function () {
@@ -244,7 +244,7 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "2017-01-01";
       intColumn.maxValue = "";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid column properties");
     });
 
     it("Invalid with Date and min empty string", function () {
@@ -255,13 +255,8 @@ describe("method: isValidBody tests", function() {
       intColumn.minValue = "";
       intColumn.maxValue = "2017-01-01";
       body.columns.push(intColumn);
-      expect(isValidBody(body)).to.be.false;
+      expect(isValidBody(body)).to.be.a("string").and.to.equal("invalid column properties");
     });
-
-    it("returns false with trend column with invalid min/max range/increment", function() {
-      bodyTrend.numberOfRecords = 500;
-      expect(isValidBody(bodyTrend)).to.be.false;
-    })
 
   });
 

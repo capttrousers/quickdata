@@ -20,9 +20,10 @@ router.get('/', function(request, response, next) {
 });
 
 router.post("/quickdata", function(request, response, next) {
-  if( ! isValidBody(request.body) ) {
-    logger.info('bad request (400), body property is missing something')
-    response.status(400).type('json').send({error: 'request body missing something'});
+  var isValidErrorMessage = isValidBody(request.body);
+  if( isValidErrorMessage.length != 0 ) {
+    logger.info('bad request (400), ' + isValidErrorMessage)
+    response.status(400).type('json').send({error: isValidErrorMessage});
   } else {
     next();
   }
