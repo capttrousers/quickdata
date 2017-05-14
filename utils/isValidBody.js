@@ -9,6 +9,8 @@
 */
 
 var _ = require('lodash');
+var validator = require('validator');
+
 module.exports = (body) => {
   if( ( ! body )
     || body == null
