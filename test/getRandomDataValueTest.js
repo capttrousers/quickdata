@@ -178,7 +178,7 @@ describe("Random data generator", function() {
       expect(moment("2017-03-18").add(10, "days").isSame(moment("2017-03-28"), "day")).to.be.true;
     })
     
-    it.only("compares moment to Date", function() {
+    it("compares moment to Date", function() {
       expect(moment().toISOString()).to.equal(new Date().toISOString());
     })
 
