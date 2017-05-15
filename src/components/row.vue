@@ -16,7 +16,7 @@
       md-layout(md-flex="30", v-show="dataType == 'file'")
         md-input-container
           label Data list file
-          md-file(v-model="fileName", accept="*", :multiple="false", @selected="addFile($event)")
+          md-file(v-model="fileName", accept=".csv", :multiple="false", @selected="addFile($event)")
       md-layout(:md-flex="dataType == 'date' ? 15 : 10", v-show="dataType != 'file' && dataType != 'text'")
         md-input-container
           label {{ MinValueLabel }}
@@ -165,9 +165,11 @@
           return this.columnData.fileName;
         },
         set(value) {
-          var propName = "fileName";
-          var index = this.columnIndex;
-          this.$store.dispatch('updateColumn', {index, propName, value});
+          if(value != null && (value.indexOf(".csv") >= 0 || value.length == 0) ) {
+            var propName = "fileName";
+            var index = this.columnIndex;
+            this.$store.dispatch('updateColumn', {index, propName, value});
+          }
         }
       },
       CountLabel: {
@@ -224,7 +226,19 @@
         this.$store.commit('REMOVE_COLUMN', {index});
 			},
       addFile: function(evt){
-        this.file = ( evt[0] ) || null;
+        if(evt[0] != null && evt[0] != undefined) {
+          console.log("file name: " + evt[0].name);
+          console.log("file type: " + evt[0].type);
+          if(evt[0].name.indexOf(".csv") >= 0) {
+            this.file = ( evt[0] );
+          } else {
+            this.fileName = "";
+            console.log("file must be a csv file, open snackbar with error");
+          }
+        } else {
+          this.file = null;
+          this.fileName = "";
+        }
       }
 		}
 	}
