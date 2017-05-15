@@ -15,7 +15,7 @@
             md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value", :disabled="hierarchy == 'parent' && ['date', 'text'].indexOf(dataTypeOption.value) < 0")  {{ dataTypeOption.label }}
       md-layout(md-flex="30", v-show="dataType == 'file'")
         md-input-container
-          label Data list file
+          label Data list file, CSV format
           md-file(v-model="fileName", accept=".csv", :multiple="false", @selected="addFile($event)")
       md-layout(:md-flex="dataType == 'date' ? 15 : 10", v-show="dataType != 'file' && dataType != 'text'")
         md-input-container
