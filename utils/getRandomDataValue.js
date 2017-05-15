@@ -4,6 +4,7 @@
 var logger   = require('./logger').logger;
 var addDays = require('date-fns/add_days');
 var moment = require("moment");
+
 module.exports = (column) => {
   if(column.allowNulls && Math.random() > .9) {
     return null;

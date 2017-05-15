@@ -10,12 +10,14 @@ module.exports = (columns, numberOfRecords) => {
       column.intervalCounter--;
       if( column.intervalCounter < 1 ||
          (column.hierarchy == 'child' && column.dataType != "file" && columns[column.parentIndex].intervalCounter == columns[column.parentIndex].count)) {
-          // reset intervalCount, to count if random or expand, to 1 if trending behavior
+         
+         // reset intervalCount, to count if random or expand, to 1 if trending behavior
           column.intervalCounter = (["positive", "negative"].indexOf(column.behavior) < 0) ? column.count : 1;
           if(column.dataType == "file" && column.hierarchy == "parent") {
             column.nextIndex = columns[column.childIndex].nextIndex = Math.floor(Math.random() * column.file.values.length);
           }
           column.nextRandomData = getRandomDataValue(column);
+       
           if(column.hierarchy == 'parent' && column.dataType == "date") {
             columns[column.childIndex].minValue = new Date(column.nextRandomData);
           }

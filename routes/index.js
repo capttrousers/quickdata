@@ -50,6 +50,7 @@ router.post("/quickdata", function(request, response, next) {
     var dataType = null;
     switch (column.dataType) {
       case 'text' :
+      case 'file' :
         dataType = models.Sequelize.STRING;
         break;
       case 'date' :
@@ -85,7 +86,6 @@ router.post("/quickdata", function(request, response, next) {
     next();
   }
 });
-
 
 router.post("/quickdata", function(request, response, next) {
   logger.info('POST /quickdata recieved request with a new or valid existing table or csv file');
@@ -153,7 +153,7 @@ router.post("/quickdata", function(request, response, next) {
             connectionText += "|     port                           :       " + seq.config.port + " \n|\n";
             connectionText += "|     username of test db            :       " + seq.config.username + " \n";
             connectionText += "|     password of test db            :       " + seq.config.password + " \n|\n";
-            connectionText += "|     database name                  :       " + seq.config.database + " \n\n";
+            connectionText += "|     database name                  :       " + seq.config.database + " \n|\n";
             connectionText += "|     table name                     :       " + request.body.tableName + " \n|\n";
             connectionText += "|     user requesting random data    :       " + request.body.user + " \n";
             connectionText += "|     random data created on         :       " + createdAt.toString();
