@@ -178,10 +178,6 @@ describe("Random data generator", function() {
       expect(moment("2017-03-18").add(10, "days").isSame(moment("2017-03-28"), "day")).to.be.true;
     })
     
-    it("compares moment to Date", function() {
-      expect(moment().toISOString()).to.equal(new Date().toISOString());
-    })
-
     it('adds a negative number of days with moment.js', function() {
       expect(moment("2017-03-18").add(-10, "days").isSame(moment("2017-03-08"), "day")).to.be.true;
     })
