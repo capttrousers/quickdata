@@ -13,8 +13,11 @@ module.exports = (columns, numberOfRecords) => {
          
          // reset intervalCount, to count if random or expand, to 1 if trending behavior
           column.intervalCounter = (["positive", "negative"].indexOf(column.behavior) < 0) ? column.count : 1;
-          if(column.dataType == "file" && column.hierarchy == "parent") {
-            column.nextIndex = columns[column.childIndex].nextIndex = Math.floor(Math.random() * column.file.values.length);
+          if(column.dataType == "file" && column.hierarchy != "child") {
+            column.nextIndex = Math.floor(Math.random() * column.file.values.length);
+            if(column.hierarchy == "parent") {
+              columns[column.childIndex].nextIndex = column.nextIndex;
+            }
           }
           column.nextRandomData = getRandomDataValue(column);
        

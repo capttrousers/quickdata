@@ -8,7 +8,7 @@
       md-layout(v-show="hierarchy != 'child'", md-flex="10", md-theme="'row'")
         md-button-toggle.md-primary
           md-button(@click.native="toggleHierarchy", :disabled="['file', 'integer', 'decimal'].indexOf(dataType) >= 0") Parent
-      md-layout(md-flex="15", v-if="true")
+      md-layout(md-flex="15")
         md-input-container
           label(for='data-type') Data type
           md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
@@ -34,7 +34,7 @@
         md-input-container
           label {{ CountLabel }}
           md-input(v-model="count")
-      md-layout(md-flex="10")
+      md-layout(md-flex="15")
         md-checkbox(v-model="allowNulls") Allow nulls?
     br
     Row(v-if="hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
