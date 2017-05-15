@@ -61,8 +61,6 @@
 
       myRow( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
 
-    .bottom(style="text-align:center; padding: 1em 0;")
-      span bottom trademark area
     md-snackbar(ref="errorsnackbar", :md-duration="7000")
       span {{ error.message }}
       md-button.md-accent(@click.native="$refs.errorsnackbar.close()") Close
