@@ -6,7 +6,7 @@ var config = {
         // 'webpack/hot/dev-server',
         // 'webpack-hot-middleware/client?path=http://localhost:8080&noInfo=true&reload=true',
         'webpack-hot-middleware/client',
-        './src/main.js'
+        './client/main.js'
     ],
     output: {
         path: path.resolve(__dirname, '../public'),
