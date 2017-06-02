@@ -1,7 +1,7 @@
 <template lang="pug">
   #control
 
-    md-progress(v-show="isTransferring", md-indeterminate="true", :md-progress="progressValue")
+    md-progress(v-show="isTransferring", :md-indeterminate="true")
 
     #form
       .form-row(v-show="false")
