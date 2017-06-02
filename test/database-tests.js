@@ -3,11 +3,11 @@ var expect = chai.expect;
 var chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 
-var models = require('../models');
+var models = require('../server/models');
 
-var logger   = require('../utils/logger').logger;
+var logger   = require('../server/utils/logger').logger;
 
-var processTables = require('../utils/cleaner/processTables');
+var processTables = require('../server/utils/cleaner/processTables');
 
 describe.skip("Database connections with sequelize", function() {
 

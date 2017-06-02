@@ -10,10 +10,10 @@
 var chai = require('chai');
 var expect = chai.expect;
 var _ = require('lodash');
-var logger   = require('../utils/logger').logger;
+var logger   = require('../server/utils/logger').logger;
 
-var processColumns = require('../utils/processColumns');
-var generateData = require('../utils/generateData');
+var processColumns = require('../server/utils/processColumns');
+var generateData = require('../server/utils/generateData');
 
 var bodyDateHierarchy = require('../data/bodyTesterDateHierarchy');
 var bodyNulls = require('../data/bodyTesterNulls');
