@@ -12,9 +12,9 @@ var logger    = logging.logger;
 var configFile;
 // to modify when at home or work while in dev
 if(env == "work" || env == "production") {
-  configFile    = require(__dirname + '/../config/config.prod.json');
+  configFile    = require(__dirname + '/../../config/config.prod.json');
 } else {
-  configFile    = require(__dirname + '/../config/config.dev.json');
+  configFile    = require(__dirname + '/../../config/config.dev.json');
 }
 logger.debug("env variable is : ", env);
 logger.debug("configFile %o", configFile);

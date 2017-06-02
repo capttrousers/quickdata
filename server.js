@@ -6,10 +6,10 @@ console.log("Server started @ " + new Date().toString());
  * Module dependencies.
  */
 
-var app = require('./app');
+var app = require('./server/app');
 var debug = require('debug')('express:server');
 var http = require('http');
-var models = require('./models');
+var models = require('./server/models');
 
 /**
  * Get port from environment and store in Express.

@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // app.use( [URL path],  express.static( relative file path ) )
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/', routes);
 app.use('/fileuploader', file);

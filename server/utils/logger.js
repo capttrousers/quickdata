@@ -15,7 +15,7 @@ var logger = new (winston.Logger)({
 if (testing) {
   logger.add(winston.transports.File, 
               { name: 'tests', 
-                filename: path.join(__dirname, '../test/tests.log'), 
+                filename: path.join(__dirname, '../../test/tests.log'), 
                 level: logLevel });
   logger.remove(winston.transports.Console);
 }

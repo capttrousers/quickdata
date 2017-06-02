@@ -9,7 +9,7 @@ var getRandomDataValue = require('./getRandomDataValue');
 //
 // should probably do the same type of validation / reactive behavior on props / clipping as on client side
 
-var logger   = require('../utils/logger').logger;
+var logger   = require('./logger').logger;
 
 module.exports = (bodyColumns, numberOfRecords) => {
   var fields = bodyColumns;
