@@ -234,6 +234,7 @@
           } else {
             this.fileName = "";
             console.log("file must be a csv file, open snackbar with error");
+            // this.refs["errorsnackbar"].open();
           }
         } else {
           this.file = null;
