@@ -7,11 +7,11 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
     file: null,
-		numberOfRecords: "500",
+		numberOfRecords: "",
     dataSource: "csv",
-    user: "somebody@tableau.com",
-    sfCase: "01234",
-    tableName: "TableName",
+    user: "",
+    sfCase: "",
+    tableName: "",
 		templateColumn: {
 			"hierarchy": "none",// ['none', 'parent', 'child']
 			"dataType": "text",
@@ -32,7 +32,15 @@ export default new Vuex.Store({
 	getters: {
 		getColumnByIndex: (state, getters) => (index) => {
 			return state.columns[index];
-		}
+		},
+    isValidBody: state => {
+      if(state.user.length == 0) return "Must enter email";
+      if(! state.user.includes("tableau.com") ) return "Must be a valid tableau email";
+      if(state.numberOfRecords.length == 0) return "Must enter a value for the # of records to generate";
+      if(isNaN(Number(state.numberOfRecords))) return "Number of records must be a valid integer";
+      if(state.tableName.length == 0) return "Must enter a value for the table name";
+      return "";
+    }
 	},
 
 	mutations: {

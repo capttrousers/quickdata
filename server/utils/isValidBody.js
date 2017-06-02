@@ -5,7 +5,8 @@
   and parses the body object and the columns array and checks for all appropriate properties
 
   @
-  returns false if body is not valid
+  returns a string with a pertinent message if body is not valid
+  else returns an empty string to signal valid body
 */
 
 var _ = require('lodash');

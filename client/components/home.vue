@@ -1,15 +1,7 @@
 <template lang="pug">
   #control
 
-    md-progress(v-show="false", indeterminate, :md-progress="progressValue")
-
-    md-dialog(md-open-from="#getDataButton", md-close-to="#getDataButton", ref="alert")
-      md-dialog-title Invalid form
-      md-dialog-content
-        md-list
-          md-list-item(v-for="alert in this.alerts") {{ alert }}
-      md-dialog-actions
-        md-button(@click.native="closeDialog('alert')") OK
+    md-progress(v-show="isTransferring", md-indeterminate="true", :md-progress="progressValue")
 
     #form
       .form-row(v-show="false")
@@ -17,7 +9,7 @@
           md-layout(md-flex="75")
             md-input-container
               label Schema file
-              md-file(v-model="fileName", accept="*", :multiple="true", @selected="pickFile($event)")
+              md-file(v-model="schemaFileName", accept="*", :multiple="true", @selected="pickFile($event)")
           md-layout(md-flex="15")
             md-button.md-raised(:disabled="file == null", @click.native="submitFile") Submit
           md-layout(md-flex="10")
@@ -84,32 +76,12 @@
             url: '/fileuploader',
             uploadMultiple: false
         }
+        , isTransferring: false
         , progressValue: 0
-        , fileName: ''
+        , schemaFileName: ''
       }
     },
     computed: {
-        isValid: {
-          get() {
-            // check that columns are valid
-            // check number of records, email, sfcase, table name
-            /*
-            if( this.numberOfRecords < 1
-              || this.numberOfRecords > 1000
-              || this.columns.length < 1
-              || this.user.indexOf('@tableau.com') < 1 // not zero so user@tableau, charset
-              || this.tableName.length > 0
-              || parseInt(this.sfCase, 10) != NaN
-            ) return false;
-            */
-            return true;
-          }
-        },
-        alerts : {
-          get() {
-            return [];
-          }
-        },
         fileButtonLabel: {
           get() {
             return this.dataSource == 'csv' ? 'GET CSV FILE' : 'GET TXT FILE';
@@ -186,12 +158,6 @@
         }
     },
     methods: {
-      openDialog(ref) {
-        this.$refs[ref].open();
-      },
-      closeDialog(ref) {
-        this.$refs[ref].close();
-      },
       addNewColumn: function () {
         this.$store.commit('ADD_NEW_COLUMN')
       },
@@ -236,7 +202,9 @@
         reader.readAsText(this.file);
       },
       getData: function () {
-        if(this.isValid) {  // ajax post columns, numberOfRecords
+        if(this.$store.getters.isValidBody.length == 0) {  // ajax post columns, numberOfRecords
+          this.isTransferring = true;
+          var that = this;
           // add user, sfcase, datasource
           var body = {};
           body.user = this.user;
@@ -251,32 +219,20 @@
               var data = response.body;
               var binaryData = [];
               binaryData.push(data);
-              var fileName = this.sfCase + '-' + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+              var fileName = this.sfCase + '_' + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
               FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
+              that.isTransferring = false;
             }, (response) => {
+              that.isTransferring = false;
               this.error.message = (response.body.error) || '404 error';
               this.$refs.errorsnackbar.open();
+              
             }
           );
         } else {
-          // open alert and say why not valid
-          // alert message
-          /*
-            var temp = [];
-            console.log("len after clearing " + this.alerts.length);
-            if( this.numberOfRecords < 1) { this.alerts.push("Number of records must be greater than 0"); }
-            if(this.numberOfRecords > 1000) { this.alerts.push("Number of records must be less than 1000"); }
-            if(this.columns.length < 1) { this.alerts.push("Must add at least one column of data to the dataset"); }
-            // not zero so user@tableau, charset)
-            if(this.user.indexOf('@tableau.com') < 1) { this.alerts.push("User must be valid tableau employee"); }
-            if(this.tableName.length > 0) { this.alerts.push("Table name cannot be empty"); }
-            if(parseInt(this.sfCase, 10) != NaN) { this.alerts.push("Salesforce case must be a number"); }
-            console.log("len after pushing this.alerts " + this.alerts.length);
-            this.alerts = temp;
-      	  */
-          this.openDialog('alert');
+          this.error.message = this.$store.getters.isValidBody;
+          this.$refs.errorsnackbar.open();
         }
-
       }
     }
   }
