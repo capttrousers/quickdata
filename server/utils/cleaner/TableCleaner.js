@@ -1,4 +1,3 @@
-
 var models = require('../../models');
 var logging = require('../logger');
 var logger = logging.logger;
