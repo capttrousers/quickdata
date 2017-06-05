@@ -4,16 +4,13 @@ var router = express.Router();
 var _ = require('lodash');
 
 var logger   = require('../utils/logger').logger;
-var models = require('../models');
-var processColumns = require('../utils/processColumns');
-var generateData = require('../utils/generateData');
-var isValidBody = require('../utils/isValidBody');
 
 var testing   = process.env.NODE_TESTING || false;
 
 
-router.post("/", function(request, response, next) {
-  // logger.info('POST on /fileuploader with file %j', request.body);
+router.post("/", function(request, response) {
+  logger.info('POST on /fileuploader with file %j', request.body);
+  /* 
   if( ! isValidBody(request.body) ) {
     logger.info('bad request (400), body property is missing something')
     response.status(400).type('json').send({error: 'request body missing something'});
@@ -21,5 +18,12 @@ router.post("/", function(request, response, next) {
     // next();
     response.status(200).end();
   }
+  */
+  
+  // file uploader will allow uploading .twb files to parse the XML and then create the schema.json file to then send to /quickdata
+  // defaults to CSV file with datasource name from .twb 
+  
+  
+  response.status(200).type("json").send({"test" : 123});  
 });
 module.exports = router;

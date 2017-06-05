@@ -17,7 +17,7 @@ if(env == "work" || env == "production") {
   configFile    = require(__dirname + '/../../config/config.dev.json');
 }
 logger.debug("env variable is : ", env);
-logger.debug("configFile %o", configFile);
+// logger.debug("configFile %o", configFile);
 
 logger.debug('dirname of models.index at runtime:')
 logger.debug(__dirname);
@@ -33,7 +33,7 @@ if(testing) {
   config = configFile['usage'];
 }
 logger.debug('NODE_TESTING env variable is ', testing);
-logger.debug("config for usage db : %o", config);
+// logger.debug("config for usage db : %o", config);
 
 config.logging = logger.info;
 mysqlConfig.logging = logger.info;

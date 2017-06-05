@@ -1,9 +1,8 @@
-var json2csv = require('json2csv');
-var fs = require('fs');
 var path = require('path');
 var express = require('express');
 var router = express.Router();
 var _ = require('lodash');
+var json2csv = require('json2csv');
 
 var logger   = require('../utils/logger').logger;
 

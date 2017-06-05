@@ -4,18 +4,24 @@
     md-progress(v-show="isTransferring", :md-indeterminate="true")
 
     #form
-      .form-row(v-show="false")
-        md-layout(md-gutter="8")
-          md-layout(md-flex="75")
+      .form-row(v-show="true")
+        md-layout(md-gutter="24")
+          md-layout(md-flex="15")
             md-input-container
-              label Schema file
-              md-file(v-model="schemaFileName", accept="*", :multiple="true", @selected="pickFile($event)")
+              label(for='file-upload')  Upload file
+              md-select(name='file-upload', v-model="fileUpload")
+                md-option(value="schema") Schema.json
+                md-option(value="twb") Customer's workbook
+          md-layout(md-flex="60")
+            md-input-container
+              label Schema file or twb workbook
+              md-file(v-model="schemaFileName", accept=".json,.twb", :multiple="true", @selected="pickFile($event)")
           md-layout(md-flex="15")
             md-button.md-raised(:disabled="file == null", @click.native="submitFile") Submit
           md-layout(md-flex="10")
             md-button.md-raised.md-icon-button.md-dense( @click.native="helpRouter")
               md-icon help_outline
-      .form-row(v-show="false")
+      .form-row(v-show="true")
         md-layout(md-gutter="24")
           md-layout(md-flex)
           md-layout(md-flex)
@@ -26,7 +32,7 @@
           md-layout(md-flex)
             md-button.md-raised(:disabled="columns.length >= 12", @click.native="addNewColumn") Add Column
           md-layout(md-flex)
-            md-button.md-raised.md-primary(@click.native="getData") {{ fileButtonLabel }}
+            md-button.md-raised.md-primary(@click.native="getData", :disabled="false") {{ fileButtonLabel }}
           md-layout(md-flex)
             md-input-container(style="display: inline-block; width: auto;")
               label(for='data-source')  Data Source
@@ -76,9 +82,10 @@
             url: '/fileuploader',
             uploadMultiple: false
         }
+        , fileUpload: "schema"
         , isTransferring: false
         , progressValue: 0
-        , schemaFileName: ''
+        , schemaFileName: ""
       }
     },
     computed: {
@@ -163,17 +170,18 @@
       },
       pickFile: function( event ) {
         console.log("event object is typeof " + typeof event);
-          console.log("event object length " + event.length);
+        console.log("event object length " + event.length);
         var f = event[0];
         if(f) {
           console.log('file size is ' + f.size);
           console.log('file name is ' + f.name);
           console.log('file picked');
-
-          // process file
-
-          console.log('file processed');
-          this.file = f;
+          
+          this.file = f;      
+          this.fileUpload = f.name.indexOf(".json") > 0 ? "schema" : "twb";
+        } else {
+          this.file = null;      
+          this.schemaFileName = "";
         }
       },
       helpRouter: function() {
@@ -183,28 +191,71 @@
         console.log('file size is ' + this.file.size);
         console.log('file name is ' + this.file.name);
         var reader = new FileReader();
-        var body = {};
         var that = this;
+        this.isTransferring = true;
         reader.onload = function(evt) {
-
-          body = JSON.parse(reader.result);
-
-          Vue.http.post('/fileuploader', body).then(
-            (response) => {
-              console.log('post to /fileuploader successful');
-            }, (response) => {
-              console.log('post to /fileuploader has failed');
-              that.error.message = (response.body.error) || 'error uploading file';
+          if(that.fileUpload == "schema") {
+            // parse JSON file and upload to /quickdata like normal body
+            try {
+              var body = JSON.parse(reader.result);
+              Vue.http.post("/quickdata", body).then(
+                (response) => {
+                  var data = response.body;
+                  var binaryData = [];
+                  binaryData.push(data);
+                  var fileName = that.sfCase + '_' + that.tableName + ( that.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+                  FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
+                  that.isTransferring = false;
+                }, (response) => {
+                  that.isTransferring = false;
+                  that.error.message = (response.body.error) || '404 error';
+                  that.$refs.errorsnackbar.open();
+                }
+              );
+            } catch (e) {
+              console.log('parsing JSON failed');
+              that.error.message = "Invalid JSON file: " + e;
               that.$refs.errorsnackbar.open();
+              that.isTransferring = false;
             }
-          );
+          
+          } else {
+            // just send the read file to /fileuploader
+            var body = {};
+            body.twbFile = reader.result;
+            console.log("twb file type: " + typeof body.twbFile);
+            console.log("twb file string length: " + body.twbFile.length);
+            Vue.http.post("/fileuploader", body).then(
+              (response) => {
+                /*
+                var data = response.body;
+                var binaryData = [];
+                binaryData.push(data);
+                var fileName = that.sfCase + '_' + that.tableName + ( that.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+                FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
+                */
+                that.error.message = "TWB file parsed and uploaded successfully";
+                that.$refs.errorsnackbar.open();
+                that.isTransferring = false;
+              }, (response) => {
+                that.isTransferring = false;
+                that.error.message = (response.body.error) || '404 error';
+                that.$refs.errorsnackbar.open();
+              }
+            );
+          
+          }
         }
         reader.readAsText(this.file);
       },
       getData: function () {
-        if(this.$store.getters.isValidBody.length == 0) {  // ajax post columns, numberOfRecords
+        if(this.$store.getters.isValidBody.length == 0) {  
+          // ajax post columns, numberOfRecords
+          
           this.isTransferring = true;
+          
           var that = this;
+          
           // add user, sfcase, datasource
           var body = {};
           body.user = this.user;
@@ -226,7 +277,6 @@
               that.isTransferring = false;
               this.error.message = (response.body.error) || '404 error';
               this.$refs.errorsnackbar.open();
-              
             }
           );
         } else {
