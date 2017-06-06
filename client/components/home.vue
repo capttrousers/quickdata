@@ -69,6 +69,7 @@
   import row from './row.vue';
   import Vue from 'vue';
   var FileSaver = require('file-saver');
+  var parseXML = require('xml2js').parseString;
   export default {
     components: {
       'myRow': row
@@ -225,6 +226,25 @@
             body.twbFile = reader.result;
             console.log("twb file type: " + typeof body.twbFile);
             console.log("twb file string length: " + body.twbFile.length);
+            parseXML(body.twbFile, function(err, result){
+              if(err) {
+                console.log(err);
+                that.isTransferring = false;
+              } else {
+                // columns located in result.workbook.datasources[]
+                // foreach datasource: datasource is an array of objects
+                // each datasource array element, is an obj with a single datasource prop
+                // each datasource prop is an array of a single obj with props:
+                // $ for all values on the datasource XML element, and connection[], column[], layout[], semantic-values[]
+                // connection array has single obj with props $, relation[], metadata[]
+                // relation has single obj with props $ and columns[]
+                // connection.relation.columns has props $ and column[]
+                // connection.relation.columns.column has elements for each column:
+                // column obj "$" with props datatype,name,ordinal
+              
+                console.log(JSON.stringify(result.workbook.datasources, null, 2));
+              }
+            });
             Vue.http.post("/fileuploader", body).then(
               (response) => {
                 /*
