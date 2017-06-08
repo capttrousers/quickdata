@@ -41,7 +41,7 @@ router.post("/quickdata", function(request, response, next) {
 
 	// first loop thru columns, find interval profile for each column
 	request.body.columns = processColumns(request.body.columns, request.body.numberOfRecords);
-  request.body.tableName = request.body.sfCase + '_' + request.body.tableName;
+  request.body.tableName = (request.body.sfCase.length > 0 ? request.body.sfCase + '_' : "" ) + request.body.tableName;
 
   // create table attributes object here to check against any existing tables
   request.body.attributes = {};

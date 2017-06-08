@@ -204,7 +204,7 @@
                   var data = response.body;
                   var binaryData = [];
                   binaryData.push(data);
-                  var fileName = that.sfCase + '_' + that.tableName + ( that.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+                  var fileName = (that.sfCase.length > 0 ? that.sfCase + '_' : "" ) + that.tableName + ( that.dataSource == 'csv' ? '.csv' : '.txt' ) ;
                   FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
                   that.isTransferring = false;
                 }, (response) => {
@@ -260,7 +260,7 @@
                 var data = response.body;
                 var binaryData = [];
                 binaryData.push(data);
-                var fileName = that.sfCase + '_' + that.tableName + ( that.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+                var fileName = (that.sfCase.length > 0 ? that.sfCase + '_' : "" ) + that.tableName + ( that.dataSource == 'csv' ? '.csv' : '.txt' ) ;
                 FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
                 */
                 that.error.message = "TWB file parsed and uploaded successfully";
@@ -299,7 +299,7 @@
               var data = response.body;
               var binaryData = [];
               binaryData.push(data);
-              var fileName = this.sfCase + '_' + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+              var fileName = (that.sfCase.length > 0 ? that.sfCase + '_' : "" ) + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
               FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
               that.isTransferring = false;
             }, (response) => {

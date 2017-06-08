@@ -65,7 +65,8 @@ module.exports = (column) => {
       case 'decimal' :
         return ( Math.random() * ( column.maxValue + 1 - column.minValue ) ) + column.minValue;
       case "file" :
-        return column.file.values[column.nextIndex][column.fieldName];
+        // grab substring starting at 7th char to remove "Custom " from fieldName - see processColumns.processFileValues
+        return column.file.values[column.nextIndex][column.fieldName.substring(7)];
     }
   }
 }
