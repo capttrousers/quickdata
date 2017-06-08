@@ -23,10 +23,10 @@ var bodyTrend = require('../data/bodyTesterPositiveTrend');
 var bodyFileList = require('../data/bodyTesterFileList');
 var bodyFileListSingleColumn = require('../data/bodyTesterFileListSingleColumn');
 
-describe.only('method : generateData tests', function(){
+describe('method : generateData tests', function(){
 
 
-  describe.only("Tests file list data generation", function() {
+  describe("Tests file list data generation", function() {
 
     it("generates data values from file list with single column", function(done) {
 
@@ -35,7 +35,7 @@ describe.only('method : generateData tests', function(){
 
       var possibilities = [];
       columns[0].file.values.forEach( (obj) => {
-        possibilities.push(obj[columns[0].fieldName]);
+        possibilities.push(obj[columns[0].fieldName.substring(7)]);
       });
       _.forEach(data, function(row) {
         expect(row[columns[0].fieldName]).to.be.oneOf(possibilities);
@@ -58,10 +58,10 @@ describe.only('method : generateData tests', function(){
       var columns = processColumns(bodyFileList.columns, bodyFileList.numberOfRecords);
       var data = generateData(columns, bodyFileList.numberOfRecords);
       data.forEach(function(row) {
-        var index = _.findIndex( columns[0].file.values, (valueRow) => { return valueRow["Subcategory"] == row["Subcategory"] } );
+        var index = _.findIndex( columns[0].file.values, (valueRow) => { return valueRow["Subcategory"] == row["Custom Subcategory"] } );
         expect(index).to.be.a("number");
         expect(index).to.be.below(columns[0].file.values.length).and.at.least(0);
-        expect(row["Category"]).to.equal(columns[0].file.values[index]["Category"]);
+        expect(row["Custom Category"]).to.equal(columns[0].file.values[index]["Category"]);
       });
       done();
     })
