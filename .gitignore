@@ -10,3 +10,6 @@ config/config.prod.json*
 !client/assets/*.png
 .foreverignore
 forever.sh
+
+# ignore temp TWB files
+*.twbr

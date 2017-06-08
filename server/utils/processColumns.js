@@ -138,14 +138,14 @@ module.exports = (bodyColumns, numberOfRecords) => {
       // now we know which column has more varied data values
       // we will put the one with more variation as parent
       if(columnOneCountD > columnTwoCountD) {
-        column.child.fieldName = column.file.fields[1];
-        column.fieldName = column.file.fields[0];
+        column.child.fieldName = "Custom " + column.file.fields[1];
+        column.fieldName = "Custom " + column.file.fields[0];
       } else {
-        column.child.fieldName = column.file.fields[0];
-        column.fieldName = column.file.fields[1];
+        column.child.fieldName = "Custom " + column.file.fields[0];
+        column.fieldName = "Custom " + column.file.fields[1];
       }
     } else {  // for now assume file.fields is only one or two columns wide
-      column.fieldName = column.file.fields[0];
+      column.fieldName = "Custom " + column.file.fields[0];
     }
 
     return column;
