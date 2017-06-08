@@ -4,7 +4,7 @@
     md-progress(v-show="isTransferring", :md-indeterminate="true")
 
     #form
-      .form-row(v-show="true")
+      .form-row(v-show="false")
         md-layout(md-gutter="24")
           md-layout(md-flex="15")
             md-input-container
@@ -21,7 +21,7 @@
           md-layout(md-flex="10")
             md-button.md-raised.md-icon-button.md-dense( @click.native="helpRouter")
               md-icon help_outline
-      .form-row(v-show="true")
+      .form-row(v-show="false")
         md-layout(md-gutter="24")
           md-layout(md-flex)
           md-layout(md-flex)
