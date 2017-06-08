@@ -81,7 +81,7 @@ describe('method : processColumns tests', function(){
 
       it("Processes body w/ file list of 1 column which has prop fieldName", function() {
         var column = processColumns(bodyFileListSingleColumn.columns, bodyFileListSingleColumn.numberOfRecords)[0];
-        expect(column).to.have.property("fieldName").that.equals(bodyFileListSingleColumn.columns[0].file.fields[0]);
+        expect(column).to.have.property("fieldName").that.equals("Custom " + bodyFileListSingleColumn.columns[0].file.fields[0]);
       })
 
       it("Processes body w/ file list of 2 columns and returns array of columns w/ fieldName props", function() {
@@ -102,7 +102,7 @@ describe('method : processColumns tests', function(){
         var columns = processColumns(bodyFileList.columns, bodyFileList.numberOfRecords);
         columns.forEach((column) => {
           if(column.hierarchy == "parent") {
-            expect(column.fieldName).to.equal("Subcategory");
+            expect(column.fieldName).to.equal("Custom Subcategory");
           }
         })
       })

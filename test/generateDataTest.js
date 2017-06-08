@@ -23,10 +23,10 @@ var bodyTrend = require('../data/bodyTesterPositiveTrend');
 var bodyFileList = require('../data/bodyTesterFileList');
 var bodyFileListSingleColumn = require('../data/bodyTesterFileListSingleColumn');
 
-describe('method : generateData tests', function(){
+describe.only('method : generateData tests', function(){
 
 
-  describe("Tests file list data generation", function() {
+  describe.only("Tests file list data generation", function() {
 
     it("generates data values from file list with single column", function(done) {
 

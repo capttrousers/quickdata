@@ -16,7 +16,7 @@ describe("Random data generator", function() {
   describe("Checks file dataType", function() {
       it("returns a value from column.file.values[...]['fieldName']", function () {
         var column = {};
-        column.fieldName = "Parent";
+        column.fieldName = "Custom Parent";
         column.allowNulls = false;
         column.dataType = "file";
         column.file = {};
@@ -30,7 +30,7 @@ describe("Random data generator", function() {
         ];
         var possibilities = [];
         column.file.values.forEach( (obj) => {
-          possibilities.push(obj[column.fieldName]);
+          possibilities.push(obj[column.fieldName.substring(7)]);
         });
         column.nextIndex = Math.floor(Math.random() * column.file.values.length);
         var randomValueFromList = getRandomData(column);
@@ -40,7 +40,7 @@ describe("Random data generator", function() {
 
       it("sets nextIndex to be index in column.file.values[...] of value", function () {
         var column = {};
-        column.fieldName = "Parent";
+        column.fieldName = "Custom Parent";
         column.allowNulls = false;
         column.dataType = "file";
         column.file = {};
@@ -54,12 +54,12 @@ describe("Random data generator", function() {
         ];
         var possibilities = [];
         column.file.values.forEach( (obj) => {
-          possibilities.push(obj[column.fieldName]);
+          possibilities.push(obj[column.fieldName.substring(7)]);
         });
         column.nextIndex = Math.floor(Math.random() * column.file.values.length);
         var randomValueFromList = getRandomData(column);
         expect(randomValueFromList).to.be.oneOf(possibilities);
-        expect(randomValueFromList).to.equal(column.file.values[column.nextIndex][column.fieldName]);
+        expect(randomValueFromList).to.equal(column.file.values[column.nextIndex][column.fieldName.substring(7)]);
       });
   });
 
