@@ -196,26 +196,188 @@
       <column datatype='integer' name='[Number of Records]' role='measure' type='quantitative' user:auto-column='numrec'>
         <calculation class='tableau' formula='1' />
       </column>
-      <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.4' show-structure='true' />
+      <layout dim-ordering='alphabetic' dim-percentage='0.454009' measure-ordering='alphabetic' measure-percentage='0.545991' show-structure='true' />
       <semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
       </semantic-values>
     </datasource>
-    <datasource caption='Multiple Connections' inline='true' name='federated.1q7tl3z14m14rw167dzci1g2u1xn' version='10.3'>
+    <datasource caption='datasourcesJoinedMultiConnectionsOne+ (quickdata)' inline='true' name='federated.1e1e1yv1no8yzp1dakkze0z4z50e' version='10.3'>
       <connection class='federated'>
         <named-connections>
-          <named-connection caption='Sample - Superstore Subset (Excel)' name='excel-direct.0ai4ox310ikw4x19khz9k0wzybf1'>
-            <connection class='excel-direct' cleaning='no' compat='no' dataRefreshTime='' filename='C:/Users/sosborn/Documents/My Tableau Repository/Datasources/Sample - Superstore Subset (Excel).xlsx' interpretationMode='0' password='' server='' validate='no' />
-          </named-connection>
-          <named-connection caption='Sample - World Bank Indicators' name='excel-direct.1970av81xm5yu91ff3i9m11ylbea'>
-            <connection class='excel-direct' cleaning='no' compat='no' dataRefreshTime='' filename='C:/Users/sosborn/Documents/My Tableau Repository/Datasources/Sample - World Bank Indicators.xlsx' interpretationMode='0' password='' server='' validate='no' />
+          <named-connection caption='adhoc-mssql2008r2.test.tsi.lan' name='sqlserver.053a6qr1vi49pa1d8y30o0ttwu5y'>
+            <connection authentication='sqlserver' class='sqlserver' dbname='quickdata' minimum-driver-version='SQL Server Native Client 10.0' odbc-native-protocol='yes' one-time-sql='' server='adhoc-mssql2008r2.test.tsi.lan' username='quickdata' />
           </named-connection>
         </named-connections>
+        <relation join='inner' type='join'>
+          <clause type='join'>
+            <expression op='='>
+              <expression op='[datasourcesJoinedMultiConnectionsOne].[Custom Text column 1]' />
+              <expression op='[datasourcesJoinedMultiConnectionsTwo].[Custom Text column 1]' />
+            </expression>
+          </clause>
+          <relation connection='sqlserver.053a6qr1vi49pa1d8y30o0ttwu5y' name='datasourcesJoinedMultiConnectionsOne' table='[dbo].[datasourcesJoinedMultiConnectionsOne]' type='table' />
+          <relation connection='sqlserver.053a6qr1vi49pa1d8y30o0ttwu5y' name='datasourcesJoinedMultiConnectionsTwo' table='[dbo].[datasourcesJoinedMultiConnectionsTwo]' type='table' />
+        </relation>
+        <cols>
+          <map key='[Custom Text column 1 (datasourcesJoinedMultiConnectionsTwo)]' value='[datasourcesJoinedMultiConnectionsTwo].[Custom Text column 1]' />
+          <map key='[Custom Text column 1]' value='[datasourcesJoinedMultiConnectionsOne].[Custom Text column 1]' />
+          <map key='[Date column 1 (datasourcesJoinedMultiConnectionsTwo)]' value='[datasourcesJoinedMultiConnectionsTwo].[Date column 1]' />
+          <map key='[Date column 1]' value='[datasourcesJoinedMultiConnectionsOne].[Date column 1]' />
+          <map key='[Integer column 1 (datasourcesJoinedMultiConnectionsTwo)]' value='[datasourcesJoinedMultiConnectionsTwo].[Integer column 1]' />
+          <map key='[Integer column 1]' value='[datasourcesJoinedMultiConnectionsOne].[Integer column 1]' />
+          <map key='[Text column 1 (datasourcesJoinedMultiConnectionsTwo)]' value='[datasourcesJoinedMultiConnectionsTwo].[Text column 1]' />
+          <map key='[Text column 1]' value='[datasourcesJoinedMultiConnectionsOne].[Text column 1]' />
+        </cols>
+        <metadata-records>
+          <metadata-record class='column'>
+            <remote-name>Custom Text column 1</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Custom Text column 1]</local-name>
+            <parent-name>[datasourcesJoinedMultiConnectionsOne]</parent-name>
+            <remote-alias>Custom Text column 1</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>255</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Text column 1</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Text column 1]</local-name>
+            <parent-name>[datasourcesJoinedMultiConnectionsOne]</parent-name>
+            <remote-alias>Text column 1</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>255</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Date column 1</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[Date column 1]</local-name>
+            <parent-name>[datasourcesJoinedMultiConnectionsOne]</parent-name>
+            <remote-alias>Date column 1</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>datetime</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_TIMESTAMP&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_TIMESTAMP&quot;</attribute>
+              <attribute datatype='boolean' name='TypeIsDateTime2'>true</attribute>
+              <attribute datatype='boolean' name='TypeIsDateTime2orDate'>true</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Integer column 1</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[Integer column 1]</local-name>
+            <parent-name>[datasourcesJoinedMultiConnectionsOne]</parent-name>
+            <remote-alias>Integer column 1</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Custom Text column 1</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Custom Text column 1 (datasourcesJoinedMultiConnectionsTwo)]</local-name>
+            <parent-name>[datasourcesJoinedMultiConnectionsTwo]</parent-name>
+            <remote-alias>Custom Text column 1</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>255</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Text column 1</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Text column 1 (datasourcesJoinedMultiConnectionsTwo)]</local-name>
+            <parent-name>[datasourcesJoinedMultiConnectionsTwo]</parent-name>
+            <remote-alias>Text column 1</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>255</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Date column 1</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[Date column 1 (datasourcesJoinedMultiConnectionsTwo)]</local-name>
+            <parent-name>[datasourcesJoinedMultiConnectionsTwo]</parent-name>
+            <remote-alias>Date column 1</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>datetime</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_TIMESTAMP&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_TIMESTAMP&quot;</attribute>
+              <attribute datatype='boolean' name='TypeIsDateTime2'>true</attribute>
+              <attribute datatype='boolean' name='TypeIsDateTime2orDate'>true</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Integer column 1</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[Integer column 1 (datasourcesJoinedMultiConnectionsTwo)]</local-name>
+            <parent-name>[datasourcesJoinedMultiConnectionsTwo]</parent-name>
+            <remote-alias>Integer column 1</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+          </metadata-record>
+        </metadata-records>
       </connection>
+      <aliases enabled='yes' />
       <column datatype='integer' name='[Number of Records]' role='measure' type='quantitative' user:auto-column='numrec'>
         <calculation class='tableau' formula='1' />
       </column>
-      <layout dim-ordering='alphabetic' dim-percentage='0.501179' measure-ordering='alphabetic' measure-percentage='0.498821' show-structure='true' />
+      <layout dim-ordering='alphabetic' dim-percentage='0.545991' measure-ordering='alphabetic' measure-percentage='0.454009' show-structure='true' />
       <semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
       </semantic-values>
@@ -311,9 +473,44 @@
         <cols>([excel-direct.42332.364068171293].[:Measure Names] / [excel-direct.42332.364068171293].[mn:Month:ok])</cols>
       </table>
     </worksheet>
+    <worksheet name='Sheet 3'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='datasourcesJoinedMultiConnectionsOne+ (quickdata)' name='federated.1e1e1yv1no8yzp1dakkze0z4z50e' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1e1e1yv1no8yzp1dakkze0z4z50e'>
+            <column datatype='integer' name='[Number of Records]' role='measure' type='quantitative' user:auto-column='numrec'>
+              <calculation class='tableau' formula='1' />
+            </column>
+            <column-instance column='[Number of Records]' derivation='Sum' name='[sum:Number of Records:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <text column='[federated.1e1e1yv1no8yzp1dakkze0z4z50e].[sum:Number of Records:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows />
+        <cols />
+      </table>
+    </worksheet>
   </worksheets>
   <windows saved-dpi-scale-factor='1.25' source-height='89'>
-    <window class='worksheet' maximized='true' name='Sheet 1'>
+    <window class='worksheet' name='Sheet 1'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -371,6 +568,28 @@
           </color-one-way>
         </highlight>
       </viewpoint>
+    </window>
+    <window class='worksheet' maximized='true' name='Sheet 3'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
     </window>
   </windows>
   <thumbnails>
@@ -519,6 +738,17 @@
       KgDpchX/svKmxcmLn3rAEAE4bXGW8B9rxyhX2eKk3tE9AKom8NVeAn/YiQPgKk7qraYBEELg
       YHcb8A6glE7gytWrSKZyWH74MS73XexQCek7LU5e+KSH/we9Thmbn4+I7wAAAABJRU5ErkJg
       gg==
+    </thumbnail>
+    <thumbnail height='24' name='Sheet 3' width='64'>
+      iVBORw0KGgoAAAANSUhEUgAAAEAAAAAYCAYAAABKtPtEAAAACXBIWXMAABJ0AAASdAHeZh94
+      AAABd0lEQVRYhe2YMUgCYRiGH7MhHCUHB2lxcCpahBuChiC3QLgouKBBWoJApbGxKVLaGoSw
+      pMGDqAYxSGpzaAoaTloCD4IOhBDcxAbLTJNrqZ/+u2e7j/fgvQe+/7jzdDqdDg5mTHQB0bgC
+      RBcQjStAdAHRuAJEFxDNuF3AMIy/6CEMWwEAkUjkt3sIw/Er4HgBP1qB/0S7lmdrp4FWTKIA
+      dT1FWjeHclMrB+zFg7IJqHORK2MR7U1Caoai+ploVnbZOJ1EWwoCkq1As3LM1USY4KhAq0ru
+      5JFoYo0Zb3ckj4DWHUfnPta1abwjItb1JdVgHE3x9WaSCGhT0wtYMY2+ZxugRqn0xOziAoG+
+      qRwCrDKFB4VELDA6c3/LzWuU+bmvhiQ4BKtkN/PUgO3Vs940u1zH3M+ghgCeOStUCGmHKAP7
+      IYEAhWRRIflxWddJpU3U99dgFxPT9BMO+4fulmMF7Gi8YLV9+L45Hzx2P0UNw3C/BWTG8QLe
+      APMqYPwrWwDLAAAAAElFTkSuQmCC
     </thumbnail>
   </thumbnails>
 </workbook>

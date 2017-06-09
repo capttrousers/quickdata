@@ -1,0 +1,1505 @@
+[
+ {
+  "datasource": [
+   {
+    "$": {
+     "caption": "Sheet1 (Test)",
+     "inline": "true",
+     "name": "excel-direct.42332.350190011573",
+     "version": "10.3"
+    },
+    "connection": [
+     {
+      "$": {
+       "class": "federated",
+       "prefer-ind-semantics": "true"
+      },
+      "named-connections": [
+       {
+        "named-connection": [
+         {
+          "$": {
+           "caption": "Sheet1 (Test)",
+           "name": "excel-direct.42332.350190011573leaf"
+          },
+          "connection": [
+           {
+            "$": {
+             "class": "excel-direct",
+             "cleaning": "no",
+             "compat": "no",
+             "dataRefreshTime": "",
+             "filename": "C:/Users/sosborn/Documents/Case-Files/Week-2/01696183/Test.xlsx",
+             "interpretationMode": "0",
+             "password": "",
+             "server": "",
+             "username": "",
+             "validate": "no"
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ],
+      "relation": [
+       {
+        "$": {
+         "connection": "excel-direct.42332.350190011573leaf",
+         "name": "Sheet1$",
+         "table": "[Sheet1$]",
+         "type": "table"
+        },
+        "columns": [
+         {
+          "$": {
+           "gridOrigin": "A1:D13:no:A1:D13",
+           "header": "yes",
+           "outcome": "2"
+          },
+          "column": [
+           {
+            "$": {
+             "datatype": "date",
+             "name": "Month",
+             "ordinal": "0"
+            }
+           },
+           {
+            "$": {
+             "datatype": "integer",
+             "name": "A",
+             "ordinal": "1"
+            }
+           },
+           {
+            "$": {
+             "datatype": "integer",
+             "name": "B",
+             "ordinal": "2"
+            }
+           },
+           {
+            "$": {
+             "datatype": "integer",
+             "name": "C",
+             "ordinal": "3"
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ],
+      "metadata-records": [
+       {
+        "metadata-record": [
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "Month"
+          ],
+          "remote-type": [
+           "7"
+          ],
+          "local-name": [
+           "[Month]"
+          ],
+          "parent-name": [
+           "[Sheet1$]"
+          ],
+          "remote-alias": [
+           "Month"
+          ],
+          "ordinal": [
+           "0"
+          ],
+          "local-type": [
+           "date"
+          ],
+          "aggregation": [
+           "Year"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"DATE\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "A"
+          ],
+          "remote-type": [
+           "20"
+          ],
+          "local-name": [
+           "[A]"
+          ],
+          "parent-name": [
+           "[Sheet1$]"
+          ],
+          "remote-alias": [
+           "A"
+          ],
+          "ordinal": [
+           "1"
+          ],
+          "local-type": [
+           "integer"
+          ],
+          "aggregation": [
+           "Sum"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"I8\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "B"
+          ],
+          "remote-type": [
+           "20"
+          ],
+          "local-name": [
+           "[B]"
+          ],
+          "parent-name": [
+           "[Sheet1$]"
+          ],
+          "remote-alias": [
+           "B"
+          ],
+          "ordinal": [
+           "2"
+          ],
+          "local-type": [
+           "integer"
+          ],
+          "aggregation": [
+           "Sum"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"I8\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "C"
+          ],
+          "remote-type": [
+           "20"
+          ],
+          "local-name": [
+           "[C]"
+          ],
+          "parent-name": [
+           "[Sheet1$]"
+          ],
+          "remote-alias": [
+           "C"
+          ],
+          "ordinal": [
+           "3"
+          ],
+          "local-type": [
+           "integer"
+          ],
+          "aggregation": [
+           "Sum"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"I8\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "capability"
+          },
+          "remote-name": [
+           ""
+          ],
+          "remote-type": [
+           "0"
+          ],
+          "parent-name": [
+           "[Sheet1$]"
+          ],
+          "remote-alias": [
+           ""
+          ],
+          "aggregation": [
+           "Count"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "0",
+              "$": {
+               "datatype": "integer",
+               "name": "context"
+              }
+             },
+             {
+              "_": "\"A1:D13:no:A1:D13\"",
+              "$": {
+               "datatype": "string",
+               "name": "gridOrigin"
+              }
+             },
+             {
+              "_": "true",
+              "$": {
+               "datatype": "boolean",
+               "name": "header"
+              }
+             },
+             {
+              "_": "2",
+              "$": {
+               "datatype": "integer",
+               "name": "outcome"
+              }
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "aliases": [
+     {
+      "$": {
+       "enabled": "yes"
+      }
+     }
+    ],
+    "column": [
+     {
+      "$": {
+       "datatype": "integer",
+       "name": "[Number of Records]",
+       "role": "measure",
+       "type": "quantitative",
+       "user:auto-column": "numrec"
+      },
+      "calculation": [
+       {
+        "$": {
+         "class": "tableau",
+         "formula": "1"
+        }
+       }
+      ]
+     }
+    ],
+    "layout": [
+     {
+      "$": {
+       "dim-ordering": "alphabetic",
+       "dim-percentage": "0.455189",
+       "measure-ordering": "alphabetic",
+       "measure-percentage": "0.544811",
+       "show-structure": "true"
+      }
+     }
+    ],
+    "semantic-values": [
+     {
+      "semantic-value": [
+       {
+        "$": {
+         "key": "[Country].[Name]",
+         "value": "\"United States\""
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "$": {
+     "caption": "Sheet1 (Test2)",
+     "inline": "true",
+     "name": "excel-direct.42332.364068171293",
+     "version": "10.3"
+    },
+    "connection": [
+     {
+      "$": {
+       "class": "federated",
+       "prefer-ind-semantics": "true"
+      },
+      "named-connections": [
+       {
+        "named-connection": [
+         {
+          "$": {
+           "caption": "Sheet1 (Test2)",
+           "name": "excel-direct.42332.364068171293leaf"
+          },
+          "connection": [
+           {
+            "$": {
+             "class": "excel-direct",
+             "cleaning": "no",
+             "compat": "no",
+             "dataRefreshTime": "",
+             "filename": "C:/Users/sosborn/Documents/Case-Files/Week-2/01696183/Test2.xlsx",
+             "interpretationMode": "0",
+             "password": "",
+             "server": "",
+             "username": "",
+             "validate": "no"
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ],
+      "relation": [
+       {
+        "$": {
+         "connection": "excel-direct.42332.364068171293leaf",
+         "name": "Sheet1$",
+         "table": "[Sheet1$]",
+         "type": "table"
+        },
+        "columns": [
+         {
+          "$": {
+           "gridOrigin": "A1:D13:no:A1:D13",
+           "header": "yes",
+           "outcome": "2"
+          },
+          "column": [
+           {
+            "$": {
+             "datatype": "date",
+             "name": "Month",
+             "ordinal": "0"
+            }
+           },
+           {
+            "$": {
+             "datatype": "integer",
+             "name": "A",
+             "ordinal": "1"
+            }
+           },
+           {
+            "$": {
+             "datatype": "integer",
+             "name": "B",
+             "ordinal": "2"
+            }
+           },
+           {
+            "$": {
+             "datatype": "integer",
+             "name": "C",
+             "ordinal": "3"
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ],
+      "metadata-records": [
+       {
+        "metadata-record": [
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "Month"
+          ],
+          "remote-type": [
+           "7"
+          ],
+          "local-name": [
+           "[Month]"
+          ],
+          "parent-name": [
+           "[Sheet1$]"
+          ],
+          "remote-alias": [
+           "Month"
+          ],
+          "ordinal": [
+           "0"
+          ],
+          "local-type": [
+           "date"
+          ],
+          "aggregation": [
+           "Year"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"DATE\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "A"
+          ],
+          "remote-type": [
+           "20"
+          ],
+          "local-name": [
+           "[A]"
+          ],
+          "parent-name": [
+           "[Sheet1$]"
+          ],
+          "remote-alias": [
+           "A"
+          ],
+          "ordinal": [
+           "1"
+          ],
+          "local-type": [
+           "integer"
+          ],
+          "aggregation": [
+           "Sum"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"I8\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "B"
+          ],
+          "remote-type": [
+           "20"
+          ],
+          "local-name": [
+           "[B]"
+          ],
+          "parent-name": [
+           "[Sheet1$]"
+          ],
+          "remote-alias": [
+           "B"
+          ],
+          "ordinal": [
+           "2"
+          ],
+          "local-type": [
+           "integer"
+          ],
+          "aggregation": [
+           "Sum"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"I8\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "C"
+          ],
+          "remote-type": [
+           "20"
+          ],
+          "local-name": [
+           "[C]"
+          ],
+          "parent-name": [
+           "[Sheet1$]"
+          ],
+          "remote-alias": [
+           "C"
+          ],
+          "ordinal": [
+           "3"
+          ],
+          "local-type": [
+           "integer"
+          ],
+          "aggregation": [
+           "Sum"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"I8\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "capability"
+          },
+          "remote-name": [
+           ""
+          ],
+          "remote-type": [
+           "0"
+          ],
+          "parent-name": [
+           "[Sheet1$]"
+          ],
+          "remote-alias": [
+           ""
+          ],
+          "aggregation": [
+           "Count"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "0",
+              "$": {
+               "datatype": "integer",
+               "name": "context"
+              }
+             },
+             {
+              "_": "\"A1:D13:no:A1:D13\"",
+              "$": {
+               "datatype": "string",
+               "name": "gridOrigin"
+              }
+             },
+             {
+              "_": "true",
+              "$": {
+               "datatype": "boolean",
+               "name": "header"
+              }
+             },
+             {
+              "_": "2",
+              "$": {
+               "datatype": "integer",
+               "name": "outcome"
+              }
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "column": [
+     {
+      "$": {
+       "datatype": "integer",
+       "name": "[Number of Records]",
+       "role": "measure",
+       "type": "quantitative",
+       "user:auto-column": "numrec"
+      },
+      "calculation": [
+       {
+        "$": {
+         "class": "tableau",
+         "formula": "1"
+        }
+       }
+      ]
+     }
+    ],
+    "layout": [
+     {
+      "$": {
+       "dim-ordering": "alphabetic",
+       "dim-percentage": "0.454009",
+       "measure-ordering": "alphabetic",
+       "measure-percentage": "0.545991",
+       "show-structure": "true"
+      }
+     }
+    ],
+    "semantic-values": [
+     {
+      "semantic-value": [
+       {
+        "$": {
+         "key": "[Country].[Name]",
+         "value": "\"United States\""
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "$": {
+     "caption": "datasourcesJoinedMultiConnectionsOne+ (quickdata)",
+     "inline": "true",
+     "name": "federated.1e1e1yv1no8yzp1dakkze0z4z50e",
+     "version": "10.3"
+    },
+    "connection": [
+     {
+      "$": {
+       "class": "federated"
+      },
+      "named-connections": [
+       {
+        "named-connection": [
+         {
+          "$": {
+           "caption": "adhoc-mssql2008r2.test.tsi.lan",
+           "name": "sqlserver.053a6qr1vi49pa1d8y30o0ttwu5y"
+          },
+          "connection": [
+           {
+            "$": {
+             "authentication": "sqlserver",
+             "class": "sqlserver",
+             "dbname": "quickdata",
+             "minimum-driver-version": "SQL Server Native Client 10.0",
+             "odbc-native-protocol": "yes",
+             "one-time-sql": "",
+             "server": "adhoc-mssql2008r2.test.tsi.lan",
+             "username": "quickdata"
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ],
+      "relation": [
+       {
+        "$": {
+         "join": "inner",
+         "type": "join"
+        },
+        "clause": [
+         {
+          "$": {
+           "type": "join"
+          },
+          "expression": [
+           {
+            "$": {
+             "op": "="
+            },
+            "expression": [
+             {
+              "$": {
+               "op": "[datasourcesJoinedMultiConnectionsOne].[Custom Text column 1]"
+              }
+             },
+             {
+              "$": {
+               "op": "[datasourcesJoinedMultiConnectionsTwo].[Custom Text column 1]"
+              }
+             }
+            ]
+           }
+          ]
+         }
+        ],
+        "relation": [
+         {
+          "$": {
+           "connection": "sqlserver.053a6qr1vi49pa1d8y30o0ttwu5y",
+           "name": "datasourcesJoinedMultiConnectionsOne",
+           "table": "[dbo].[datasourcesJoinedMultiConnectionsOne]",
+           "type": "table"
+          }
+         },
+         {
+          "$": {
+           "connection": "sqlserver.053a6qr1vi49pa1d8y30o0ttwu5y",
+           "name": "datasourcesJoinedMultiConnectionsTwo",
+           "table": "[dbo].[datasourcesJoinedMultiConnectionsTwo]",
+           "type": "table"
+          }
+         }
+        ]
+       }
+      ],
+      "cols": [
+       {
+        "map": [
+         {
+          "$": {
+           "key": "[Custom Text column 1 (datasourcesJoinedMultiConnectionsTwo)]",
+           "value": "[datasourcesJoinedMultiConnectionsTwo].[Custom Text column 1]"
+          }
+         },
+         {
+          "$": {
+           "key": "[Custom Text column 1]",
+           "value": "[datasourcesJoinedMultiConnectionsOne].[Custom Text column 1]"
+          }
+         },
+         {
+          "$": {
+           "key": "[Date column 1 (datasourcesJoinedMultiConnectionsTwo)]",
+           "value": "[datasourcesJoinedMultiConnectionsTwo].[Date column 1]"
+          }
+         },
+         {
+          "$": {
+           "key": "[Date column 1]",
+           "value": "[datasourcesJoinedMultiConnectionsOne].[Date column 1]"
+          }
+         },
+         {
+          "$": {
+           "key": "[Integer column 1 (datasourcesJoinedMultiConnectionsTwo)]",
+           "value": "[datasourcesJoinedMultiConnectionsTwo].[Integer column 1]"
+          }
+         },
+         {
+          "$": {
+           "key": "[Integer column 1]",
+           "value": "[datasourcesJoinedMultiConnectionsOne].[Integer column 1]"
+          }
+         },
+         {
+          "$": {
+           "key": "[Text column 1 (datasourcesJoinedMultiConnectionsTwo)]",
+           "value": "[datasourcesJoinedMultiConnectionsTwo].[Text column 1]"
+          }
+         },
+         {
+          "$": {
+           "key": "[Text column 1]",
+           "value": "[datasourcesJoinedMultiConnectionsOne].[Text column 1]"
+          }
+         }
+        ]
+       }
+      ],
+      "metadata-records": [
+       {
+        "metadata-record": [
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "Custom Text column 1"
+          ],
+          "remote-type": [
+           "130"
+          ],
+          "local-name": [
+           "[Custom Text column 1]"
+          ],
+          "parent-name": [
+           "[datasourcesJoinedMultiConnectionsOne]"
+          ],
+          "remote-alias": [
+           "Custom Text column 1"
+          ],
+          "ordinal": [
+           "1"
+          ],
+          "local-type": [
+           "string"
+          ],
+          "aggregation": [
+           "Count"
+          ],
+          "width": [
+           "255"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "padded-semantics": [
+           "true"
+          ],
+          "collation": [
+           {
+            "$": {
+             "flag": "2147483649",
+             "name": "LEN_RUS_S2_VWIN"
+            }
+           }
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"SQL_WVARCHAR\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             },
+             {
+              "_": "\"SQL_C_WCHAR\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugWireType"
+              }
+             },
+             {
+              "_": "\"true\"",
+              "$": {
+               "datatype": "string",
+               "name": "TypeIsVarchar"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "Text column 1"
+          ],
+          "remote-type": [
+           "130"
+          ],
+          "local-name": [
+           "[Text column 1]"
+          ],
+          "parent-name": [
+           "[datasourcesJoinedMultiConnectionsOne]"
+          ],
+          "remote-alias": [
+           "Text column 1"
+          ],
+          "ordinal": [
+           "2"
+          ],
+          "local-type": [
+           "string"
+          ],
+          "aggregation": [
+           "Count"
+          ],
+          "width": [
+           "255"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "padded-semantics": [
+           "true"
+          ],
+          "collation": [
+           {
+            "$": {
+             "flag": "2147483649",
+             "name": "LEN_RUS_S2_VWIN"
+            }
+           }
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"SQL_WVARCHAR\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             },
+             {
+              "_": "\"SQL_C_WCHAR\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugWireType"
+              }
+             },
+             {
+              "_": "\"true\"",
+              "$": {
+               "datatype": "string",
+               "name": "TypeIsVarchar"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "Date column 1"
+          ],
+          "remote-type": [
+           "7"
+          ],
+          "local-name": [
+           "[Date column 1]"
+          ],
+          "parent-name": [
+           "[datasourcesJoinedMultiConnectionsOne]"
+          ],
+          "remote-alias": [
+           "Date column 1"
+          ],
+          "ordinal": [
+           "3"
+          ],
+          "local-type": [
+           "datetime"
+          ],
+          "aggregation": [
+           "Year"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"SQL_TYPE_TIMESTAMP\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             },
+             {
+              "_": "\"SQL_C_TYPE_TIMESTAMP\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugWireType"
+              }
+             },
+             {
+              "_": "true",
+              "$": {
+               "datatype": "boolean",
+               "name": "TypeIsDateTime2"
+              }
+             },
+             {
+              "_": "true",
+              "$": {
+               "datatype": "boolean",
+               "name": "TypeIsDateTime2orDate"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "Integer column 1"
+          ],
+          "remote-type": [
+           "3"
+          ],
+          "local-name": [
+           "[Integer column 1]"
+          ],
+          "parent-name": [
+           "[datasourcesJoinedMultiConnectionsOne]"
+          ],
+          "remote-alias": [
+           "Integer column 1"
+          ],
+          "ordinal": [
+           "4"
+          ],
+          "local-type": [
+           "integer"
+          ],
+          "aggregation": [
+           "Sum"
+          ],
+          "precision": [
+           "10"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"SQL_INTEGER\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             },
+             {
+              "_": "\"SQL_C_SLONG\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugWireType"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "Custom Text column 1"
+          ],
+          "remote-type": [
+           "130"
+          ],
+          "local-name": [
+           "[Custom Text column 1 (datasourcesJoinedMultiConnectionsTwo)]"
+          ],
+          "parent-name": [
+           "[datasourcesJoinedMultiConnectionsTwo]"
+          ],
+          "remote-alias": [
+           "Custom Text column 1"
+          ],
+          "ordinal": [
+           "6"
+          ],
+          "local-type": [
+           "string"
+          ],
+          "aggregation": [
+           "Count"
+          ],
+          "width": [
+           "255"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "padded-semantics": [
+           "true"
+          ],
+          "collation": [
+           {
+            "$": {
+             "flag": "2147483649",
+             "name": "LEN_RUS_S2_VWIN"
+            }
+           }
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"SQL_WVARCHAR\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             },
+             {
+              "_": "\"SQL_C_WCHAR\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugWireType"
+              }
+             },
+             {
+              "_": "\"true\"",
+              "$": {
+               "datatype": "string",
+               "name": "TypeIsVarchar"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "Text column 1"
+          ],
+          "remote-type": [
+           "130"
+          ],
+          "local-name": [
+           "[Text column 1 (datasourcesJoinedMultiConnectionsTwo)]"
+          ],
+          "parent-name": [
+           "[datasourcesJoinedMultiConnectionsTwo]"
+          ],
+          "remote-alias": [
+           "Text column 1"
+          ],
+          "ordinal": [
+           "7"
+          ],
+          "local-type": [
+           "string"
+          ],
+          "aggregation": [
+           "Count"
+          ],
+          "width": [
+           "255"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "padded-semantics": [
+           "true"
+          ],
+          "collation": [
+           {
+            "$": {
+             "flag": "2147483649",
+             "name": "LEN_RUS_S2_VWIN"
+            }
+           }
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"SQL_WVARCHAR\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             },
+             {
+              "_": "\"SQL_C_WCHAR\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugWireType"
+              }
+             },
+             {
+              "_": "\"true\"",
+              "$": {
+               "datatype": "string",
+               "name": "TypeIsVarchar"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "Date column 1"
+          ],
+          "remote-type": [
+           "7"
+          ],
+          "local-name": [
+           "[Date column 1 (datasourcesJoinedMultiConnectionsTwo)]"
+          ],
+          "parent-name": [
+           "[datasourcesJoinedMultiConnectionsTwo]"
+          ],
+          "remote-alias": [
+           "Date column 1"
+          ],
+          "ordinal": [
+           "8"
+          ],
+          "local-type": [
+           "datetime"
+          ],
+          "aggregation": [
+           "Year"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"SQL_TYPE_TIMESTAMP\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             },
+             {
+              "_": "\"SQL_C_TYPE_TIMESTAMP\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugWireType"
+              }
+             },
+             {
+              "_": "true",
+              "$": {
+               "datatype": "boolean",
+               "name": "TypeIsDateTime2"
+              }
+             },
+             {
+              "_": "true",
+              "$": {
+               "datatype": "boolean",
+               "name": "TypeIsDateTime2orDate"
+              }
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "$": {
+           "class": "column"
+          },
+          "remote-name": [
+           "Integer column 1"
+          ],
+          "remote-type": [
+           "3"
+          ],
+          "local-name": [
+           "[Integer column 1 (datasourcesJoinedMultiConnectionsTwo)]"
+          ],
+          "parent-name": [
+           "[datasourcesJoinedMultiConnectionsTwo]"
+          ],
+          "remote-alias": [
+           "Integer column 1"
+          ],
+          "ordinal": [
+           "9"
+          ],
+          "local-type": [
+           "integer"
+          ],
+          "aggregation": [
+           "Sum"
+          ],
+          "precision": [
+           "10"
+          ],
+          "contains-null": [
+           "true"
+          ],
+          "attributes": [
+           {
+            "attribute": [
+             {
+              "_": "\"SQL_INTEGER\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugRemoteType"
+              }
+             },
+             {
+              "_": "\"SQL_C_SLONG\"",
+              "$": {
+               "datatype": "string",
+               "name": "DebugWireType"
+              }
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "aliases": [
+     {
+      "$": {
+       "enabled": "yes"
+      }
+     }
+    ],
+    "column": [
+     {
+      "$": {
+       "datatype": "integer",
+       "name": "[Number of Records]",
+       "role": "measure",
+       "type": "quantitative",
+       "user:auto-column": "numrec"
+      },
+      "calculation": [
+       {
+        "$": {
+         "class": "tableau",
+         "formula": "1"
+        }
+       }
+      ]
+     }
+    ],
+    "layout": [
+     {
+      "$": {
+       "dim-ordering": "alphabetic",
+       "dim-percentage": "0.545991",
+       "measure-ordering": "alphabetic",
+       "measure-percentage": "0.454009",
+       "show-structure": "true"
+      }
+     }
+    ],
+    "semantic-values": [
+     {
+      "semantic-value": [
+       {
+        "$": {
+         "key": "[Country].[Name]",
+         "value": "\"United States\""
+        }
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+]

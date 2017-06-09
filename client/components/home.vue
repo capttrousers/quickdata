@@ -231,24 +231,7 @@
                 console.log(err);
                 that.isTransferring = false;
               } else {
-                // columns located in result.workbook.datasources[]
-                // datasources[] is an array with a single element: datasource[]
-                // datasource is an array with objects for each data source connection from the twb
-                // each datasource array element, is a single datasource obj with  props:
-                // $ for all values on the datasource XML element, and connection[], column[], layout[], semantic-values[]
-                // connection array has single obj with props $, relation[], metadata[]
-                // relation has single obj with props $ and columns[]
-                // connection.relation.columns has props $ and column[]
-                // connection.relation.columns.column has elements for each column:
-                // column obj "$" with props datatype,name,ordinal
-                // result.workbook.datasources[0].datasource.forEach(DataSourceConnection)
-                /*
-                  DataSourceConnection.$.caption == Name_Of_Data_Source
-                  DataSourceConnection.connection[0] == connection info for this source, including
-                  
-                
-                
-                */
+
               
                 console.log(JSON.stringify(result.workbook.datasources, null, 2));
                 that.isTransferring = false;

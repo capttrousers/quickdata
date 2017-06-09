@@ -39,6 +39,7 @@ export default new Vuex.Store({
       if(state.numberOfRecords.length == 0) return "Must enter a value for the # of records to generate";
       if(isNaN(Number(state.numberOfRecords))) return "Number of records must be a valid integer";
       if(state.tableName.length == 0) return "Must enter a value for the table name";
+      if(state.columns.length == 0) return "Must add at least one column";
       return "";
     }
 	},
