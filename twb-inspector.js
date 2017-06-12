@@ -24,7 +24,7 @@ var datasource = twb.workbook.datasources[0].datasource
   connection has remote column info
   column[] array contains all calc fields > should we ignore these? and make users copy of calc fields? i think so
 */
-datasource = _.chain(datasource).map((ds)=> { return _.pick(ds, ["connection","column"]) } ).value();
+// datasource = _.chain(datasource).map((ds)=> { return _.pick(ds, ["connection","column"]) } ).value();
 
 // array of connections contains connection objs
 // each connection obj is actually an array
@@ -39,7 +39,7 @@ connections = _.chain(connections).map((ds) => {
                           .map((col) => { return _.pick(col, ["contains-null", "precision", "width", "local-type", "local-name"]); }).value() 
               }).value();
 
-              
+connections = _.chain(connections).map((ds) => { return _.chain(ds).map((field) => { return _.mapValues(field, (prop) => { return prop[0] ;} ); }).value(); }).value();
                 // local-name and local-type will help create data model
                 // local-names are wrapped in brackets: [field name]
                 // contains null is always there
