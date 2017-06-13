@@ -4,29 +4,30 @@
     md-progress(v-show="isTransferring", :md-indeterminate="true")
 
     #form
-      .form-row(v-show="false")
-        md-layout(md-gutter="24")
-          md-layout(md-flex="15")
-            md-input-container
-              label(for='file-upload')  Upload file
-              md-select(name='file-upload', v-model="fileUpload")
-                md-option(value="schema") Schema.json
-                md-option(value="twb") Customer's workbook
-          md-layout(md-flex="60")
-            md-input-container
-              label Schema file or twb workbook
-              md-file(v-model="schemaFileName", accept=".json,.twb", :multiple="true", @selected="pickFile($event)")
-          md-layout(md-flex="15")
-            md-button.md-raised(:disabled="file == null", @click.native="submitFile") Submit
-          md-layout(md-flex="10")
-            md-button.md-raised.md-icon-button.md-dense( @click.native="helpRouter")
-              md-icon help_outline
-      .form-row(v-show="false")
-        md-layout(md-gutter="24")
-          md-layout(md-flex)
-          md-layout(md-flex)
-            span(style="margin: 0 auto;") --- OR ---
-          md-layout(md-flex)
+      #file-upload(v-show="true")
+        .form-row
+          md-layout(md-gutter="24")
+            md-layout(md-flex="15")
+              md-input-container
+                label(for='file-upload')  Upload file
+                md-select(name='file-upload', v-model="fileUpload")
+                  md-option(value="schema") Schema.json
+                  md-option(value="twb") Customer's workbook
+            md-layout(md-flex="60")
+              md-input-container
+                label Schema file or twb workbook
+                md-file(v-model="schemaFileName", accept=".json,.twb", :multiple="true", @selected="pickFile($event)")
+            md-layout(md-flex="15")
+              md-button.md-raised(:disabled="file == null", @click.native="submitFile") Submit
+            md-layout(md-flex="10")
+              md-button.md-raised.md-icon-button.md-dense( @click.native="helpRouter")
+                md-icon help_outline
+        .form-row
+          md-layout(md-gutter="24")
+            md-layout(md-flex)
+            md-layout(md-flex)
+              span(style="margin: 0 auto;") --- OR ---
+            md-layout(md-flex)
       .form-row
         md-layout(md-gutter="40")
           md-layout(md-flex)
@@ -204,13 +205,14 @@
                   var data = response.body;
                   var binaryData = [];
                   binaryData.push(data);
-                  var fileName = (that.sfCase.length > 0 ? that.sfCase + '_' : "" ) + that.tableName + ( that.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+                  var fileName = body.tableName + ( that.dataSource == 'csv' ? '.csv' : '.txt' ) ;
                   FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
                   that.isTransferring = false;
                 }, (response) => {
-                  that.isTransferring = false;
-                  that.error.message = (response.body.error) || '404 error';
+                  if(! response ) that.error.message = "server unresponsive"
+                  else that.error.message = (response.body.error) || '404 error';
                   that.$refs.errorsnackbar.open();
+                  that.isTransferring = false;
                 }
               );
             } catch (e) {
@@ -227,19 +229,16 @@
                 that.isTransferring = false;
               } else {
                 if(result.workbook["$"].version.split(".")[0] == "10") {
-  
                   var body = {};
-                  
-                  
+                  body.twb = result;
                   Vue.http.post("/fileuploader", body).then(
                     (response) => {
-                      /*
+                      
                       var data = response.body;
                       var binaryData = [];
                       binaryData.push(data);
-                      var fileName = (that.sfCase.length > 0 ? that.sfCase + '_' : "" ) + that.tableName + ( that.dataSource == 'csv' ? '.csv' : '.txt' ) ;
-                      FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
-                      */
+                      var fileName = that.schemaFileName.replace(/.twb/, "-TWB-schemas.zip") ;
+                      FileSaver.saveAs(new Blob(binaryData, {type: "application/zip;charset=utf-8"}), fileName);
                       that.error.message = "TWB file parsed and uploaded successfully";
                       that.$refs.errorsnackbar.open();
                       that.isTransferring = false;
@@ -285,7 +284,7 @@
               var data = response.body;
               var binaryData = [];
               binaryData.push(data);
-              var fileName = (that.sfCase.length > 0 ? that.sfCase + '_' : "" ) + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+              var fileName = (that.sfCase && that.sfCase.length > 0 ? that.sfCase + '_' : "" ) + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
               FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
               that.isTransferring = false;
             }, (response) => {

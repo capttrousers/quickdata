@@ -16,7 +16,8 @@
         The Parent button allows text and date fields to contain a child column to act as a categorical hierarchy for text, or a start/end timestamp for date.
       p.
         Note, the mysql adhoc testing db is retired as of late, and is performing really slow. Stick with postgres and mssql unless mysql is necessary.
-
+      p.
+        #[a(href='https://mytableau.tableaucorp.com/display/cesupport/quickdata') Link to the quickdata wiki page with more info]
     router-view
 
 </template>
