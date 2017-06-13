@@ -209,10 +209,13 @@
                   FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
                   that.isTransferring = false;
                 }, (response) => {
-                  if(! response ) that.error.message = "server unresponsive"
-                  else that.error.message = (response.body.error) || '404 error';
-                  that.$refs.errorsnackbar.open();
+                  if(! (response && response.body) ) {
+                    that.error.message = "server unresponsive"
+                  } else {
+                    that.error.message = (response.body.error) || '404 error';
+                  }
                   that.isTransferring = false;
+                  that.$refs.errorsnackbar.open();
                 }
               );
             } catch (e) {
