@@ -218,43 +218,46 @@
               that.error.message = "Invalid JSON file: " + e;
               that.$refs.errorsnackbar.open();
               that.isTransferring = false;
-            }
-          
+            }          
           } else {
-            // just send the read file to /fileuploader
-            var body = {};
-            body.twbFile = reader.result;
-            console.log("twb file type: " + typeof body.twbFile);
-            console.log("twb file string length: " + body.twbFile.length);
-            parseXML(body.twbFile, function(err, result){
+            // parse the TWB xml and 
+            parseXML(reader.result, function(err, result){
               if(err) {
                 console.log(err);
                 that.isTransferring = false;
               } else {
-
-              
-                console.log(JSON.stringify(result.workbook.datasources, null, 2));
-                that.isTransferring = false;
+                if(result.workbook["$"].version.split(".")[0] == "10") {
+  
+                  var body = {};
+                  
+                  
+                  Vue.http.post("/fileuploader", body).then(
+                    (response) => {
+                      /*
+                      var data = response.body;
+                      var binaryData = [];
+                      binaryData.push(data);
+                      var fileName = (that.sfCase.length > 0 ? that.sfCase + '_' : "" ) + that.tableName + ( that.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+                      FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
+                      */
+                      that.error.message = "TWB file parsed and uploaded successfully";
+                      that.$refs.errorsnackbar.open();
+                      that.isTransferring = false;
+                    }, (response) => {
+                      that.isTransferring = false;
+                      that.error.message = (response.body.error) || '404 error';
+                      that.$refs.errorsnackbar.open();
+                    }
+                  );
+                
+                } else {
+                  that.isTransferring = false;
+                  that.error.message = "TWB version must be made in Tableau Desktop 10.0 or greater";
+                  that.$refs.errorsnackbar.open();
+                  
+                }
               }
             });
-            Vue.http.post("/fileuploader", body).then(
-              (response) => {
-                /*
-                var data = response.body;
-                var binaryData = [];
-                binaryData.push(data);
-                var fileName = (that.sfCase.length > 0 ? that.sfCase + '_' : "" ) + that.tableName + ( that.dataSource == 'csv' ? '.csv' : '.txt' ) ;
-                FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
-                */
-                that.error.message = "TWB file parsed and uploaded successfully";
-                that.$refs.errorsnackbar.open();
-                that.isTransferring = false;
-              }, (response) => {
-                that.isTransferring = false;
-                that.error.message = (response.body.error) || '404 error';
-                that.$refs.errorsnackbar.open();
-              }
-            );
           
           }
         }
