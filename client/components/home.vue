@@ -246,8 +246,12 @@
                       that.$refs.errorsnackbar.open();
                       that.isTransferring = false;
                     }, (response) => {
+                      if(! (response && response.body) ) {
+                        that.error.message = "server unresponsive"
+                      } else {
+                        that.error.message = (response.body.error) || '404 error';
+                      }
                       that.isTransferring = false;
-                      that.error.message = (response.body.error) || '404 error';
                       that.$refs.errorsnackbar.open();
                     }
                   );
@@ -291,9 +295,13 @@
               FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
               that.isTransferring = false;
             }, (response) => {
+              if(! (response && response.body) ) {
+                that.error.message = "server unresponsive"
+              } else {
+                that.error.message = (response.body.error) || '404 error';
+              }
               that.isTransferring = false;
-              this.error.message = (response.body.error) || '404 error';
-              this.$refs.errorsnackbar.open();
+              that.$refs.errorsnackbar.open();
             }
           );
         } else {

@@ -32,7 +32,7 @@ module.exports = (twb) => {
                                fields : ds.connection[0]["metadata-records"][0]["metadata-record"] 
                              } 
                     }).value();
-  connections = _.chain(connections).map((ds) => { 
+  var connectionsParsed = _.chain(connections).map((ds) => { 
                     return { tablename : ds.tablename, 
                              fields: _.chain(ds.fields).filter((col) => { return col["$"].class == "column"; })
                                 .map((col) => { 
@@ -66,5 +66,5 @@ module.exports = (twb) => {
 
 
   
-  return connections;
+  return connectionsParsed;
 }

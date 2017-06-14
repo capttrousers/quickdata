@@ -10,31 +10,7 @@ var testing   = process.env.NODE_TESTING || false;
 
 
 router.post("/", function(request, response) {
-  // logger.debug('POST on /fileuploader with file %j', request.body);
-  /* 
-  if( ! isValidBody(request.body) ) {
-    logger.info('bad request (400), body property is missing something')
-    response.status(400).type('json').send({error: 'request body missing something'});
-  } else {
-    // next();
-    response.status(200).end();
-  }
-  */
   
-  // file uploader will allow uploading .twb files to parse the XML and then create the schema.json file to then send to /quickdata
-  // defaults to CSV file with datasource name from .twb 
-  
-  /*
-    process twb json here
-    use twbs.js method
-    return connections array with tablename and fields
-    for each connections
-      create json
-      zip.append(JSON.stringify(connection), {name: connection.tablename + ".json"})
-      
-    zip.finalize();
-  
-  */
   if(request.body.twb == null || request.body.twb == undefined) {
     response.status(400).type("json").send({"error" : "TWB file uploaded with errors"});
   }
@@ -91,7 +67,5 @@ router.post("/", function(request, response) {
   });
   zip.finalize();
   
-  
-  // response.status(200).type("json").send({"test" : 123});  
 });
 module.exports = router;
