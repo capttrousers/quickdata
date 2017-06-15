@@ -32,15 +32,16 @@ module.exports = (twb) => {
                                fields : ds.connection[0]["metadata-records"][0]["metadata-record"] 
                              } 
                     }).value();
-  var connectionsParsed = _.chain(connections).map((ds) => { 
-                    return { tablename : ds.tablename, 
-                             fields: _.chain(ds.fields).filter((col) => { return col["$"].class == "column"; })
+  var connectionsParsed = _.chain(connections)
+                          .map((ds) => { return 
+                            { tablename : ds.tablename, 
+                              fields: _.chain(ds.fields).filter((col) => { return col["$"].class == "column"; })
                                 .map((col) => { 
                                   return _.mapValues(_.pick(col, ["contains-null", "precision", "width", "local-type", "local-name"]), 
                                     (prop) => {return prop[0]; }) ; 
                                 }).value() 
-                          } ;
-                }).value();
+                            } ;
+                          }).value();
 
   // local-name and local-type will help create data model
   // local-names are wrapped in brackets: [field name]
