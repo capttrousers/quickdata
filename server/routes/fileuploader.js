@@ -55,6 +55,11 @@ router.post("/", function(request, response) {
           column.minValue = 0
           column.maxValue = 1000
           break;
+        case "real" :
+          column.dataType = "decimal"
+          column.minValue = 0
+          column.maxValue = 1000
+          break;
         case "string" :
           column.dataType = "text"
           column.minValue = 1
