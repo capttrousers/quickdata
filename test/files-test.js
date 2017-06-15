@@ -14,10 +14,10 @@ describe('server accepts a text or json file to describe schema', function(){
     var body = {
         file: 'test'
     }
-    return chai.request(app).post('/fileuploader').send(body).then(function(res) {
-      expect(res).to.have.status(200);
-      expect(res).to.have.property("body");
-      expect(res.body).to.have.property("test").that.is.a("number");
+    return chai.request(app).post('/fileuploader').send(body).catch(function(err) {
+      expect(err).to.have.status(400);
+      expect(err.response.body).to.have.property("error").that.is.a("string");
+      expect(err.response.body.error).to.equal("TWB file uploaded with errors");
     });
   });
   

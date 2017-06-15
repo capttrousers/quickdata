@@ -33,9 +33,8 @@ module.exports = (twb) => {
                              } 
                     }).value();
   var connectionsParsed = _.chain(connections)
-                          .map((ds) => { return 
-                            { tablename : ds.tablename, 
-                              fields: _.chain(ds.fields).filter((col) => { return col["$"].class == "column"; })
+                          .map((ds) => { return { tablename : ds.tablename, fields : 
+                                _.chain(ds.fields).filter((col) => { return col["$"].class == "column"; })
                                 .map((col) => { 
                                   return _.mapValues(_.pick(col, ["contains-null", "precision", "width", "local-type", "local-name"]), 
                                     (prop) => {return prop[0]; }) ; 
