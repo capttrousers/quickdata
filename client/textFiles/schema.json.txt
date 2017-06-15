@@ -1,0 +1,111 @@
+export default {
+text : "\
+{\n\
+ "numberOfRecords": 500,\n\
+ "dataSource": "csv",\n\
+ "user": "somebody@tableau.com",\n\
+ "sfCase": "01234567",\n\
+ "tableName": "TableName",\n\
+ "columns": [\n\
+  {\n\
+   "dataType": "integer",\n\
+   "hierarchy": "none",\n\
+   "child": {},\n\
+   "allowNulls": false,\n\
+   "count": 1,\n\
+   "maxValue": 1000,\n\
+   "minValue": 0,\n\
+   "file": null,\n\
+   "behavior": "random"\n\
+  },\n\
+  {\n\
+   "dataType": "date",\n\
+   "hierarchy": "none",\n\
+   "child": {},\n\
+   "allowNulls": false,\n\
+   "count": 1,\n\
+   "maxValue": "2017-03-18",\n\
+   "minValue": "2010-01-01",\n\
+   "file": null,\n\
+   "behavior": "random"\n\
+  },\n\
+  {\n\
+   "dataType": "decimal",\n\
+   "hierarchy": "none",\n\
+   "child": {},\n\
+   "allowNulls": false,\n\
+   "count": 1,\n\
+   "maxValue": 1000,\n\
+   "minValue": 0,\n\
+   "file": null,\n\
+   "behavior": "random"\n\
+  },\n\
+  {\n\
+   "dataType": "text",\n\
+   "hierarchy": "none",\n\
+   "child": {},\n\
+   "allowNulls": false,\n\
+   "count": 1,\n\
+   "maxValue": 10,\n\
+   "minValue": 1,\n\
+   "file": null,\n\
+   "behavior": "random"\n\
+  },\n\
+  {\n\
+   "dataType": "file",\n\
+   "hierarchy": "none",\n\
+   "child": {},\n\
+   "allowNulls": false,\n\
+   "count": 1,\n\
+   "maxValue": 1000,\n\
+   "minValue": 0,\n\
+   "file": {\n\
+    "fields": [\n\
+     "Category",\n\
+     "Subcategory"\n\
+    ],\n\
+    "values": [\n\
+     {\n\
+      "Category": "Category 1",\n\
+      "Subcategory": "Sub-category 1"\n\
+     },\n\
+     {\n\
+      "Category": "Category 1",\n\
+      "Subcategory": "Sub-category 2"\n\
+     },\n\
+     {\n\
+      "Category": "Category 1",\n\
+      "Subcategory": "Sub-category 3"\n\
+     },\n\
+     {\n\
+      "Category": "Category 2",\n\
+      "Subcategory": "Sub-category 4"\n\
+     },\n\
+     {\n\
+      "Category": "Category 2",\n\
+      "Subcategory": "Sub-category 5"\n\
+     },\n\
+     {\n\
+      "Category": "Category 2",\n\
+      "Subcategory": "Sub-category 6"\n\
+     },\n\
+     {\n\
+      "Category": "Category 3",\n\
+      "Subcategory": "Sub-category 7"\n\
+     },\n\
+     {\n\
+      "Category": "Category 3",\n\
+      "Subcategory": "Sub-category 8"\n\
+     },\n\
+     {\n\
+      "Category": "Category 3",\n\
+      "Subcategory": "Sub-category 9"\n\
+     }\n\
+    ]\n\
+   },\n\
+   "behavior": "random"\n\
+  }\n\
+ ]\n\
+}\n\
+"
+}
