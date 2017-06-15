@@ -18,6 +18,8 @@
         Note, the mysql adhoc testing db is retired as of late, and is performing really slow. Stick with postgres and mssql unless mysql is necessary.
       p.
         #[a(href='https://mytableau.tableaucorp.com/display/cesupport/quickdata') Link to the quickdata wiki page with more info]
+      p.
+        If there are any issues uploading a TWB file, please visit the wiki page above on where to send feedback, and include the TWB you had issues uploading. 
     router-view
 
 </template>
