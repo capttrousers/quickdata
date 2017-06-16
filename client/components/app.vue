@@ -19,14 +19,24 @@
       p.
         #[a(href='https://mytableau.tableaucorp.com/display/cesupport/quickdata') Link to the quickdata wiki page with more info]
       p.
-        If there are any issues uploading a TWB file, please visit the wiki page above on where to send feedback, and include the TWB you had issues uploading. 
-    router-view
+        If there are any issues uploading a TWB file, please visit the wiki page above on where to send feedback, and include the TWB you had issues uploading.
 
+    md-tabs(:md-centered="true")
+      md-tab(md-icon="assignment")
+        home
+      md-tab(md-icon="file_upload")
+        help
 </template>
 
 <script>
+  import Home from "./home.vue"
+  import Help from "./help.vue"
   export default {
-    name: 'app'
+    name: 'app',
+    components: {
+      Home,
+      Help
+    }
   }
 </script>
 <style>

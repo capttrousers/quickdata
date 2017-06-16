@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
+		errorMessage: "default error message",
     file: null,
 		numberOfRecords: "",
     dataSource: "csv",
@@ -47,6 +48,9 @@ export default new Vuex.Store({
 	mutations: {
 		SET_TABLE_NAME(state, payload) {
 			state.tableName = payload.value
+		},
+		SET_ERROR_MESSAGE(state, payload) {
+			state.errorMessage = payload.value
 		},
 		SET_DATA_SOURCE(state, payload) {
 			state.dataSource = payload.value;
