@@ -172,7 +172,7 @@ export default {
                 var data = response.body;
                 var binaryData = [];
                 binaryData.push(data);
-                var fileName = body.tableName + ( that.dataSource == 'csv' ? '.csv' : '.txt' ) ;
+                var fileName = body.tableName + ( body.dataSource == 'csv' ? '.csv' : '.txt' ) ;
                 FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
                 that.isTransferring = false;
               }, (response) => {
