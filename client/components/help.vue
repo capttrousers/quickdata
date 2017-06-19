@@ -149,8 +149,14 @@ export default {
         console.log('file size is ' + f.size);
         console.log('file name is ' + f.name);
         console.log('file picked');
-
-        this.file = f;
+        if(f.name.indexOf(".twb") >= 0 || f.name.indexOf(".json") >= 0) {
+          this.file = f;
+        } else {
+          this.file = null;
+          this.fileName = "";
+          this.errorMessage = "File uploaded must be a JSON schema file or an unpackaged TWB";
+          this.$refs.errorsnackbar.open();
+        }
       } else {
         this.file = null;
         this.fileName = "";
