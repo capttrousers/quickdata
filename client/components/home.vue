@@ -46,7 +46,6 @@
   import MyRow from './row.vue';
   import Vue from 'vue';
   var FileSaver = require('file-saver');
-  var parseXML = require('xml2js').parseString;
   export default {
     components: {
       MyRow

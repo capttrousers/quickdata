@@ -16,11 +16,10 @@ if(env == "work" || env == "production") {
 } else {
   configFile    = require(__dirname + '/../../config/config.dev.json');
 }
-logger.debug("env variable is : ", env);
+logger.debug("env variable is :", env);
 // logger.debug("configFile %o", configFile);
 
-logger.debug('dirname of models.index at runtime:')
-logger.debug(__dirname);
+logger.debug('dirname of models.index at runtime:', __dirname);
 
 var mysqlConfig = configFile['mysqlTestDB'];
 var postgresConfig = configFile['postgresTestDB'];

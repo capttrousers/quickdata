@@ -55,6 +55,10 @@
               tr(v-for="row in csvParsedRaw.data")
                 td(v-for="field in csvParsedRaw.meta.fields") {{ row[field] }}
 
+    md-snackbar(ref="errorsnackbar", :md-duration="7000")
+      span {{ errorMessage }}
+      md-button.md-accent(@click.native="$refs.errorsnackbar.close()") Close
+
 </template>
 
 
@@ -65,7 +69,9 @@ import csvFile from '../textFiles/csv';
 import jsonFile from '../textFiles/json';
 import schemaTextFile from '../textFiles/schema.json.text';
 import schemaJSONFile from '../textFiles/schema.json.template';
+import Vue from 'vue';
 var FileSaver = require('file-saver');
+var parseXML = require('xml2js').parseString;
 
 export default {
   data: function() {
@@ -188,6 +194,7 @@ export default {
         } else {
           // parse the TWB xml and
           parseXML(reader.result, function(err, result){
+            console.log("parsing xml of TWB" + that.file.name);
             if(err) {
               console.log(err);
               that.isTransferring = false;
