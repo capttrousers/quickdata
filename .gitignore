@@ -11,5 +11,9 @@ config/config.prod.json*
 .foreverignore
 forever.sh
 
-# ignore temp TWB files
+# ignore temp and normal TWB files
 *.twbr
+*.twb
+
+client/textFiles/*.json
+client/textFiles/*.csv
