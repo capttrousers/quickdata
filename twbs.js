@@ -5,7 +5,7 @@ var twb2schema = require("./server/utils/twb2schema")
 
 var twb = {}
 
-xmlParse(fs.readFileSync(".\\client\\textFiles\\test-multiple-connections-same-ds.twb", "utf-8"), (err, result) => {twb = result})
+xmlParse(fs.readFileSync(".\\client\\textFiles\\TISA_Viz_PIF_1.0_103.twb", "utf-8"), (err, result) => {twb = result})
 
 
-var connections = twb2schema(twb);
+// var connections = twb2schema(twb);

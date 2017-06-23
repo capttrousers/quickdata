@@ -39,7 +39,8 @@ module.exports = (twb) => {
   var connections = _.chain(datasource)
                      .filter((ds) => { return ds["$"].name != "Parameters" ; })
                      .map((ds) => {
-                        return { tablename :  ds["$"].caption.replace(/\s/g,"_"),
+                        var tablename = (ds["$"].caption == null || ds["$"].caption == undefined) ?  ds["$"].name.replace(/\s/g,"_") :  ds["$"].caption.replace(/\s/g,"_");
+                        return { tablename,
                                  fields : ds.connection[0]["metadata-records"][0]["metadata-record"]
                                }
                       }).value();
@@ -48,7 +49,7 @@ module.exports = (twb) => {
 
   var connectionsParsed = _.chain(connections)
                           .map((ds) => { return { tablename : ds.tablename, fields :
-                                _.chain(ds.fields).filter((col) => { return col["$"].class == "column"; })
+                                _.chain(ds.fields).filter((col) => { return col["$"].class == "column" || col["$"].class == "measure"; })
                                 .map((col) => {
                                   return _.mapValues(_.pick(col, ["contains-null", "precision", "width", "local-type", "local-name"]),
                                     (prop) => {return prop[0]; }) ;
