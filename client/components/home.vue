@@ -14,18 +14,16 @@
             v-flex.xs3
               v-select(:items="dataSourceOptions",
                        v-model="dataSource",
-                       label="Select",
-                       single-line)
+                       label="Data Source")
 
             v-flex.xs3
               v-text-field(name="number-of-records", v-model="numberOfRecords", label="Records of random data")
-
             v-flex.xs4
               v-text-field(name="case", v-model="sfCase", label="Sales Force Case (optional)")
             v-flex.xs4
               v-text-field(name="table-name", v-model="tableName", :label="tableNameLabel")
             v-flex.xs4
-              v-text-field(name="user", v-model="user", label="User email @ tableau.com")
+              v-text-field.green--text(name="user", v-model="user", label="User email @ tableau.com")
 
       my-row( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
 
@@ -103,17 +101,11 @@
         },
         dataSourceOptions: {
           get () {
-            // return [
-            //   {text: "CSV", value: "csv"},
-            //   {text: "MySQL", value: "mysql"},
-            //   {text: "MS SQL Server", value: "mssql"},
-            //   {text: "PostgreSQL", value: "postgres"}
-            // ];
             return [
-              "csv",
-              "mysql",
-              "mssql",
-              "postgres",
+              {text: "CSV", value: "csv"},
+              {text: "MySQL", value: "mysql"},
+              {text: "MS SQL Server", value: "mssql"},
+              {text: "PostgreSQL", value: "postgres"}
             ];
           }
         },
@@ -179,16 +171,9 @@
   }
 </script>
 <style>
-  #info {
-    background-color: #fff6e0;
-    padding: 1em;
-  }
   #form {
     margin: 0 auto;
     width: 75%;
-  }
-  .md-button {
-    height:40px;
   }
   @media screen and (max-width: 1400px) {
     #form {

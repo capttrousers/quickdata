@@ -20,19 +20,19 @@
         #[a(href='https://mytableau.tableaucorp.com/display/cesupport/quickdata') Link to the quickdata wiki page with more info]
       p.
         If there are any issues uploading a TWB file, please visit the wiki page above on where to send feedback, and include the TWB you had issues uploading.
+    v-app
+      v-tabs(v-model="currentItem", fixed-tabs, color="green")
+        v-tabs-slider
+        v-tab(key="form_input")
+          v-icon.white--text assignment
+        v-tab(key="file_upload")
+          v-icon.white--text file_upload
 
-    v-tabs(v-model="currentItem", fixed-tabs, color="green")
-      v-tabs-slider
-      v-tab(key="form_input")
-        v-icon.white--text assignment
-      v-tab(key="file_upload")
-        v-icon.white--text file_upload
-
-    v-tabs-items(v-model="currentItem")
-      v-tab-item(key="form_input")
-        home
-      v-tab-item(key="file_upload")
-        help
+      v-tabs-items(v-model="currentItem")
+        v-tab-item(key="form_input")
+          home
+        v-tab-item(key="file_upload")
+          //-help
 </template>
 
 <script>
@@ -51,9 +51,10 @@
     }
   }
 </script>
-<style>
+<style >
   #info {
     background-color: #fff6e0;
     padding: 1em;
   }
+
 </style>

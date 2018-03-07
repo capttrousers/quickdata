@@ -9,7 +9,7 @@
     "build": "cross-env NODE_ENV=production webpack --config ./config/webpack.config.js --progress --hide-modules",
     "test": "cross-env NODE_TESTING=true mocha",
     "test-debug": "cross-env NODE_TESTING=true mocha --debug-brk --inspect",
-    "start": "cross-env DEBUG=true node server.js"
+    "start": "cross-env NODE_ENV=development DEBUG=true node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -47,6 +47,8 @@
     "serve-favicon": "~2.3.0",
     "sqlite3": "^3.1.8",
     "style-loader": "^0.13.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
     "tedious": "^1.14.0",
     "validator": "^7.0.0",
     "vue": "^2.1.4",

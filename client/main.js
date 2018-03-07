@@ -14,27 +14,25 @@ import router from './router';
 import Vuetify from 'vuetify';
 Vue.use(Vuetify);
 
-import VueMaterial from 'vue-material';
 // import 'css!vue-material/dist/vue-material.css';
-Vue.use(VueMaterial);
-
-
-Vue.material.registerTheme({
-  "default" : {
-    primary: {
-      color: 'green',
-      hue: '600'
-    },
-    accent: 'cyan',
-    warn: 'red'
-  },
-  row : {
-    primary: {
-      color: 'cyan',
-      hue: 200
-    }
-  }
-});
+// import VueMaterial from 'vue-material';
+// Vue.use(VueMaterial);
+// Vue.material.registerTheme({
+//   "default" : {
+//     primary: {
+//       color: 'green',
+//       hue: '600'
+//     },
+//     accent: 'cyan',
+//     warn: 'red'
+//   },
+//   row : {
+//     primary: {
+//       color: 'cyan',
+//       hue: 200
+//     }
+//   }
+// });
 
 new Vue({
   el: '#app',

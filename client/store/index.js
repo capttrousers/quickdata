@@ -18,7 +18,7 @@ export default new Vuex.Store({
 			"dataType": "text",
 			"minValue": "1",
 			"maxValue": "10",
-      "behavior": "random",  // ['positive', 'negative', 'random'] for date/int/float, ["expand", "random"] for file
+  		    "behavior": "random",  // ['positive', 'negative', 'random'] for date/int/float, ["expand", "random"] for file
 			"count": "1",
 			"allowNulls": false,
 			"file": null,
@@ -35,13 +35,13 @@ export default new Vuex.Store({
 			return state.columns[index];
 		},
 		isValidBody: state => {
-		if(state.user.length == 0) return "Must enter email";
-		if(! state.user.includes("tableau.com") ) return "Must be a valid tableau email";
-		if(state.numberOfRecords.length == 0) return "Must enter a value for the # of records to generate";
-		if(isNaN(Number(state.numberOfRecords))) return "Number of records must be a valid integer";
-		if(state.tableName.length == 0) return "Must enter a value for the table name";
-		if(state.columns.length == 0) return "Must add at least one column";
-		return "";
+			if(state.user.length == 0) return "Must enter email";
+			if(! state.user.includes("tableau.com") ) return "Must be a valid tableau email";
+			if(state.numberOfRecords.length == 0) return "Must enter a value for the # of records to generate";
+			if(isNaN(Number(state.numberOfRecords))) return "Number of records must be a valid integer";
+			if(state.tableName.length == 0) return "Must enter a value for the table name";
+			if(state.columns.length == 0) return "Must add at least one column";
+			return "";
 		}
 	},
 
@@ -147,92 +147,92 @@ export default new Vuex.Store({
 			commit('SET_FILE', payload);
 		},
 		updateColumn({commit}, payload) {
-				var index, propName, newValue;
-				index = payload.index;
-				propName = payload.propName;
-				newValue = payload.value;
+			var index, propName, newValue;
+			index = payload.index;
+			propName = payload.propName;
+			newValue = payload.value;
 
-				// switch based on payload.propName
-				switch(propName) {
-					case "hierarchy":
-						commit("UPDATE_COLUMN_HIERARCHY", { index, value: newValue});
-						break;
-					case "dataType":
-					 	// commit data type
-						commit("UPDATE_COLUMN_DATATYPE", {index, value: newValue});
-						// set default values for min max depending on data type
-						var minValue, maxValue;
-						switch(newValue) {
-							case "date":
-								minValue = new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toJSON().substring(0,10);
-								maxValue = new Date().toJSON().substring(0,10);
-								break;
-							case "integer":
-							case "decimal":
-								minValue = "0";
-								maxValue = "1000";
-								break;
-							case "text":
-             				case "file" :
-								minValue = "1";
-								maxValue = "10";
-								break;
-						}
-						commit("UPDATE_COLUMN_MINVALUE", {index, value: minValue});
-						commit("UPDATE_COLUMN_MAXVALUE", {index, value: maxValue});
+			// switch based on payload.propName
+			switch(propName) {
+				case "hierarchy":
+					commit("UPDATE_COLUMN_HIERARCHY", { index, value: newValue});
+					break;
+				case "dataType":
+					// commit data type
+					commit("UPDATE_COLUMN_DATATYPE", {index, value: newValue});
+					// set default values for min max depending on data type
+					var minValue, maxValue;
+					switch(newValue) {
+						case "date":
+							minValue = new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toJSON().substring(0,10);
+							maxValue = new Date().toJSON().substring(0,10);
+							break;
+						case "integer":
+						case "decimal":
+							minValue = "0";
+							maxValue = "1000";
+							break;
+						case "text":
+						case "file" :
+							minValue = "1";
+							maxValue = "10";
+							break;
+					}
+					commit("UPDATE_COLUMN_MINVALUE", {index, value: minValue});
+					commit("UPDATE_COLUMN_MAXVALUE", {index, value: maxValue});
 
-						// reset the behavior and count for any new dataType
-						commit("UPDATE_COLUMN_BEHAVIOR", {index, value: "random"});
-						commit("UPDATE_COLUMN_COUNT", {index, value: "1"});
-						break;
-					case "minValue":
-						commit("UPDATE_COLUMN_MINVALUE", {index, value: newValue});
-						break;
-					case "maxValue":
-						commit("UPDATE_COLUMN_MAXVALUE", {index, value: newValue});
-						break;
-					case "behavior":
-						commit("UPDATE_COLUMN_BEHAVIOR", {index, value: newValue});
-						commit("UPDATE_COLUMN_COUNT", {index, value: "1"});
-						break;
-					case "allowNulls":
-						commit("UPDATE_COLUMN_ALLOWNULLS", {index, value: newValue});
-						break;
-					case "child-count":
-						commit("UPDATE_COLUMN_CHILD_COUNT", {index, value: newValue});
-						break;
-					case "child-nulls":
-						commit("UPDATE_COLUMN_CHILD_ALLOWNULLS", {index, value: newValue});
-						break;
-					case "count":
-						commit("UPDATE_COLUMN_COUNT", {index, value: newValue});
-						break;
-					case "fileName":
-						commit("UPDATE_COLUMN_FILENAME", {index, value: newValue});
-						break;
-					case "file":
-						var reader = new FileReader();
-						reader.onload = function(evt) {
-							var text = reader.result;
-							Papa.parse(text, {
-								header: true,
-               					skipEmptyLines: true,
-								complete: function (results) {
-									var data = {}
-									data.fields = results.meta.fields;
-									data.values = results.data;
-									console.log(JSON.stringify(data, null, 1));
-									commit("UPDATE_COLUMN_FILE", {index, value: data});
-								}
-							});
-						}
-						if(newValue != null ) {
-							reader.readAsText(newValue);
-						} else {
-							commit("UPDATE_COLUMN_FILE", {index, value: null});
-						}
-						break;
-				}
+					// reset the behavior and count for any new dataType
+					commit("UPDATE_COLUMN_BEHAVIOR", {index, value: "random"});
+					commit("UPDATE_COLUMN_COUNT", {index, value: "1"});
+					break;
+				case "minValue":
+					commit("UPDATE_COLUMN_MINVALUE", {index, value: newValue});
+					break;
+				case "maxValue":
+					commit("UPDATE_COLUMN_MAXVALUE", {index, value: newValue});
+					break;
+				case "behavior":
+					commit("UPDATE_COLUMN_BEHAVIOR", {index, value: newValue});
+					commit("UPDATE_COLUMN_COUNT", {index, value: "1"});
+					break;
+				case "allowNulls":
+					commit("UPDATE_COLUMN_ALLOWNULLS", {index, value: newValue});
+					break;
+				case "child-count":
+					commit("UPDATE_COLUMN_CHILD_COUNT", {index, value: newValue});
+					break;
+				case "child-nulls":
+					commit("UPDATE_COLUMN_CHILD_ALLOWNULLS", {index, value: newValue});
+					break;
+				case "count":
+					commit("UPDATE_COLUMN_COUNT", {index, value: newValue});
+					break;
+				case "fileName":
+					commit("UPDATE_COLUMN_FILENAME", {index, value: newValue});
+					break;
+				case "file":
+					var reader = new FileReader();
+					reader.onload = function(evt) {
+						var text = reader.result;
+						Papa.parse(text, {
+							header: true,
+							skipEmptyLines: true,
+							complete: function (results) {
+								var data = {}
+								data.fields = results.meta.fields;
+								data.values = results.data;
+								console.log(JSON.stringify(data, null, 1));
+								commit("UPDATE_COLUMN_FILE", {index, value: data});
+							}
+						});
+					}
+					if(newValue != null ) {
+						reader.readAsText(newValue);
+					} else {
+						commit("UPDATE_COLUMN_FILE", {index, value: null});
+					}
+					break;
+			}
 		}
 	},
 	strict: false

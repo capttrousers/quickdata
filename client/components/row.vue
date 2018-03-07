@@ -1,41 +1,35 @@
 <template lang="pug">
   .field-row(:class="{child: hierarchy == 'child'}")
     span.parentLabel(v-if="hierarchy != 'child'")  {{ "Column " + (columnIndex + 1) }}
-      md-button.md-icon-button.md-warn.md-dense(@click.native="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
-          md-icon clear
+      v-btn(flat, icon, color="red", @click.native="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
+          v-icon clear
     span.childLabel(v-else) Child column of Column {{ columnIndex + 1 }}
-    md-layout(md-gutter="16")
-      md-layout(v-show="hierarchy != 'child'", md-flex="10", md-theme="'row'")
-        md-button-toggle.md-primary
-          md-button(@click.native="toggleHierarchy", :disabled="['file', 'integer', 'decimal'].indexOf(dataType) >= 0") Parent
-      md-layout(md-flex="15")
-        md-input-container
-          label(for='data-type') Data type
-          md-select(name='data-type', v-model="dataType", :disabled="hierarchy == 'child'")
-            md-option(v-for="dataTypeOption in dataTypes", :value="dataTypeOption.value", :disabled="hierarchy == 'parent' && ['date', 'text'].indexOf(dataTypeOption.value) < 0")  {{ dataTypeOption.label }}
-      md-layout(md-flex="30", v-show="dataType == 'file'")
+    v-layout
+      v-flex.xs1(v-show="hierarchy != 'child'")
+        v-btn-toggle(v-model="hierarchyToggled")
+          v-btn(:disabled="['file', 'integer', 'decimal'].indexOf(dataType) >= 0") Parent
+      v-flex.xs2
+        v-select(:items="dataTypes", v-model="dataType", label="Data type", :disabled="hierarchy == 'child'")
+          //- need to implement item disabling, if vuetify supports it:
+          //-md-option(v-for="dataTypeOption in dataTypes", :disabled="hierarchy == 'parent' && ['date', 'text'].indexOf(dataTypeOption.value) < 0")
+      //-v-flex.xs3(v-show="dataType == 'file'")
         md-input-container
           label Data list file, CSV format
           md-file(v-model="fileName", accept=".csv", :multiple="false", @selected="addFile($event)")
-      md-layout(:md-flex="dataType == 'date' ? 15 : 10", v-show="dataType != 'file' && dataType != 'text'")
-        md-input-container
-          label {{ MinValueLabel }}
-          md-input(v-model="minValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
-      md-layout(:md-flex="dataType == 'date' ? 15 : 10", v-show="dataType != 'file'")
-        md-input-container
-          label {{ MaxValueLabel }}
-          md-input(v-model="maxValue", :type="(dataType == 'date' ? 'date' : 'text')", :disabled="hierarchy == 'child'")
-      md-layout(md-flex="15", v-show="dataType != 'text' && hierarchy == 'none'")
-        md-input-container
-          label Behavior
-          md-select(v-model="behavior")
-            md-option(v-for="behaviorOption in behaviors", :value="behaviorOption.value") {{ behaviorOption.label}}
-      md-layout(md-flex="10", v-show="(dataType != 'date' && dataType != 'file') || behavior != 'random'")
-        md-input-container
-          label {{ CountLabel }}
-          md-input(v-model="count")
-      md-layout(md-flex="15")
-        md-checkbox(v-model="allowNulls") Allow nulls?
+      v-flex.xs2(v-show="dataType != 'file' && dataType != 'text'")
+        v-text-field(v-model="minValue", :label="MinValueLabel",
+                     :type="(dataType == 'date' ? 'date' : 'text')",
+                     :disabled="hierarchy == 'child'")
+      v-flex.xs2(v-show="dataType != 'file'")
+        v-text-field(v-model="maxValue", :label="MaxValueLabel",
+                     :type="(dataType == 'date' ? 'date' : 'text')",
+                     :disabled="hierarchy == 'child'")
+      v-flex.xs2(v-show="dataType != 'text' && hierarchy == 'none'")
+        v-select(:items="behaviors", v-model="behavior", label="Behavior", :disabled="hierarchy == 'child'")
+      v-flex.xs1(v-show="(dataType != 'date' && dataType != 'file') || behavior != 'random'")
+        v-text-field(v-model="count", :label="CountLabel")
+      v-flex.xs2
+        v-checkbox(v-model="allowNulls", label="Allow nulls?")
     br
     Row(v-if="hierarchy == 'parent'", :columnData="columnData.child", :columnIndex="columnIndex")
 </template>
@@ -51,16 +45,16 @@
 			  get() {
           if(this.hierarchy != "none" ) {
             return [
-              {label: "Text", value: "text"},
-              {label: "Date", value: "date"}
+              {text: "Text", value: "text"},
+              {text: "Date", value: "date"}
         		];
           } else {
             return [
-              {label: "Text", value: "text"},
-              {label: "Date", value: "date"},
-              {label: "Integer", value: "integer"},
-              {label: "Decimal", value: "decimal"},
-              {label: "File", value: "file"}
+              {text: "Text", value: "text"},
+              {text: "Date", value: "date"},
+              {text: "Integer", value: "integer"},
+              {text: "Decimal", value: "decimal"},
+              // {text: "File", value: "file"}
         		];
           }
 			  }
@@ -69,18 +63,29 @@
 			  get() {
           if(this.dataType != "file" ) {
             return [
-              {label: "Random", value: "random"},
-        			{label: "Positive Trend", value: "positive"},
-        			{label: "Negative Trend", value: "negative"}
+              {text: "Random", value: "random"},
+        			{text: "Positive Trend", value: "positive"},
+        			{text: "Negative Trend", value: "negative"}
         		];
           } else {
             return [
-              {label: "Random", value: "random"},
-              {label: "Expand", value: "expand"}
+              {text: "Random", value: "random"},
+              {text: "Expand", value: "expand"}
         		];
           }
 			  }
-			},
+      },
+      hierarchyToggled: {
+        get() {
+          return this.columnData.hierarchy === "none" ? 0 : null;
+        },
+        set() {
+          var value = this.hierarchy == 'none' ? 'parent' : 'none';
+          var index = this.columnIndex;
+          var propName = 'hierarchy';
+          this.$store.dispatch('updateColumn', {index, propName, value});
+        }
+      },
       hierarchy: {
         get() {
           return this.columnData.hierarchy;
@@ -216,12 +221,6 @@
       }
 		},
 		methods: {
-      toggleHierarchy: function (){
-        var value = this.hierarchy == 'none' ? 'parent' : 'none';
-        var index = this.columnIndex;
-        var propName = 'hierarchy';
-				this.$store.dispatch('updateColumn', {index, propName, value});
-      },
 			removeColumn: function(index) {
         this.$store.commit('REMOVE_COLUMN', {index});
 			},
