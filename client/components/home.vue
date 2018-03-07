@@ -1,44 +1,37 @@
 <template lang="pug">
   #control
 
-    md-progress(v-show="isTransferring", :md-indeterminate="true")
+    v-progress-linear.my-0(:active="isTransferring", color="blue" :indeterminate="true", height="3")
 
     #form
-      .form-row
-        md-layout(md-gutter="40")
-          md-layout(md-flex)
-            md-button.md-raised(:disabled="columns.length >= 12", @click.native="addNewColumn") Add Column
-          md-layout(md-flex)
-            md-button.md-raised.md-primary(@click.native="getData", :disabled="false") {{ fileButtonLabel }}
-          md-layout(md-flex)
-            md-input-container(style="display: inline-block; width: auto;")
-              label(for='data-source')  Data Source
-              md-select(name='data-source', v-model="dataSource")
-                md-option(v-for="dataSourceOption in dataSources", :value="dataSourceOption.value")  {{ dataSourceOption.label }}
-          md-layout(md-flex="20")
-            md-input-container(style="display: inline-block;")
-              label(for="number-of-records")  Records of random data
-              md-input(name='number-of-records', v-model="numberOfRecords")
-      .form-row
-        md-layout(md-gutter="40")
-          md-layout(md-flex="33")
-            md-input-container
-              label(for="case")  Sales Force Case (optional)
-              md-input(name='case', v-model="sfCase")
-          md-layout(md-flex="33")
-            md-input-container
-              label(for="table-name")  {{ tableNameLabel }}
-              md-input(name='table-name', v-model="tableName")
-          md-layout(md-flex="33")
-            md-input-container
-                label(for="user")  User email @ tableau.com
-                md-input(name='user', v-model="user")
+      v-container
+          v-layout(row, wrap)
+            v-flex.xs3
+              v-btn.grey(:disabled="columns.length >= 12", @click.native="addNewColumn") Add Column
+            v-flex.xs3
+              v-btn.green(@click.native="getData", :disabled="false") {{ fileButtonLabel }}
+
+            v-flex.xs3
+              v-select(:items="dataSourceOptions",
+                       v-model="dataSource",
+                       label="Select",
+                       single-line)
+
+            v-flex.xs3
+              v-text-field(name="number-of-records", v-model="numberOfRecords", label="Records of random data")
+
+            v-flex.xs4
+              v-text-field(name="case", v-model="sfCase", label="Sales Force Case (optional)")
+            v-flex.xs4
+              v-text-field(name="table-name", v-model="tableName", :label="tableNameLabel")
+            v-flex.xs4
+              v-text-field(name="user", v-model="user", label="User email @ tableau.com")
 
       my-row( v-for="(column, index) in columns", :columnData="column", :columnIndex="index")
 
-    md-snackbar(ref="errorsnackbar", :md-duration="7000")
+    v-snackbar(v-model="snackbar", :timeout="7000", bottom)
       span {{ errorMessage }}
-      md-button.md-accent(@click.native="$refs.errorsnackbar.close()") Close
+      v-btn(flat, color="pink", @click.native="snackbar = false") Close
 
 </template>
 
@@ -52,7 +45,8 @@
     },
     data: function() {
       return {
-        isTransferring: false
+        isTransferring: false,
+        snackbar: false
       }
     },
     computed: {
@@ -107,13 +101,19 @@
             this.$store.commit('SET_USER', {value});
           }
         },
-        dataSources: {
+        dataSourceOptions: {
           get () {
+            // return [
+            //   {text: "CSV", value: "csv"},
+            //   {text: "MySQL", value: "mysql"},
+            //   {text: "MS SQL Server", value: "mssql"},
+            //   {text: "PostgreSQL", value: "postgres"}
+            // ];
             return [
-              {label: "CSV", value: "csv"},
-              {label: "MySQL", value: "mysql"},
-              {label: "MS SQL Server", value: "mssql"},
-              {label: "PostgreSQL", value: "postgres"}
+              "csv",
+              "mysql",
+              "mssql",
+              "postgres",
             ];
           }
         },
@@ -167,12 +167,12 @@
                 that.errorMessage = (response.body.error) || '404 error';
               }
               that.isTransferring = false;
-              that.$refs.errorsnackbar.open();
+              that.snackbar = true;
             }
           );
         } else {
           this.errorMessage = this.$store.getters.isValidBody;
-          this.$refs.errorsnackbar.open();
+          this.snackbar = true;
         }
       }
     }
@@ -186,9 +186,6 @@
   #form {
     margin: 0 auto;
     width: 75%;
-  }
-  .form-row{
-    margin: 1em 0;
   }
   .md-button {
     height:40px;

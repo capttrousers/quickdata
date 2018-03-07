@@ -21,10 +21,17 @@
       p.
         If there are any issues uploading a TWB file, please visit the wiki page above on where to send feedback, and include the TWB you had issues uploading.
 
-    md-tabs(:md-centered="true")
-      md-tab(md-icon="assignment")
+    v-tabs(v-model="currentItem", fixed-tabs, color="green")
+      v-tabs-slider
+      v-tab(key="form_input")
+        v-icon.white--text assignment
+      v-tab(key="file_upload")
+        v-icon.white--text file_upload
+
+    v-tabs-items(v-model="currentItem")
+      v-tab-item(key="form_input")
         home
-      md-tab(md-icon="file_upload")
+      v-tab-item(key="file_upload")
         help
 </template>
 
@@ -36,6 +43,11 @@
     components: {
       Home,
       Help
+    },
+    data() {
+      return {
+        currentItem: null
+      }
     }
   }
 </script>

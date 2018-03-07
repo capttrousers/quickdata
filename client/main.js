@@ -11,6 +11,9 @@ import app from './components/app.vue';
 import store from './store';
 import router from './router';
 
+import Vuetify from 'vuetify';
+Vue.use(Vuetify);
+
 import VueMaterial from 'vue-material';
 // import 'css!vue-material/dist/vue-material.css';
 Vue.use(VueMaterial);

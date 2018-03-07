@@ -1,5 +1,5 @@
 <template lang="pug">
-  .row(:class="{child: hierarchy == 'child'}")
+  .field-row(:class="{child: hierarchy == 'child'}")
     span.parentLabel(v-if="hierarchy != 'child'")  {{ "Column " + (columnIndex + 1) }}
       md-button.md-icon-button.md-warn.md-dense(@click.native="removeColumn(columnIndex)", style="height: 1.5em; min-height: initial;")
           md-icon clear
@@ -245,7 +245,7 @@
 	}
 </script>
 <style media="screen">
-  .row {
+  .field-row {
     border-top: 3px inset #ccc;
     padding: 1em 0 0 0;
     /*height: 100px;*/

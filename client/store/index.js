@@ -7,12 +7,12 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		errorMessage: "default error message",
-    file: null,
+   		file: null,
 		numberOfRecords: "",
-    dataSource: "csv",
-    user: "",
-    sfCase: "",
-    tableName: "",
+		dataSource: "csv",
+		user: "",
+		sfCase: "",
+		tableName: "",
 		templateColumn: {
 			"hierarchy": "none",// ['none', 'parent', 'child']
 			"dataType": "text",
@@ -34,15 +34,15 @@ export default new Vuex.Store({
 		getColumnByIndex: (state, getters) => (index) => {
 			return state.columns[index];
 		},
-    isValidBody: state => {
-      if(state.user.length == 0) return "Must enter email";
-      if(! state.user.includes("tableau.com") ) return "Must be a valid tableau email";
-      if(state.numberOfRecords.length == 0) return "Must enter a value for the # of records to generate";
-      if(isNaN(Number(state.numberOfRecords))) return "Number of records must be a valid integer";
-      if(state.tableName.length == 0) return "Must enter a value for the table name";
-      if(state.columns.length == 0) return "Must add at least one column";
-      return "";
-    }
+		isValidBody: state => {
+		if(state.user.length == 0) return "Must enter email";
+		if(! state.user.includes("tableau.com") ) return "Must be a valid tableau email";
+		if(state.numberOfRecords.length == 0) return "Must enter a value for the # of records to generate";
+		if(isNaN(Number(state.numberOfRecords))) return "Number of records must be a valid integer";
+		if(state.tableName.length == 0) return "Must enter a value for the table name";
+		if(state.columns.length == 0) return "Must add at least one column";
+		return "";
+		}
 	},
 
 	mutations: {
@@ -88,7 +88,7 @@ export default new Vuex.Store({
 			if(state.columns[payload.index].hierarchy == "parent") {
 				state.columns[payload.index].child.minValue = payload.value;
 			}
-    },
+        },
 		UPDATE_COLUMN_MAXVALUE(state, payload) {
 			state.columns[payload.index].maxValue = payload.value;
 			if(state.columns[payload.index].hierarchy == "parent") {
@@ -97,13 +97,13 @@ export default new Vuex.Store({
 		},
 		UPDATE_COLUMN_ALLOWNULLS(state, payload) {
 			state.columns[payload.index].allowNulls = payload.value;
-    },
+ 	    },
 		UPDATE_COLUMN_CHILD_ALLOWNULLS(state, payload) {
 			state.columns[payload.index].child.allowNulls = payload.value;
-    },
+        },
 		UPDATE_COLUMN_COUNT(state, payload) {
 			state.columns[payload.index].count = payload.value;
-    },
+ 	    },
 		UPDATE_COLUMN_CHILD_COUNT(state, payload) {
 			state.columns[payload.index].child.count = payload.value;
 		},
@@ -112,7 +112,7 @@ export default new Vuex.Store({
 			if(state.columns[payload.index].hierarchy == "parent") {
 				state.columns[payload.index].child.behavior = payload.value;
 			}
-    },
+  	    },
 		UPDATE_COLUMN_HIERARCHY(state, payload) {
 			if(payload.value == "none") {
 				state.columns[payload.index].child = {};
@@ -129,13 +129,13 @@ export default new Vuex.Store({
 				state.columns[payload.index].child = childColumn;
 			}
 			state.columns[payload.index].hierarchy = payload.value;
-    },
+ 	    },
 		UPDATE_COLUMN_FILE(state, payload) {
 			state.columns[payload.index].file = payload.value;
-    },
+        },
 		UPDATE_COLUMN_FILENAME(state, payload) {
 			state.columns[payload.index].fileName = payload.value;
-    }
+    }	
 	},
 	actions: {
 		setFile({commit}, payload) {
@@ -173,7 +173,7 @@ export default new Vuex.Store({
 								maxValue = "1000";
 								break;
 							case "text":
-              case "file" :
+             				case "file" :
 								minValue = "1";
 								maxValue = "10";
 								break;
@@ -216,7 +216,7 @@ export default new Vuex.Store({
 							var text = reader.result;
 							Papa.parse(text, {
 								header: true,
-                skipEmptyLines: true,
+               					skipEmptyLines: true,
 								complete: function (results) {
 									var data = {}
 									data.fields = results.meta.fields;

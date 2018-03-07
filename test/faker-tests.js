@@ -2,7 +2,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var faker = require("faker");
 
-describe.only("checks various faker random data values", function() {
+describe("checks various faker random data values", function() {
 
   describe("address category", function() {
 
