@@ -37,6 +37,8 @@
   import MyRow from './row.vue';
   import Vue from 'vue';
   var FileSaver = require('file-saver');
+  import axios from "axios";
+
   export default {
     components: {
       MyRow
@@ -143,16 +145,17 @@
           body.sfCase = this.sfCase;
           body.columns = this.columns;
           body.numberOfRecords = this.numberOfRecords;
-
-          Vue.http.post('/quickdata', body).then(
+          
+          axios.post('/quickdata', body).then(
             (response) => {
-              var data = response.body;
+              var data = response.data;
               var binaryData = [];
               binaryData.push(data);
               var fileName = (that.sfCase && that.sfCase.length > 0 ? that.sfCase + '_' : "" ) + this.tableName + ( this.dataSource == 'csv' ? '.csv' : '.txt' ) ;
               FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
               that.isTransferring = false;
-            }, (response) => {
+            }, (error) => {
+              let response = error.response
               if(! (response && response.body) ) {
                 that.errorMessage = "server unresponsive"
               } else {

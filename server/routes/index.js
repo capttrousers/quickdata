@@ -121,7 +121,8 @@ router.post("/quickdata", function(request, response, next) {
   }).then( function() {
     logger.info("Created log entry in Usage table");
     if(request.body.dataSource == 'csv') {
-    	var csv = json2csv({ data: quick_data, fields: quick_data_fields });
+      var csv = json2csv({ data: quick_data, fields: quick_data_fields });
+      logger.debug("sending CSV data back to client: %o", csv)
       // created string for csv file. send as response to save on client
       response.status(200).type('text').send(csv);
     } else {

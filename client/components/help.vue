@@ -69,9 +69,9 @@ import csvFile from '../textFiles/csv';
 import jsonFile from '../textFiles/json';
 import schemaTextFile from '../textFiles/schema.json.text';
 import schemaJSONFile from '../textFiles/schema.json.template';
-import Vue from 'vue';
 var FileSaver = require('file-saver');
 var parseXML = require('xml2js').parseString;
+import axios from "axios";
 
 export default {
   data: function() {
@@ -173,19 +173,20 @@ export default {
           // parse JSON file and upload to /quickdata like normal body
           try {
             var body = JSON.parse(reader.result);
-            Vue.http.post("/quickdata", body).then(
+            axios.post("/quickdata", body).then(
               (response) => {
-                var data = response.body;
+                var data = response.data;
                 var binaryData = [];
                 binaryData.push(data);
                 var fileName = body.tableName + ( body.dataSource == 'csv' ? '.csv' : '.txt' ) ;
                 FileSaver.saveAs(new Blob(binaryData, {type: "text/plain;charset=utf-8"}), fileName);
                 that.isTransferring = false;
-              }, (response) => {
-                if(! (response && response.body) ) {
+              }, (error) => {
+                let response = error.response
+                if(! (response && response.data) ) {
                   that.errorMessage = "server unresponsive"
                 } else {
-                  that.errorMessage = (response.body.error) || '404 error';
+                  that.errorMessage = (response.data.error) || '404 error';
                 }
                 that.isTransferring = false;
                 that.$refs.errorsnackbar.open();
@@ -208,10 +209,9 @@ export default {
               if(result.workbook["$"].version.split(".")[0] == "10") {
                 var body = {};
                 body.twb = result;
-                Vue.http.post("/fileuploader", body).then(
+                axios.post("/fileuploader", body).then(
                   (response) => {
-
-                    var data = response.body;
+                    var data = response.data;
                     var binaryData = [];
                     binaryData.push(data);
                     var fileName = that.fileName.replace(/.twb/, "-TWB-schemas.zip") ;
@@ -219,11 +219,12 @@ export default {
                     that.errorMessage = "TWB file parsed and uploaded successfully";
                     that.$refs.errorsnackbar.open();
                     that.isTransferring = false;
-                  }, (response) => {
-                    if(! (response && response.body) ) {
+                  }, (error) => {
+                    let response = error.response
+                    if(! (response && response.data) ) {
                       that.errorMessage = "server unresponsive"
                     } else {
-                      that.errorMessage = (response.body.error) || '404 error';
+                      that.errorMessage = (response.data.error) || '404 error';
                     }
                     that.isTransferring = false;
                     that.$refs.errorsnackbar.open();
