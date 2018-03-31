@@ -15,3 +15,16 @@
 9. Run `npm run build` to make sure you have the latest build of the front end code.
 10. (Optional) Run `npm run test` to run tests, but many of these will probablay fail unless you set up the db config.
 11. Run project: `node ./server.js` and navigate to `localhost:8080` in a browser to see the quick data tool.
+
+
+++++++++
+  PROD
+++++++++
+$ ssh
+$ cd to project
+$ git pull
+$ rm -rf node_modules // optional, hard reset
+$ npm install
+$ npm run build
+$ pm2 list
+$ pm2 restart appname
