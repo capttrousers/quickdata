@@ -13,18 +13,18 @@
 7. This will create a `quickdata` folder inside the `code` directory. Move into new project directory: `cd ./quickdata`.
 8. Run `npm install` to install all dependencies / node modules and packages.
 9. Run `npm run build` to make sure you have the latest build of the front end code.
-10. (Optional) Run `npm run test` to run tests, but many of these will probablay fail unless you set up the db config.
+10. (Optional) Run `npm run test` to run tests, but many of these will probablay fail unless you set up the db config (`config/config.prod.json`).
 11. Run project: `node ./server.js` and navigate to `localhost:8080` in a browser to see the quick data tool.
 
 
-++++++++
-  PROD
-++++++++
-$ ssh
-$ cd to project
-$ git pull
-$ rm -rf node_modules // optional, hard reset
-$ npm install
-$ npm run build
-$ pm2 list
-$ pm2 restart appname
+++++++++  
+  PROD  
+++++++++  
+$ ssh  
+$ cd to project  
+$ git pull  
+$ rm -rf node_modules // optional, hard reset  
+$ npm install  
+$ npm run build  
+$ pm2 list  
+$ pm2 restart appname  
