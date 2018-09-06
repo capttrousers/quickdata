@@ -17,9 +17,9 @@
 11. Run project: `node ./server.js` and navigate to `localhost:8080` in a browser to see the quick data tool.
 
 
-++++++++  
-  PROD  
-++++++++  
++++++++++++++++
+  PROD deploy
++++++++++++++++
 $ ssh  
 $ cd to project  
 $ git pull  
@@ -28,3 +28,16 @@ $ npm install
 $ npm run build  
 $ pm2 list  
 $ pm2 restart appname  
+
+
+++++++++++++++++++
+ new prod install
+++++++++++++++++++
+- install nginx sqlite3 node
+- clone repo and build
+- set NODE_ENV=production env variable:
+  $ printf '# export node env variable\nexport NODE_ENV="production"\n' >> ~/.bashrc && source ~/.bashrc
+- copy prod db creds conf file and run tests
+- copy nginx conf and sites-available
+- hosts and hostname files from /etc
+- setup pm2
