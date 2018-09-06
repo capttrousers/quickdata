@@ -41,3 +41,4 @@ $ pm2 restart appname
 - copy nginx conf and sites-available
 - hosts and hostname files from /etc
 - setup pm2
+
