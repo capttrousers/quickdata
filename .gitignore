@@ -13,3 +13,5 @@ forever.sh
 
 # ignore temp TWB files
 *.twbr
+
+.vscode
