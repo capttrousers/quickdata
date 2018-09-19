@@ -18,7 +18,7 @@
 
 
 +++++++++++++++
-  PROD deploy
+  PROD CD
 +++++++++++++++
 $ ssh  
 $ cd to project  
@@ -38,7 +38,6 @@ $ pm2 restart appname
 - set NODE_ENV=production env variable:
   $ printf '# export node env variable\nexport NODE_ENV="production"\n' >> ~/.bashrc && source ~/.bashrc
 - copy prod db creds conf file and run tests
-- copy nginx conf and sites-available
-- hosts and hostname files from /etc
-- setup pm2
+- copy nginx sites-available conf
+- setup pm2: start and startup
 
