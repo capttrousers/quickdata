@@ -18,12 +18,12 @@ var logger   = require('../utils/logger').logger;
 
 var processColumns = require('../utils/processColumns');
 
-var bodyDateHierarchy = require('../../data/bodyTesterDateHierarchy');
-var bodyFileList = require('../../data/bodyTesterFileList');
-var bodyFileListSingleColumn = require('../../data/bodyTesterFileListSingleColumn');
-var bodyDateHierarchyNulls = require('../../data/bodyTesterDateHierarchyNulls');
-var bodyAllTypes = require('../../data/bodyTesterNoFiles');
-var bodyTrend = require('../../data/bodyTesterPositiveTrend');
+var bodyDateHierarchy = require('./data/bodyTesterDateHierarchy');
+var bodyFileList = require('./data/bodyTesterFileList');
+var bodyFileListSingleColumn = require('./data/bodyTesterFileListSingleColumn');
+var bodyDateHierarchyNulls = require('./data/bodyTesterDateHierarchyNulls');
+var bodyAllTypes = require('./data/bodyTesterNoFiles');
+var bodyTrend = require('./data/bodyTesterPositiveTrend');
 
 describe('method : processColumns tests', function(){
     before(function() {

@@ -15,13 +15,13 @@ var logger   = require('../utils/logger').logger;
 var processColumns = require('../utils/processColumns');
 var generateData = require('../utils/generateData');
 
-var bodyDateHierarchy = require('../../data/bodyTesterDateHierarchy');
-var bodyNulls = require('../../data/bodyTesterNulls');
-var bodyDateNulls = require('../../data/bodyTesterDateNulls');
-var bodyDateHierarchyNulls = require('../../data/bodyTesterDateHierarchyNulls');
-var bodyTrend = require('../../data/bodyTesterPositiveTrend');
-var bodyFileList = require('../../data/bodyTesterFileList');
-var bodyFileListSingleColumn = require('../../data/bodyTesterFileListSingleColumn');
+var bodyDateHierarchy = require('./data/bodyTesterDateHierarchy');
+var bodyNulls = require('./data/bodyTesterNulls');
+var bodyDateNulls = require('./data/bodyTesterDateNulls');
+var bodyDateHierarchyNulls = require('./data/bodyTesterDateHierarchyNulls');
+var bodyTrend = require('./data/bodyTesterPositiveTrend');
+var bodyFileList = require('./data/bodyTesterFileList');
+var bodyFileListSingleColumn = require('./data/bodyTesterFileListSingleColumn');
 
 describe('method : generateData tests', function(){
 

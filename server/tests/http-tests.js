@@ -6,7 +6,7 @@ var logger   = require('../utils/logger').logger;
 var processTables = require('../utils/cleaner/processTables');
 
 var models = require('../models');
-var body = require('../../data/bodyTesterNoFiles');
+var body = require('./data/bodyTesterNoFiles');
 var app = require('../app');
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
