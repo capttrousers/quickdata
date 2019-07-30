@@ -1,13 +1,13 @@
 var chai = require('chai');
 var expect = chai.expect;
 var _ = require('lodash');
-var logger   = require('../server/utils/logger').logger;
+var logger   = require('../utils/logger').logger;
 
-var processTables = require('../server/utils/cleaner/processTables');
+var processTables = require('../utils/cleaner/processTables');
 
-var models = require('../server/models');
-var body = require('../data/bodyTesterNoFiles');
-var app = require('../server/app');
+var models = require('../models');
+var body = require('../../data/bodyTesterNoFiles');
+var app = require('../app');
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 

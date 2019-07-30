@@ -1,9 +1,9 @@
 var chai = require('chai');
 var expect = chai.expect;
 var _ = require('lodash');
-var logger   = require('../server/utils/logger').logger;
+var logger   = require('../utils/logger').logger;
 
-var app = require('../server/app');
+var app = require('../app');
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 

@@ -1,8 +1,8 @@
 var expect = require('chai').expect;
 
-var logger   = require('../server/utils/logger').logger;
+var logger   = require('../utils/logger').logger;
 
-var getRandomData = require('../server/utils/getRandomDataValue');
+var getRandomData = require('../utils/getRandomDataValue');
 var addDays = require('date-fns/add_days');
 var startOfDay = require('date-fns/start_of_day');
 var isSameDay = require('date-fns/is_same_day');

@@ -1,14 +1,14 @@
 var expect = require('chai').expect;
 
-var logger   = require('../server/utils/logger').logger;
+var logger   = require('../utils/logger').logger;
 
 var _ = require("lodash");
 
-var isValidBody = require('../server/utils/isValidBody');
+var isValidBody = require('../utils/isValidBody');
 
-var dataColumnObject = require('../data/dataColumnObject');
-var bodyTemplate = require('../data/bodyTemplate');
-var bodyTrend = require('../data/bodyTesterPositiveTrend');
+var dataColumnObject = require('../../data/dataColumnObject');
+var bodyTemplate = require('../../data/bodyTemplate');
+var bodyTrend = require('../../data/bodyTesterPositiveTrend');
 
 describe("method: isValidBody tests", function() {
 

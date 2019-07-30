@@ -14,16 +14,16 @@
 var chai = require('chai');
 var expect = chai.expect;
 var _ = require('lodash');
-var logger   = require('../server/utils/logger').logger;
+var logger   = require('../utils/logger').logger;
 
-var processColumns = require('../server/utils/processColumns');
+var processColumns = require('../utils/processColumns');
 
-var bodyDateHierarchy = require('../data/bodyTesterDateHierarchy');
-var bodyFileList = require('../data/bodyTesterFileList');
-var bodyFileListSingleColumn = require('../data/bodyTesterFileListSingleColumn');
-var bodyDateHierarchyNulls = require('../data/bodyTesterDateHierarchyNulls');
-var bodyAllTypes = require('../data/bodyTesterNoFiles');
-var bodyTrend = require('../data/bodyTesterPositiveTrend');
+var bodyDateHierarchy = require('../../data/bodyTesterDateHierarchy');
+var bodyFileList = require('../../data/bodyTesterFileList');
+var bodyFileListSingleColumn = require('../../data/bodyTesterFileListSingleColumn');
+var bodyDateHierarchyNulls = require('../../data/bodyTesterDateHierarchyNulls');
+var bodyAllTypes = require('../../data/bodyTesterNoFiles');
+var bodyTrend = require('../../data/bodyTesterPositiveTrend');
 
 describe('method : processColumns tests', function(){
     before(function() {
