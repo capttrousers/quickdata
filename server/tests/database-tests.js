@@ -9,7 +9,7 @@ var logger   = require('../server/utils/logger').logger;
 
 var processTables = require('../server/utils/cleaner/processTables');
 
-describe("Database connections with sequelize", function() {
+describe.skip("Database connections with sequelize", function() {
 
   var seq = models.postgresConnection;
   this.slow(500);

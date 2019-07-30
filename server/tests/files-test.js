@@ -8,7 +8,7 @@ var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
 
-describe('server accepts a text or json file to describe schema', function(){
+describe.skip('server accepts a text or json file to describe schema', function(){
 
   it('POST /fileuploader accepts anything and returns 200', function(){
     var body = {

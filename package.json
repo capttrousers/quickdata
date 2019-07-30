@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./config/webpack.config.js --open --inline --hot --content-base public/",
     "build": "cross-env NODE_ENV=production webpack --config ./config/webpack.config.js --progress --hide-modules",
-    "test": "cross-env NODE_TESTING=true mocha",
+    "test": "cross-env NODE_TESTING=true mocha --recursive \"./server/tests/*.js\"",
     "test-debug": "cross-env NODE_TESTING=true mocha --debug-brk --inspect",
     "start": "cross-env NODE_ENV=development DEBUG=true node server.js"
   },
