@@ -9,7 +9,7 @@
     "build": "cross-env NODE_ENV=production webpack --config ./config/webpack.config.js --progress --hide-modules",
     "test": "cross-env NODE_TESTING=true mocha --recursive \"./server/tests/*.js\"",
     "test-debug": "cross-env NODE_TESTING=true mocha --debug-brk --inspect",
-    "start": "cross-env NODE_ENV=development DEBUG=true node server.js"
+    "start": "cross-env NODE_ENV=development DEBUG=true node server/server.js"
   },
   "author": "",
   "license": "ISC",

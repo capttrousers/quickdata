@@ -1,7 +1,7 @@
 var fs = require("fs")
 var xmlParse = require("xml2js").parseString
 
-var twb2schema = require("./server/utils/twb2schema")
+var twb2schema = require("./twb2schema")
 
 var twb = {}
 
