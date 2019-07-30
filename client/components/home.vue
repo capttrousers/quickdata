@@ -6,10 +6,12 @@
     #form
       v-container
           v-layout(row, wrap)
-            v-flex.xs3
+            v-flex.xs2
               v-btn.grey(:disabled="columns.length >= 12", @click.native="addNewColumn") Add Column
-            v-flex.xs3
+            v-flex.xs2
               v-btn.green(@click.native="getData", :disabled="false") {{ fileButtonLabel }}
+            v-flex.xs2
+              v-btn.green(@click.native="postLambda", :disabled="false") Lambda test
 
             v-flex.xs3
               v-select(:items="dataSourceOptions",
@@ -46,7 +48,8 @@
     data: function() {
       return {
         isTransferring: false,
-        snackbar: false
+        snackbar: false,
+        url: "https://y3jnm5pidb.execute-api.us-west-2.amazonaws.com/quickdata"
       }
     },
     computed: {
@@ -129,6 +132,14 @@
       addNewColumn: function () {
         this.$store.commit('ADD_NEW_COLUMN')
       },
+      postLambda: function () {
+        let body = {"thing" : "stuff"};
+	axios.post(this.url, body).then(res => {
+	 console.log("Received response: " +JSON.stringify(res, null, 2)); 
+	}).catch(err => {
+	 console.log("ERROR: " + JSON.stringify(err, null, 2));
+	});
+      },
       getData: function () {
         if(this.$store.getters.isValidBody.length == 0) {
           // ajax post columns, numberOfRecords
@@ -145,7 +156,6 @@
           body.sfCase = this.sfCase;
           body.columns = this.columns;
           body.numberOfRecords = this.numberOfRecords;
-          
           axios.post('/quickdata', body).then(
             (response) => {
               var data = response.data;
