@@ -44,7 +44,7 @@
     "pg-hstore": "^2.3.2",
     "pug": "^2.0.0-beta6",
     "sequelize": "^3.29.0",
-    "sequelize-cli": "^2.5.1",
+    "sequelize-cli": "^6.5.2",
     "serve-favicon": "~2.3.0",
     "sqlite3": "^3.1.8",
     "style-loader": "^0.13.1",
